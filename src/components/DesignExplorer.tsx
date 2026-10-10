@@ -35,7 +35,7 @@ export function DesignExplorer() {
   const active = designs.find((d) => d.id === activeId) ?? designs[0];
   const selected = selectedId ? getDesign(selectedId) : undefined;
 
-  const inquiryHref = `/inquiry${selectionToSearchParams({ design: selectedId })}`;
+  const inquiryHref = `/about${selectionToSearchParams({ design: selectedId })}#inquire`;
 
   const switchCategory = (id: string) => {
     setCategoryId(id);
@@ -402,7 +402,7 @@ export function DesignExplorer() {
                     Sends via email to {INQUIRY_EMAIL}
                     {selectedId ? " with your selected design attached" : ""}. Or open the{" "}
                     <Link href={inquiryHref} className="underline hover:text-terracotta-400">
-                      full inquiry page
+                      about & inquiry page
                     </Link>
                     .
                   </p>

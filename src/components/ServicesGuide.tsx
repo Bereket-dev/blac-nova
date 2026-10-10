@@ -33,7 +33,7 @@ export function ServicesGuide() {
                 <i className="ri-arrow-down-line text-base" />
               </Link>
               <Link
-                href="#inquire"
+                href="/about#inquire"
                 className="inline-flex items-center gap-2 rounded-full border border-ink-900/15 px-6 py-3 text-[13px] tracking-wide uppercase text-ink-900 hover:border-ink-900/40 transition-colors"
               >
                 Send a quick inquiry

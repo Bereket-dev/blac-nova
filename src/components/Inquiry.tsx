@@ -66,7 +66,7 @@ export function Inquiry() {
               a director will craft a proposal within 48 hours.
             </p>
             <a
-              href="/inquiry"
+              href="/about#inquire"
               className="group w-full inline-flex items-center justify-between gap-3 pl-5 pr-2 py-2 rounded-full bg-ink-900 text-bone-50 hover:bg-terracotta-500 transition-colors text-sm tracking-wide whitespace-nowrap"
             >
               Start your inquiry

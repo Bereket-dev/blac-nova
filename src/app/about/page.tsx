@@ -3,15 +3,16 @@ import { Suspense } from "react";
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
 import { InquiryForm } from "@/components/InquiryForm";
+import { Owner } from "@/components/Owner";
 import { parseInquirySelection } from "@/lib/services";
 
 export const metadata: Metadata = {
-  title: "Project Inquiry — Blac Nova",
+  title: "About — Blac Nova",
   description:
-    "Start a project inquiry with Blac Nova — name, phone, and an optional design direction.",
+    "Meet the founder behind Blac Nova and start a project inquiry — name, phone, and an optional design direction.",
 };
 
-type InquiryPageProps = PageProps<"/inquiry">;
+type AboutPageProps = PageProps<"/about">;
 
 function InquiryFallback() {
   return (
@@ -25,18 +26,19 @@ function InquiryFallback() {
 
 async function InquiryContent({
   searchParams,
-}: Pick<InquiryPageProps, "searchParams">) {
+}: Pick<AboutPageProps, "searchParams">) {
   const resolved = await searchParams;
   const selection = parseInquirySelection(resolved);
 
   return <InquiryForm initialSelection={selection} />;
 }
 
-export default function InquiryPage({ searchParams }: InquiryPageProps) {
+export default function AboutPage({ searchParams }: AboutPageProps) {
   return (
     <main className="bg-bone-50 text-ink-900 overflow-hidden">
       <Header solid />
-      <section className="relative pt-28 md:pt-32 pb-20 md:pb-28">
+      <Owner variant="about" />
+      <section id="inquire" className="relative bg-bone-100 py-20 md:pb-28 md:pt-4">
         <div className="max-w-7xl mx-auto px-6 md:px-10 lg:px-14">
           <Suspense fallback={<InquiryFallback />}>
             <InquiryContent searchParams={searchParams} />

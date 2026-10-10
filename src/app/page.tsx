@@ -3,10 +3,11 @@ import { Header } from "@/components/Header";
 import { Hero } from "@/components/Hero";
 import { Inquiry } from "@/components/Inquiry";
 import { Marquee } from "@/components/Marquee";
+import { Owner } from "@/components/Owner";
 import { Projects } from "@/components/Projects";
 import { Services } from "@/components/Services";
 import { ProjectFilm } from "@/components/ProjectFilm";
-import { Testimonial } from "@/components/Testimonial";
+import { Reviews } from "@/components/Reviews";
 
 export default function Home() {
   return (
@@ -17,7 +18,8 @@ export default function Home() {
       <ProjectFilm />
       <Services />
       <Projects />
-      <Testimonial />
+      <Owner />
+      <Reviews />
       <Inquiry />
       <Footer />
     </main>

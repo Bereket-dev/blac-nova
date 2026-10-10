@@ -99,10 +99,10 @@ export function Hero() {
                   </span>
                 </a>
                 <a
-                  href="#journal"
+                  href="/about"
                   className="text-bone-50/90 hover:text-bone-50 text-sm tracking-wide whitespace-nowrap underline-offset-4 hover:underline"
                 >
-                  Read the journal
+                  About the practice
                 </a>
               </div>
             </div>

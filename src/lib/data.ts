@@ -193,3 +193,43 @@ export const HERO_IMAGE =
 export const CTA_IMAGE = img.cta;
 
 export const teamAvatars = [img.avatar1, img.avatar2, img.avatar3];
+
+export const OWNER = {
+  image: "/owner.jpeg",
+  role: "Founder & Principal",
+  eyebrow: "About the practice",
+  homeHeadline: "Led by one standard — homes built to be lived in for decades.",
+  homeSummary:
+    "Blac Nova is a construction and design practice shaped by its founder: clear briefs, honest materials, and accountability from drawing to handover.",
+  aboutHeadline: "We build the homes people have carried in their minds for years.",
+  aboutSummary:
+    "Every project begins with listening — to the land, the brief, and how a family actually lives. Our founder leads the practice with the same measure on every site: proportion, material truth, and work that outlasts the moment it was finished.",
+  aboutBody: [
+    "Architecture, construction, and landscape sit under one roof so nothing is lost between the drawing and the build. Clients speak to people who stay with the project — not a revolving door of subcontractors guessing at intent.",
+    "We favour calm rooms, durable finishes, and details you notice every day. Awards are welcome; the real test is whether the house still feels inevitable ten years on.",
+  ],
+};
+
+export const reviews = [
+  {
+    quote:
+      "Blac Nova does not merely construct buildings — they engineer the homes people have carried in their minds for years. Our residence feels inevitable, as if it had always belonged to the land.",
+    name: "Sir Richard Holloway",
+    role: "Private Client, Cotswolds",
+    avatar: img.avatar2,
+  },
+  {
+    quote:
+      "Programme, quality, and cost stayed clear from foundation to final fixture. We always knew who owned the next decision — and the house matches the drawings we approved.",
+    name: "Amelia Chen",
+    role: "Private Client, Chelsea",
+    avatar: img.avatar1,
+  },
+  {
+    quote:
+      "They treated landscape as architecture without a roof. The terrace, planting, and pool read as one room with the house — quiet, precise, and completely ours.",
+    name: "Elena Vargas",
+    role: "Private Client, Oxfordshire",
+    avatar: img.avatar3,
+  },
+];

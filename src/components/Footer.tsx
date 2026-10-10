@@ -6,8 +6,8 @@ import { useState, type FormEvent } from "react";
 const explore = [
   { href: "/projects", label: "Projects" },
   { href: "/services", label: "Services" },
-  { href: "/#journal", label: "Journal" },
-  { href: "/inquiry", label: "Inquiry" },
+  { href: "/about", label: "About" },
+  { href: "/about#inquire", label: "Inquiry" },
 ];
 
 const social = [

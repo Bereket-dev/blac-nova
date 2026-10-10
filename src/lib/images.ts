@@ -22,8 +22,6 @@ export const img = {
   landPavilion: u("photo-1416879595882-3373a0480b5b", 1000),
   stoneDetail: u("photo-1504307651254-35680f356dfd", 1000),
   landscapeCard: u("photo-1558904541-efa843a96f01", 1000),
-  portraitSm: u("photo-1507003211169-0a1dd7228f2d", 200),
-  portraitLg: u("photo-1560250097-0b93528c311a", 900),
   avatar1: u("photo-1573496359142-b8d87734a5a2", 160),
   avatar2: u("photo-1472099645785-5658abf4ff4e", 160),
   avatar3: u("photo-1580489944761-15a19d654956", 160),

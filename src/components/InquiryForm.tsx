@@ -56,9 +56,9 @@ export function InquiryForm({ initialSelection }: InquiryFormProps) {
             Project inquiry
           </span>
         </div>
-        <h1 className="font-serif-display text-4xl md:text-5xl lg:text-6xl font-light text-ink-900 text-balance leading-[1.05]">
+        <h2 className="font-serif-display text-4xl md:text-5xl lg:text-6xl font-light text-ink-900 text-balance leading-[1.05]">
           Name, phone, and an optional design.
-        </h1>
+        </h2>
         <p className="mt-5 text-ink-900/60 leading-relaxed max-w-md">
           That&apos;s all we need to start. A director replies within 48 hours — with a clearer
           proposal if you&apos;ve already chosen a direction.
