@@ -11,9 +11,16 @@ const explore = [
 ];
 
 const social = [
-  { href: "#", icon: "ri-instagram-line", label: "Instagram" },
-  { href: "#", icon: "ri-linkedin-line", label: "LinkedIn" },
-  { href: "#", icon: "ri-pinterest-line", label: "Pinterest" },
+  {
+    href: "https://www.tiktok.com/@blacnova6",
+    icon: "ri-tiktok-fill",
+    label: "TikTok",
+  },
+  {
+    href: "https://t.me/+251911369200",
+    icon: "ri-telegram-fill",
+    label: "Telegram",
+  },
 ];
 
 export function Footer() {
@@ -70,6 +77,8 @@ export function Footer() {
                 <li key={item.label}>
                   <a
                     href={item.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="flex items-center gap-3 text-bone-100/85 hover:text-terracotta-400 transition-colors"
                   >
                     <span className="w-5 h-5 flex items-center justify-center">
