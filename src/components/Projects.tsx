@@ -65,7 +65,7 @@ export function Projects() {
                 className="group relative shrink-0 w-[78vw] sm:w-[58vw] md:w-[44vw] lg:w-[30vw] xl:w-[26vw] snap-start"
               >
                 <Link
-                  href={`#residences`}
+                  href={`/projects/${project.slug}`}
                   className="block relative aspect-[4/5] overflow-hidden rounded-xl bg-bone-200"
                 >
                   <FadeImage
@@ -123,13 +123,13 @@ export function Projects() {
               {String(active + 1).padStart(2, "0")} / {String(projects.length).padStart(2, "0")}{" "}
               — <span className="font-serif-display italic">{projects[active]?.title}</span>
             </div>
-            <a
-              href="#residences"
+            <Link
+              href="/projects"
               className="inline-flex items-center gap-2 text-[12px] tracking-widest-2 uppercase text-ink-900 hover:text-terracotta-500 transition-colors whitespace-nowrap"
             >
               View all projects
               <i className="ri-arrow-right-line" />
-            </a>
+            </Link>
           </div>
         </FadeIn>
       </div>

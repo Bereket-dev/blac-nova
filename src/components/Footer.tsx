@@ -4,10 +4,10 @@ import Image from "next/image";
 import { useState, type FormEvent } from "react";
 
 const explore = [
-  { href: "#residences", label: "Projects" },
-  { href: "#services", label: "Services" },
-  { href: "#journal", label: "Journal" },
-  { href: "#inquiry", label: "Inquiry" },
+  { href: "/projects", label: "Projects" },
+  { href: "/#services", label: "Services" },
+  { href: "/#journal", label: "Journal" },
+  { href: "/#inquiry", label: "Inquiry" },
 ];
 
 const social = [

@@ -2,15 +2,22 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 
 const nav = [
-  { href: "#residences", label: "Projects" },
-  { href: "#services", label: "Services" },
-  { href: "#journal", label: "Journal" },
+  { href: "/projects", label: "Projects" },
+  { href: "/#services", label: "Services" },
+  { href: "/#journal", label: "Journal" },
 ];
 
-export function Header() {
+type HeaderProps = {
+  /** Always use the light solid header (for inner pages without a dark hero). */
+  solid?: boolean;
+};
+
+export function Header({ solid = false }: HeaderProps) {
+  const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
 
@@ -28,7 +35,7 @@ export function Header() {
     };
   }, [open]);
 
-  const onLight = scrolled || open;
+  const onLight = solid || scrolled || open || pathname !== "/";
   const text = onLight ? "text-ink-900" : "text-bone-50";
   const hover = onLight ? "hover:text-ink-900/70" : "hover:text-bone-200";
 
@@ -56,26 +63,26 @@ export function Header() {
 
         <nav className="hidden md:flex items-center gap-9">
           {nav.map((item) => (
-            <a
+            <Link
               key={item.href}
               href={item.href}
               className={`text-[13px] tracking-wide uppercase transition-colors whitespace-nowrap ${text} ${hover}`}
             >
               {item.label}
-            </a>
+            </Link>
           ))}
         </nav>
 
         <div className="hidden md:flex items-center gap-4">
-          <a
-            href="#inquiry"
+          <Link
+            href="/#inquiry"
             className="group relative inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-[13px] tracking-wide uppercase transition-all duration-300 whitespace-nowrap bg-bone-50 text-ink-900 hover:bg-terracotta-500 hover:text-bone-50"
           >
             Project Inquiry
             <span className="w-4 h-4 flex items-center justify-center">
               <i className="ri-arrow-right-up-line text-base transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
             </span>
-          </a>
+          </Link>
         </div>
 
         <button
@@ -93,22 +100,22 @@ export function Header() {
         <div className="md:hidden border-t border-ink-900/8 bg-bone-50 px-6 pb-8 pt-4">
           <nav className="flex flex-col gap-5">
             {nav.map((item) => (
-              <a
+              <Link
                 key={item.href}
                 href={item.href}
                 className="text-sm tracking-wide uppercase text-ink-900"
                 onClick={() => setOpen(false)}
               >
                 {item.label}
-              </a>
+              </Link>
             ))}
-            <a
-              href="#inquiry"
+            <Link
+              href="/#inquiry"
               className="inline-flex items-center justify-center gap-2 rounded-full bg-ink-900 px-5 py-3 text-[13px] tracking-wide uppercase text-bone-50"
               onClick={() => setOpen(false)}
             >
               Project Inquiry
-            </a>
+            </Link>
           </nav>
         </div>
       )}
