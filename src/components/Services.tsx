@@ -61,6 +61,7 @@ export function Services() {
               alt="Construction detail"
               className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105"
               sizes="(max-width: 768px) 100vw, 33vw"
+              eager
             />
             <div className="absolute inset-0 bg-gradient-to-t from-ink-900/70 via-ink-900/10 to-transparent" />
             <div className="absolute top-5 left-5 flex items-center gap-2 px-3 py-1.5 rounded-full bg-ink-900/60 backdrop-blur-sm text-bone-50 text-[11px] tracking-widest-2 uppercase">
@@ -98,6 +99,7 @@ export function Services() {
                 alt="Landscape and pool detail"
                 className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105"
                 sizes="(max-width: 768px) 100vw, 33vw"
+                eager
               />
             </div>
           </FadeIn>

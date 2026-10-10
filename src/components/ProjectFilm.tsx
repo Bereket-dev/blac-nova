@@ -101,7 +101,7 @@ export function ProjectFilm() {
               ref={videoRef}
               className="absolute inset-0 h-full w-full object-cover"
               playsInline
-              preload="none"
+              preload="metadata"
               poster={PROJECT_FILM.poster}
               onPlay={() => setPlaying(true)}
               onPause={() => setPlaying(false)}
@@ -117,7 +117,8 @@ export function ProjectFilm() {
                 fill
                 sizes="(max-width: 1280px) 100vw, 1200px"
                 className="object-cover"
-                priority={false}
+                loading="eager"
+                decoding="async"
               />
             )}
 

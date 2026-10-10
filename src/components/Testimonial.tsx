@@ -70,6 +70,7 @@ export function Testimonial() {
                 alt="Client portrait"
                 className="object-cover object-top"
                 sizes="(max-width: 1024px) 100vw, 40vw"
+                eager
               />
               <div className="absolute top-4 left-4 px-3 py-1.5 rounded-full bg-bone-50/90 backdrop-blur text-[11px] tracking-widest-2 uppercase text-ink-900">
                 Dream Home Awards · 2025

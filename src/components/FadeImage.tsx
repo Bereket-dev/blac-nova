@@ -8,7 +8,8 @@ type FadeImageProps = {
   alt: string;
   className?: string;
   sizes?: string;
-  priority?: boolean;
+  /** Start fetching as soon as the page loads (even below the fold). */
+  eager?: boolean;
   fill?: boolean;
   width?: number;
   height?: number;
@@ -19,7 +20,7 @@ export function FadeImage({
   alt,
   className = "",
   sizes,
-  priority = false,
+  eager = false,
   fill = true,
   width,
   height,
@@ -28,7 +29,7 @@ export function FadeImage({
 
   return (
     <div className="relative overflow-hidden bg-bone-200 absolute inset-0">
-      {!loaded && <div className="absolute inset-0 shimmer z-10" />}
+      {!loaded && <div className="absolute inset-0 shimmer z-10 pointer-events-none" />}
       <Image
         src={src}
         alt={alt}
@@ -36,11 +37,11 @@ export function FadeImage({
         width={fill ? undefined : width}
         height={fill ? undefined : height}
         sizes={sizes}
-        priority={priority}
+        loading={eager ? "eager" : undefined}
+        decoding="async"
         onLoad={() => setLoaded(true)}
-        className={`transition-opacity duration-700 ease-out ${
-          loaded ? "opacity-100" : "opacity-0"
-        } ${className}`}
+        onError={() => setLoaded(true)}
+        className={`transition-opacity duration-500 ease-out opacity-100 ${className}`}
       />
     </div>
   );
