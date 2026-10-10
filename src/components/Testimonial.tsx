@@ -1,3 +1,4 @@
+import { img } from "@/lib/images";
 import { FadeIn } from "./FadeIn";
 import { FadeImage } from "./FadeImage";
 
@@ -23,7 +24,7 @@ export function Testimonial() {
               <div className="flex items-center gap-3">
                 <div className="relative w-12 h-12 rounded-full overflow-hidden bg-bone-200">
                   <FadeImage
-                    src="https://readdy.ai/api/search-image?query=editorial%20portrait%20of%20distinguished%20British%20gentleman%20chairman%20in%20his%20sixties%20wearing%20charcoal%20suit%20and%20tie%20against%20warm%20cream%20studio%20background%2C%20confident%20expression%2C%20pure%20simple%20background%2C%20editorial%20magazine%20photography&width=120&height=120&seq=test-portrait-01&orientation=squarish"
+                    src={img.portraitSm}
                     alt="Portrait of Sir Richard Holloway"
                     className="object-cover object-top"
                     sizes="48px"
@@ -66,7 +67,7 @@ export function Testimonial() {
           <FadeIn delayMs={100} className="lg:col-span-5">
             <div className="relative aspect-[4/5] rounded-xl overflow-hidden bg-bone-100">
               <FadeImage
-                src="https://readdy.ai/api/search-image?query=editorial%20black%20and%20white%20portrait%20of%20distinguished%20British%20gentleman%20in%20his%20sixties%20wearing%20dark%20suit%20looking%20thoughtfully%20to%20side%2C%20clean%20pale%20cream%20studio%20background%2C%20refined%20fashion%20editorial%20lighting%2C%20pure%20simple%20seamless%20background&width=640&height=800&seq=test-portrait-large-01&orientation=portrait"
+                src={img.portraitLg}
                 alt="Client portrait"
                 className="object-cover object-top"
                 sizes="(max-width: 1024px) 100vw, 40vw"

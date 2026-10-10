@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 
 const nav = [
   { href: "/projects", label: "Projects" },
-  { href: "/#services", label: "Services" },
+  { href: "/services", label: "Services" },
   { href: "/#journal", label: "Journal" },
 ];
 
@@ -75,7 +75,7 @@ export function Header({ solid = false }: HeaderProps) {
 
         <div className="hidden md:flex items-center gap-4">
           <Link
-            href="/#inquiry"
+            href="/inquiry"
             className="group relative inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-[13px] tracking-wide uppercase transition-all duration-300 whitespace-nowrap bg-bone-50 text-ink-900 hover:bg-terracotta-500 hover:text-bone-50"
           >
             Project Inquiry
@@ -110,7 +110,7 @@ export function Header({ solid = false }: HeaderProps) {
               </Link>
             ))}
             <Link
-              href="/#inquiry"
+              href="/inquiry"
               className="inline-flex items-center justify-center gap-2 rounded-full bg-ink-900 px-5 py-3 text-[13px] tracking-wide uppercase text-bone-50"
               onClick={() => setOpen(false)}
             >

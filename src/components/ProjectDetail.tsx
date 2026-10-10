@@ -177,7 +177,7 @@ export function ProjectDetail({ project, others }: ProjectDetailProps) {
               Have a plot, a brief, or a house in mind?
             </p>
             <Link
-              href="/#inquiry"
+              href="/inquiry"
               className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-ink-900 text-bone-50 text-[13px] tracking-wide uppercase hover:bg-terracotta-500 transition-colors"
             >
               Start an inquiry

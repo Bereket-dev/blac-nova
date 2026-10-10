@@ -1,3 +1,5 @@
+import Link from "next/link";
+import { img } from "@/lib/images";
 import { FadeIn } from "./FadeIn";
 import { FadeImage } from "./FadeImage";
 
@@ -41,13 +43,13 @@ export function Services() {
                 Full architectural services from concept to completion. We design homes that
                 respond to their context, respect their materials, and outlast their brief.
               </p>
-              <a
-                href="#services"
+              <Link
+                href="/services"
                 className="mt-7 flex items-center gap-2 text-[12px] tracking-widest-2 uppercase text-bone-50/70 group-hover:text-terracotta-400 transition-colors"
               >
                 Read approach
                 <i className="ri-arrow-right-up-line text-base transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-              </a>
+              </Link>
             </div>
           </FadeIn>
 
@@ -56,9 +58,12 @@ export function Services() {
             delayMs={100}
             className="group relative rounded-2xl overflow-hidden min-h-[420px] transition-transform duration-500 hover:-translate-y-1"
           >
+            <Link href="/services" className="absolute inset-0 z-10" aria-label="Construction management">
+              <span className="sr-only">View construction management</span>
+            </Link>
             <FadeImage
-              src="https://readdy.ai/api/search-image?query=intimate%20detail%20of%20warm%20travertine%20stone%20wall%20with%20soft%20directional%20sunlight%20casting%20long%20shadow%20of%20olive%20branch%2C%20bronze%20door%20handle%2C%20editorial%20architectural%20photography%2C%20pure%20simple%20background%20of%20warm%20beige%20stone%20texture&width=640&height=800&seq=phil-card-02&orientation=portrait"
-              alt="Construction detail"
+              src={img.stoneDetail}
+              alt="Construction site in progress"
               className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105"
               sizes="(max-width: 768px) 100vw, 33vw"
               eager
@@ -92,10 +97,17 @@ export function Services() {
                 without a roof — spatial design at ground level, using stone, water, planting,
                 and light to shape outdoor rooms.
               </p>
+              <Link
+                href="/services"
+                className="mt-6 inline-flex items-center gap-2 text-[12px] tracking-widest-2 uppercase text-ink-900/60 group-hover:text-terracotta-500 transition-colors"
+              >
+                Explore services
+                <i className="ri-arrow-right-line" />
+              </Link>
             </div>
             <div className="relative h-44 -mx-7 -mb-7 md:-mx-8 md:-mb-8 mt-6 overflow-hidden rounded-b-2xl">
               <FadeImage
-                src="https://readdy.ai/api/search-image?query=modern%20landscape%20garden%20with%20stone%20terrace%20and%20reflecting%20pool%2C%20mature%20planting%2C%20warm%20natural%20light%2C%20editorial%20landscape%20architectural%20photography%2C%20pure%20simple%20background%20of%20soft%20sky%20and%20green%20foliage&width=640&height=390&seq=phil-card-03&orientation=landscape"
+                src={img.landscapeCard}
                 alt="Landscape and pool detail"
                 className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105"
                 sizes="(max-width: 768px) 100vw, 33vw"
@@ -104,6 +116,16 @@ export function Services() {
             </div>
           </FadeIn>
         </div>
+
+        <FadeIn delayMs={120} className="mt-12 flex justify-center">
+          <Link
+            href="/services"
+            className="inline-flex items-center gap-2 text-[12px] tracking-widest-2 uppercase text-ink-900 hover:text-terracotta-500 transition-colors"
+          >
+            View all services & shape your brief
+            <i className="ri-arrow-right-line" />
+          </Link>
+        </FadeIn>
       </div>
     </section>
   );

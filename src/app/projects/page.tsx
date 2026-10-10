@@ -46,7 +46,7 @@ export default function ProjectsPage() {
 
           <FadeIn delayMs={100} className="mt-16 flex justify-center">
             <Link
-              href="/#inquiry"
+              href="/inquiry"
               className="inline-flex items-center gap-2 text-[12px] tracking-widest-2 uppercase text-ink-900 hover:text-terracotta-500 transition-colors"
             >
               Discuss a project

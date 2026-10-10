@@ -28,8 +28,17 @@ export function FadeImage({
   const [loaded, setLoaded] = useState(false);
 
   return (
-    <div className="relative overflow-hidden bg-bone-200 absolute inset-0">
-      {!loaded && <div className="absolute inset-0 shimmer z-10 pointer-events-none" />}
+    <div
+      className={
+        fill
+          ? // Parent must be position:relative with a real height (aspect-*, h-*, min-h-*).
+            "absolute inset-0 overflow-hidden bg-bone-200"
+          : "relative overflow-hidden bg-bone-200 w-full h-full"
+      }
+    >
+      {!loaded && (
+        <div className="absolute inset-0 shimmer z-10 pointer-events-none" aria-hidden />
+      )}
       <Image
         src={src}
         alt={alt}
@@ -41,7 +50,9 @@ export function FadeImage({
         decoding="async"
         onLoad={() => setLoaded(true)}
         onError={() => setLoaded(true)}
-        className={`transition-opacity duration-500 ease-out opacity-100 ${className}`}
+        className={`transition-opacity duration-500 ease-out ${
+          loaded ? "opacity-100" : "opacity-0"
+        } ${className}`}
       />
     </div>
   );

@@ -66,13 +66,19 @@ export function Inquiry() {
               a director will craft a proposal within 48 hours.
             </p>
             <a
-              href="mailto:hello@blacnova.com"
+              href="/inquiry"
               className="group w-full inline-flex items-center justify-between gap-3 pl-5 pr-2 py-2 rounded-full bg-ink-900 text-bone-50 hover:bg-terracotta-500 transition-colors text-sm tracking-wide whitespace-nowrap"
             >
               Start your inquiry
               <span className="w-9 h-9 flex items-center justify-center rounded-full bg-bone-50 text-ink-900 group-hover:bg-ink-900 group-hover:text-bone-50 transition-colors">
                 <i className="ri-arrow-right-line text-base" />
               </span>
+            </a>
+            <a
+              href="/services#designs"
+              className="mt-3 block text-center text-[11px] tracking-widest-2 uppercase text-ink-900/50 hover:text-terracotta-500 transition-colors"
+            >
+              Or explore designs first
             </a>
             <p className="mt-4 text-[10px] tracking-wide text-ink-900/45 leading-relaxed">
               Your inquiry is handled by a director. We never share details outside the
