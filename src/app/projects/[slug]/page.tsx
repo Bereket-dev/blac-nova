@@ -18,10 +18,10 @@ export async function generateMetadata({
   const { slug } = await params;
   const project = getProject(slug);
   if (!project) {
-    return { title: "Project — Blac Nova" };
+    return { title: "Project" };
   }
   return {
-    title: `${project.title} — Blac Nova`,
+    title: project.title,
     description: project.summary,
   };
 }

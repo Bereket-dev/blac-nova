@@ -7,7 +7,7 @@ import { ProjectCard } from "@/components/ProjectCard";
 import { projects } from "@/lib/data";
 
 export const metadata: Metadata = {
-  title: "Projects — Blac Nova",
+  title: "Projects",
   description:
     "Houses, G+ buildings, guest houses, and compound works by Blac Nova Construction & Design.",
 };

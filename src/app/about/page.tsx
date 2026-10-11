@@ -7,7 +7,7 @@ import { Owner } from "@/components/Owner";
 import { parseInquirySelection } from "@/lib/services";
 
 export const metadata: Metadata = {
-  title: "About — Blac Nova",
+  title: "About",
   description:
     "Meet the founder behind Blac Nova and start a project inquiry — name, phone, and an optional design direction.",
 };

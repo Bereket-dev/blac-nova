@@ -6,7 +6,7 @@ import { DesignExplorer } from "@/components/DesignExplorer";
 import { ServicesGuide } from "@/components/ServicesGuide";
 
 export const metadata: Metadata = {
-  title: "Services — Blac Nova",
+  title: "Services",
   description:
     "Architecture, construction, and landscape — see the work, understand how we deliver, and inquire with an optional design direction.",
 };
