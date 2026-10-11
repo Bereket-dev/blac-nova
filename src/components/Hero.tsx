@@ -24,19 +24,20 @@ export function Hero() {
       className="relative h-screen min-h-[760px] w-full overflow-hidden bg-ink-900"
       style={{ position: "sticky", top: 0, zIndex: 5 }}
     >
-      <div className="absolute inset-0 w-full h-full overflow-hidden">
-        <div
-          data-hero-image="true"
-          className={`absolute inset-0 will-change-transform transition-opacity duration-1000 ${
+      <div className="absolute inset-0">
+        <Image
+          src={HERO_IMAGE}
+          alt="Blac Nova founder on a construction site"
+          fill
+          priority
+          unoptimized
+          sizes="100vw"
+          className={`object-cover object-[62%_center] sm:object-[58%_center] lg:object-center will-change-transform transition-opacity duration-1000 ${
             ready ? "opacity-100" : "opacity-0"
           }`}
-          style={{
-            backgroundImage: `url("${HERO_IMAGE}")`,
-            backgroundSize: "cover",
-            backgroundPosition: "center center",
-          }}
         />
         <div className="absolute inset-0 bg-gradient-to-b from-ink-900/55 via-ink-900/25 to-ink-900/70" />
+        <div className="absolute inset-y-0 right-0 w-[42%] hidden lg:block bg-gradient-to-l from-ink-900/55 via-ink-900/20 to-transparent" />
         <div className="grain absolute inset-0" />
       </div>
 
@@ -49,7 +50,7 @@ export function Hero() {
           >
             <span className="w-10 h-px bg-bone-50/60" />
             <span className="text-[11px] tracking-widest-2 uppercase">
-              Est. 2014 — Construction & Design
+              Blac Nova — Construction &amp; Design
             </span>
           </div>
         </div>
@@ -80,20 +81,19 @@ export function Hero() {
                   ready ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
                 }`}
               >
-                Blac Nova is a construction and design practice crafting residences,
-                landscapes, and refined spaces for clients who measure quality by the
-                millimetre — and longevity by the century.
+                Blac Nova designs and builds houses, G+ buildings, and compound works —
+                solid structure, clean finishes, and a home you can live in for years.
               </p>
               <div
-                className={`mt-8 flex items-center gap-4 transition-all duration-1000 delay-500 ${
+                className={`mt-8 flex flex-wrap items-center gap-4 transition-all duration-1000 delay-500 ${
                   ready ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
                 }`}
               >
                 <a
-                  href="#residences"
+                  href="#projects"
                   className="group inline-flex items-center gap-3 pl-5 pr-2 py-2 rounded-full bg-bone-50 text-ink-900 hover:bg-terracotta-500 hover:text-bone-50 transition-all duration-300 whitespace-nowrap text-sm tracking-wide"
                 >
-                  Discover projects
+                  See our projects
                   <span className="w-9 h-9 flex items-center justify-center rounded-full bg-ink-900 text-bone-50 group-hover:bg-bone-50 group-hover:text-ink-900 transition-all">
                     <i className="ri-arrow-right-line text-base" />
                   </span>
@@ -102,7 +102,7 @@ export function Hero() {
                   href="/about"
                   className="text-bone-50/90 hover:text-bone-50 text-sm tracking-wide whitespace-nowrap underline-offset-4 hover:underline"
                 >
-                  About the practice
+                  About the company
                 </a>
               </div>
             </div>
@@ -134,7 +134,7 @@ export function Hero() {
                 ))}
               </div>
               <span className="text-[12px] tracking-wide">
-                A team of architects, engineers & builders dedicated to your home.
+                A team of architects, engineers &amp; builders dedicated to your home.
               </span>
             </div>
             <div

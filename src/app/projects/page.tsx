@@ -9,7 +9,7 @@ import { projects } from "@/lib/data";
 export const metadata: Metadata = {
   title: "Projects — Blac Nova",
   description:
-    "Featured residences, landscapes, and leisure spaces by Blac Nova Construction & Design.",
+    "Houses, G+ buildings, guest houses, and compound works by Blac Nova Construction & Design.",
 };
 
 export default function ProjectsPage() {
@@ -27,11 +27,11 @@ export default function ProjectsPage() {
             </div>
             <div className="flex flex-wrap items-end justify-between gap-6 mb-14 md:mb-16">
               <h1 className="font-serif-display text-4xl md:text-6xl lg:text-7xl leading-[1.02] tracking-[-0.015em] text-ink-900 font-light text-balance max-w-3xl">
-                Projects that <span className="italic">refuse</span> to be ordinary.
+                Recent builds across <span className="italic">Ethiopia</span>.
               </h1>
               <p className="text-sm md:text-base text-ink-900/60 max-w-sm font-light leading-relaxed">
-                Residences, gardens, and leisure spaces delivered with the same obsession for
-                proportion and material.
+                Family houses, G+ buildings, guest houses, and compound outdoor works —
+                designed and built for daily life.
               </p>
             </div>
           </FadeIn>

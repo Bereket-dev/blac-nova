@@ -12,16 +12,16 @@ export function ServicesGuide() {
             <div className="flex items-center gap-3 mb-5">
               <span className="w-10 h-px bg-ink-900/40" />
               <span className="text-[11px] tracking-widest-2 uppercase text-ink-900/55">
-                The practice — Services
+                Our services
               </span>
             </div>
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-end">
               <h1 className="lg:col-span-8 font-serif-display text-4xl md:text-6xl lg:text-7xl leading-[1.02] tracking-[-0.015em] text-ink-900 font-light text-balance">
-                See the work. Understand the craft. Want the home.
+                Design, build &amp; compound works — clear from start to finish.
               </h1>
               <p className="lg:col-span-4 text-ink-900/60 leading-relaxed font-light">
-                Architecture, construction, and landscape — shown as finished places, then broken
-                down so you know exactly what you receive and how we deliver it.
+                Architecture, construction, and outdoor works shown as finished homes, then
+                broken down so you know what you get and how we deliver it.
               </p>
             </div>
             <div className="mt-10 flex flex-wrap gap-4">
@@ -29,14 +29,14 @@ export function ServicesGuide() {
                 href="#designs"
                 className="inline-flex items-center gap-2 rounded-full bg-ink-900 text-bone-50 px-6 py-3 text-[13px] tracking-wide uppercase hover:bg-terracotta-500 transition-colors"
               >
-                Explore designs
+                Browse designs
                 <i className="ri-arrow-down-line text-base" />
               </Link>
               <Link
                 href="/about#inquire"
                 className="inline-flex items-center gap-2 rounded-full border border-ink-900/15 px-6 py-3 text-[13px] tracking-wide uppercase text-ink-900 hover:border-ink-900/40 transition-colors"
               >
-                Send a quick inquiry
+                Send an inquiry
               </Link>
             </div>
           </FadeIn>

@@ -79,11 +79,11 @@ export function DesignExplorer() {
               </span>
             </div>
             <h2 className="font-serif-display text-3xl md:text-5xl font-light text-ink-900 text-balance">
-              Find a direction you want to live in.
+              Browse finished work by type.
             </h2>
             <p className="mt-5 text-ink-900/60 leading-relaxed max-w-2xl">
-              Browse finished work by type. Open a design for details, optionally select it, then
-              leave your name and phone — we&apos;ll follow up with a clear next step.
+              Open a design for details, select one if you like, then leave your name and phone —
+              we follow up with clear next steps.
             </p>
           </FadeIn>
 

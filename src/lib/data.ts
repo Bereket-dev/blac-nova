@@ -9,7 +9,6 @@ export type Project = {
   collaborator: string;
   area: string;
   year: string;
-  value: string;
   image: string;
   alt: string;
   summary: string;
@@ -22,148 +21,143 @@ export type Project = {
 
 export const marqueeItems = [
   "Dream homes delivered nationwide",
-  "Architecture · Construction · Interiors",
-  "Award-winning residential design",
-  "Sustainable building practice",
-  "Custom estates & renovations",
+  "Architecture · Construction · Finishing",
+  "Residential design & build",
+  "Solid structure, clean handover",
+  "Houses, G+ buildings & renovations",
   "120+ homes completed",
   "We build your dream home",
 ];
 
 export const projects: Project[] = [
   {
-    slug: "the-hartley-hotel",
-    title: "The Hartley Residence",
-    location: "Mayfair, London",
-    category: "Luxury Home",
+    slug: "private-villa-dire-dawa",
+    title: "G+2 Private House",
+    location: "Dire Dawa",
+    category: "Private House",
     index: "01",
     collaborator: "Blac Nova Architecture",
-    area: "1,240 m²",
+    area: "480 m²",
     year: "2025",
-    value: "£4.8M",
-    image: img.hartley,
-    alt: "The Hartley Residence, Mayfair, London",
+    image: img.projectG2,
+    alt: "G+2 private house in Dire Dawa",
     summary:
-      "A limestone and bronze town residence composed for quiet grandeur on a Mayfair street.",
+      "A G+2 private house on a city plot — strong structure, clean finishes, and a shaded compound yard.",
     description:
-      "The Hartley Residence reworks a constrained urban plot into a sequence of calm, light-filled rooms. Floor-to-ceiling glazing opens the principal volumes to the street garden, while bronze framing and pale limestone keep the façade refined and enduring. Interiors are organised around a central stair and double-height reception — proportion first, ornament second.",
+      "This G+2 private house turns a tight Dire Dawa plot into a practical family home. Wide windows bring light into the living rooms, while stone cladding and aluminum framing keep the elevation neat and durable. Inside, rooms sit around a central stair — living and kitchen on the ground floor, bedrooms above.",
     approach:
-      "We led architecture through construction, coordinating structure, façade, and joinery as one continuous language. Every threshold was drawn to feel inevitable: from kerb to entrance, from day rooms to private floors.",
+      "We handled design through construction: structure, elevations, and finishing as one job. From gate to entrance to upper floors, every stage was coordinated so the build matches the drawings.",
     scope: [
-      "Full architectural design",
-      "Construction management",
-      "Custom joinery & interiors",
-      "Landscape courtyard",
+      "Architectural design",
+      "Site supervision",
+      "Interior finishing",
+      "Compound landscaping",
     ],
-    materials: ["Limestone", "Bronze", "Oak", "Travertine", "Brushed steel"],
+    materials: ["Hollow block", "Stone cladding", "Aluminum windows", "Ceramic tile", "Paint"],
     status: "Completed 2025",
   },
   {
-    slug: "serpentine-house",
-    title: "Serpentine House",
-    location: "Chelsea, London",
+    slug: "family-house-addis",
+    title: "Family House",
+    location: "Addis Ababa",
     category: "Residential",
     index: "02",
     collaborator: "Blac Nova Design",
-    area: "680 m²",
+    area: "320 m²",
     year: "2024",
-    value: "£3.4M",
-    image: img.serpentine,
-    alt: "Serpentine House, Chelsea, London",
+    image: img.projectFamily,
+    alt: "Family house in Addis Ababa",
     summary:
-      "A pale-brick Chelsea townhouse organised around garden light and vertical calm.",
+      "A family house planned for daily life — bright rooms, a small garden, and finishes that hold up.",
     description:
-      "Serpentine House is a quiet rewrite of a Chelsea terrace — retaining street presence while opening the plan to a private garden. Tall vertical windows pull daylight deep into the plan; pale brick and soft timber keep the palette restrained. Family rooms sit on the garden level; quieter suites rise above.",
+      "This Addis Ababa family house keeps a clear street front while opening to a private back garden. Tall windows pull daylight deep into the plan; plaster, paint, and timber keep the look simple. Living rooms sit on the garden side; bedrooms sit above for quiet.",
     approach:
-      "Design and interiors were developed together so furniture, joinery, and structure share the same geometry. The garden was treated as a room without a ceiling — planted for year-round green against the pale brick.",
+      "Design and interiors were developed together so cabinets, doors, and structure line up. The garden was treated as outdoor living space — planted for shade and easy upkeep.",
     scope: [
       "Residential redesign",
-      "Interior architecture",
-      "Garden integration",
-      "Bespoke kitchen & joinery",
+      "Interior finishing",
+      "Garden works",
+      "Kitchen & cabinets",
     ],
-    materials: ["Pale brick", "Limed oak", "Brass", "Wool", "Natural stone"],
+    materials: ["Concrete", "Plaster", "Timber", "Ceramic tile", "Natural stone"],
     status: "Completed 2024",
   },
   {
-    slug: "azure-pavilion",
-    title: "Azure Pavilion",
-    location: "Cotswolds, UK",
-    category: "Pool & Leisure",
+    slug: "guest-house-pool",
+    title: "Guest House & Pool",
+    location: "Dire Dawa",
+    category: "Guest House",
     index: "03",
     collaborator: "Blac Nova Landscape",
-    area: "420 m²",
+    area: "180 m²",
     year: "2024",
-    value: "£1.9M",
-    image: img.azure,
-    alt: "Azure Pavilion, Cotswolds, UK",
+    image: img.projectGuest,
+    alt: "Guest house and pool in Dire Dawa",
     summary:
-      "A dark-timber pool pavilion that dissolves into Cotswold hills and sky.",
+      "A guest house with pool and outdoor seating for a private compound on the edge of Dire Dawa.",
     description:
-      "Azure Pavilion is a leisure pavilion for an estate in the Cotswolds — dark timber, sliding glass, and an infinity edge that borrows the horizon. The building is deliberately low and quiet, so landscape remains the primary room. Changing light turns the pool into a mirror of weather and season.",
+      "This guest house sits low beside the pool — timber, glass, and a clear deck for sitting outside. The building stays simple so the yard and water do the work. Sliding doors open to the pool; changing light keeps the space useful day and evening.",
     approach:
-      "Architecture and landscape were designed as one: plantings frame views, the deck aligns with the water plane, and services are concealed so the pavilion reads as a single precise object in the field.",
+      "Building and outdoor works were planned together: planting frames views, the deck lines up with the water, and services stay hidden so the compound reads clean.",
     scope: [
-      "Pavilion architecture",
-      "Pool & plant engineering",
-      "Landscape framing",
-      "Outdoor living fit-out",
+      "Guest house design & build",
+      "Pool construction",
+      "Deck & outdoor seating",
+      "Compound planting",
     ],
-    materials: ["Charred timber", "Glass", "Stone deck", "Bronze", "Water"],
+    materials: ["Timber", "Glass", "Stone deck", "Concrete", "Water"],
     status: "Completed 2024",
   },
   {
-    slug: "thornfield-gardens",
-    title: "Thornfield Gardens",
-    location: "Oxfordshire, UK",
+    slug: "compound-landscaping",
+    title: "Compound Landscaping",
+    location: "Adama",
     category: "Landscape",
     index: "04",
     collaborator: "Blac Nova Landscape",
-    area: "4 ha",
+    area: "2,800 m²",
     year: "2023",
-    value: "£1.2M",
-    image: img.thornfield,
-    alt: "Thornfield Gardens, Oxfordshire, UK",
+    image: img.projectLandscape,
+    alt: "Compound landscaping in Adama",
     summary:
-      "Four hectares of formal garden rooms, water, and mature planting for an Oxfordshire estate.",
+      "Compound outdoor works — paths, planting, and a small water feature for a private site in Adama.",
     description:
-      "Thornfield Gardens restores structure to a historic estate landscape — clipped hedges, stone terraces, and an ornamental pond set among mature oaks. New outdoor rooms are layered for procession: arrival court, terrace, water garden, and meadow edge. The work balances formality with the softness of established trees.",
+      "This landscaping job organises a large compound into clear outdoor areas — entrance court, terrace, planted beds, and a small pond. Existing trees were kept where possible. The work balances hard surfaces for access with soft planting for shade.",
     approach:
-      "We surveyed existing trees first, then drew rooms that protect canopy and sightlines. Stone, water, and hedge geometry do the heavy lifting; planting fills the seasons without clutter.",
+      "We surveyed trees and levels first, then set out paths and planting that protect shade and sightlines. Stone, gravel, and hedge lines do the structure; planting fills in by season.",
     scope: [
-      "Master landscape plan",
-      "Stone terraces & paths",
-      "Water garden",
-      "Planting & hedging",
+      "Compound layout plan",
+      "Stone paths & terraces",
+      "Water feature",
+      "Planting & fencing line",
     ],
-    materials: ["York stone", "Yew", "Oak", "Water", "Gravel"],
+    materials: ["Local stone", "Gravel", "Timber", "Water", "Planting"],
     status: "Completed 2023",
   },
   {
-    slug: "meridian-tower",
-    title: "Nova House",
-    location: "Manchester, UK",
+    slug: "g3-residential-dire-dawa",
+    title: "G+3 Residential Building",
+    location: "Dire Dawa",
     category: "Family Home",
     index: "05",
     collaborator: "Blac Nova Construction",
     area: "890 m²",
     year: "2026",
-    value: "£2.6M",
-    image: img.nova,
-    alt: "Nova House, Manchester, UK",
+    image: img.projectG3,
+    alt: "G+3 residential building in Dire Dawa",
     summary:
-      "A curved-glass family residence for Manchester — warm light, bronze detail, and a clear plan for daily life.",
+      "A G+3 residential building for a Dire Dawa family — solid frame, clear plan, and finishes built for daily use.",
     description:
-      "Nova House is a contemporary family home with a curved glass façade that softens its urban edge. Bronze and silver cladding catch dusk light; warm interiors read through the glass after dark. The plan prioritises family flow — open living, quiet bedrooms, and a protected courtyard for children and planting.",
+      "This G+3 residential building gives a growing family space on a city plot. The elevation uses glass and cladding for a modern look; warm interiors show through after dark. The plan prioritises family flow — open living, quiet bedrooms, and a protected courtyard for children.",
     approach:
-      "Blac Nova Construction delivered the full build with architectural coordination from concept to snagging. Façade engineering, thermal performance, and interior finish were held to one specification set so the house feels continuous inside and out.",
+      "Blac Nova Construction delivered design and build from foundation to final checks. Structure, elevations, MEP, and finishing stayed under one specification so the building feels consistent inside and out.",
     scope: [
       "Design & build",
-      "Façade engineering",
-      "Interior fit-out",
-      "Courtyard landscape",
+      "Structure & elevations",
+      "Interior finishing",
+      "Courtyard works",
     ],
-    materials: ["Curved glass", "Bronze", "Silver cladding", "Concrete", "Timber"],
+    materials: ["Reinforced concrete", "Glass", "Cladding", "Hollow block", "Timber"],
     status: "In progress — 2026",
   },
 ];
@@ -177,18 +171,17 @@ export function getOtherProjects(slug: string): Project[] {
 }
 
 export const PROJECT_FILM = {
-  title: "The Hartley Residence",
-  subtitle: "Mayfair, London · Project film",
-  location: "Mayfair · London",
+  title: "G+2 House, Dire Dawa",
+  subtitle: "Dire Dawa · Site walkthrough",
+  location: "Dire Dawa · Ethiopia",
   duration: "Short cut",
   description:
-    "A short cinematic walkthrough — light, material, and space in one glance. Play when you’re ready; it pauses when you scroll away.",
-  poster: img.filmPoster,
-  src: "https://videos.pexels.com/video-files/3773486/3773486-hd_1920_1080_30fps.mp4",
+    "A quick look at a finished house — walls, finishes, and outdoor space as built. Play when you’re ready; it pauses when you scroll away.",
+  poster: "/video-poster.jpg",
+  src: "/video.mp4",
 };
 
-export const HERO_IMAGE =
-  "https://storage.readdy-site.link/project_files/1e808465-d07f-41f3-9ec9-4b2428a7dabb/4fa74f34-415f-4f26-9f20-3e14d4813dc6_bdfe798200e06f2247cecaf65f3d0529.jpg?v=49c7b385495026c3762989350c7356c6";
+export const HERO_IMAGE = "/hero.png?v=07490596";
 
 export const CTA_IMAGE = img.cta;
 
@@ -196,40 +189,40 @@ export const teamAvatars = [img.avatar1, img.avatar2, img.avatar3];
 
 export const OWNER = {
   image: "/owner.jpeg",
-  role: "Founder & Principal",
-  eyebrow: "About the practice",
-  homeHeadline: "Led by one standard — homes built to be lived in for decades.",
+  role: "Founder & Managing Director",
+  eyebrow: "About the company",
+  homeHeadline: "One standard on every site — homes built to last.",
   homeSummary:
-    "Blac Nova is a construction and design practice shaped by its founder: clear briefs, honest materials, and accountability from drawing to handover.",
-  aboutHeadline: "We build the homes people have carried in their minds for years.",
+    "Blac Nova is a construction and design company shaped by its founder: clear briefs, honest materials, and accountability from drawing to handover.",
+  aboutHeadline: "We build the homes people have planned for years.",
   aboutSummary:
-    "Every project begins with listening — to the land, the brief, and how a family actually lives. Our founder leads the practice with the same measure on every site: proportion, material truth, and work that outlasts the moment it was finished.",
+    "Every project starts with the plot, the budget, and how a family actually lives. Our founder keeps the same standard on every site: solid structure, clean finishes, and work that lasts.",
   aboutBody: [
-    "Architecture, construction, and landscape sit under one roof so nothing is lost between the drawing and the build. Clients speak to people who stay with the project — not a revolving door of subcontractors guessing at intent.",
-    "We favour calm rooms, durable finishes, and details you notice every day. Awards are welcome; the real test is whether the house still feels inevitable ten years on.",
+    "Architecture, construction, and outdoor works sit under one roof so nothing is lost between the drawing and the build. You deal with people who stay on the project — not a revolving door of subcontractors.",
+    "We favour practical rooms, durable finishes, and details you notice every day. The real test is whether the house still works well ten years on.",
   ],
 };
 
 export const reviews = [
   {
     quote:
-      "Blac Nova does not merely construct buildings — they engineer the homes people have carried in their minds for years. Our residence feels inevitable, as if it had always belonged to the land.",
-    name: "Sir Richard Holloway",
-    role: "Private Client, Cotswolds",
+      "Blac Nova builds the kind of house you can actually live in for years. Ours feels solid, finished properly, and right for the plot.",
+    name: "Abebe Tadesse",
+    role: "Private Client, Dire Dawa",
     avatar: img.avatar2,
   },
   {
     quote:
-      "Programme, quality, and cost stayed clear from foundation to final fixture. We always knew who owned the next decision — and the house matches the drawings we approved.",
-    name: "Amelia Chen",
-    role: "Private Client, Chelsea",
+      "Schedule, quality, and cost stayed clear from foundation to final fixing. We always knew who owned the next decision — and the house matches the drawings we approved.",
+    name: "Sara Mekonnen",
+    role: "Private Client, Addis Ababa",
     avatar: img.avatar1,
   },
   {
     quote:
-      "They treated landscape as architecture without a roof. The terrace, planting, and pool read as one room with the house — quiet, precise, and completely ours.",
-    name: "Elena Vargas",
-    role: "Private Client, Oxfordshire",
+      "They treated the compound as part of the house. The terrace, planting, and pool work together with the building — clean, practical, and completely ours.",
+    name: "Daniel Haile",
+    role: "Private Client, Adama",
     avatar: img.avatar3,
   },
 ];

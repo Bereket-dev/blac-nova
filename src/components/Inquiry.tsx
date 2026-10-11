@@ -52,7 +52,7 @@ export function Inquiry() {
             </span>
           </div>
           <h2 className="font-serif-display text-bone-50 text-5xl md:text-7xl lg:text-[88px] leading-[0.98] tracking-[-0.02em] font-light text-balance">
-            begin a <span className="italic">quiet</span> <br /> conversation.
+            Tell us about <span className="italic">your</span> <br /> project.
           </h2>
         </FadeIn>
 
@@ -62,8 +62,8 @@ export function Inquiry() {
               Blac Nova · Project Inquiry
             </div>
             <p className="text-sm text-ink-900/70 leading-relaxed mb-6">
-              Every dream home begins with a conversation. Tell us what you are building, and
-              a director will craft a proposal within 48 hours.
+              Share your plot, budget, and what you want to build. We reply within 48 hours
+              with clear next steps.
             </p>
             <a
               href="/about#inquire"
@@ -78,26 +78,26 @@ export function Inquiry() {
               href="/services#designs"
               className="mt-3 block text-center text-[11px] tracking-widest-2 uppercase text-ink-900/50 hover:text-terracotta-500 transition-colors"
             >
-              Or explore designs first
+              Or browse designs first
             </a>
             <p className="mt-4 text-[10px] tracking-wide text-ink-900/45 leading-relaxed">
-              Your inquiry is handled by a director. We never share details outside the
-              practice.
+              Your inquiry stays with our team. We never share your details outside the
+              company.
             </p>
           </div>
         </FadeIn>
 
         <div className="lg:col-span-12 flex items-end justify-between text-bone-50/85 flex-wrap gap-4">
           <FadeIn as="p" className="text-sm md:text-base max-w-md font-light leading-relaxed">
-            Or visit by appointment — our studios are open to clients introduced by a member.
+            Prefer to meet in person? Visit our office by appointment.
           </FadeIn>
           <FadeIn
             delayMs={80}
             className="flex items-center gap-5 text-[12px] tracking-widest-2 uppercase"
           >
-            <span>London · Manchester · Edinburgh</span>
+            <span>Dire Dawa · Addis Ababa · Adama</span>
             <span className="w-1 h-1 rounded-full bg-bone-50/50" />
-            <span>+44 20 7946 0234</span>
+            <span>+251 911 369 200</span>
           </FadeIn>
         </div>
       </div>

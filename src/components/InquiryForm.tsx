@@ -60,8 +60,8 @@ export function InquiryForm({ initialSelection }: InquiryFormProps) {
           Name, phone, and an optional design.
         </h2>
         <p className="mt-5 text-ink-900/60 leading-relaxed max-w-md">
-          That&apos;s all we need to start. A director replies within 48 hours — with a clearer
-          proposal if you&apos;ve already chosen a direction.
+          That&apos;s all we need to start. We reply within 48 hours — with clearer next steps
+          if you&apos;ve already picked a design.
         </p>
 
         {design ? (
@@ -164,7 +164,7 @@ export function InquiryForm({ initialSelection }: InquiryFormProps) {
             <p className="text-[11px] tracking-wide text-ink-900/45 leading-relaxed">
               Submitting opens your email to {INQUIRY_EMAIL}
               {design ? " with your selected design included" : ""}. We never share inquiry details
-              outside the practice.
+              outside the company.
             </p>
           )}
         </form>

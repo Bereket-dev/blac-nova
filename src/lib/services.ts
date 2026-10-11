@@ -44,48 +44,48 @@ export const servicesCatalog: ServiceOption[] = [
     roman: "I",
     index: "01",
     title: "Architecture & Design",
-    tagline: "Concept to completion drawings that hold their line.",
+    tagline: "Concept to working drawings you can build from.",
     summary:
-      "We design residences that respond to site, light, and how you live — then document them so they can be built without compromise.",
+      "We design houses and G+ buildings that fit the plot, the climate, and how you live — then produce drawings the site can follow.",
     image: img.archHero,
-    imageAlt: "Limestone and bronze residence at golden hour",
+    imageAlt: "G+2 house elevation at golden hour",
     gallery: [
       {
         src: img.archInterior,
-        alt: "Double-height living room with oak and travertine",
+        alt: "Living room with timber and tile finishes",
       },
       {
         src: img.archDetail,
-        alt: "Bronze window frame against limestone",
+        alt: "Aluminum window frame against stone cladding",
       },
     ],
     youGet: [
-      "Site study and design brief",
-      "Concept options and preferred scheme",
-      "Developed plans, elevations, and sections",
-      "Material and joinery direction",
-      "Planning and authority support as required",
+      "Site visit and design brief",
+      "Concept options and preferred layout",
+      "Plans, elevations, and sections",
+      "Material and finishing direction",
+      "Permit support as required",
     ],
     process: [
       {
         step: "01",
         title: "Listen & survey",
-        detail: "We walk the site, clarify the brief, and fix constraints before a line is drawn.",
+        detail: "We walk the plot, clarify the brief, and fix constraints before a line is drawn.",
       },
       {
         step: "02",
-        title: "Compose options",
-        detail: "Two to three clear design directions — not endless moodboards — so you can choose with confidence.",
+        title: "Offer options",
+        detail: "Two to three clear layout options — so you can choose with confidence, not guesswork.",
       },
       {
         step: "03",
-        title: "Develop & detail",
-        detail: "The chosen scheme becomes coordinated drawings, materials, and joinery ready for build.",
+        title: "Detail for build",
+        detail: "The chosen layout becomes coordinated drawings, materials, and cabinets ready for site.",
       },
       {
         step: "04",
         title: "Support through build",
-        detail: "We stay with the project so design intent survives site decisions and snagging.",
+        detail: "We stay with the project so the drawings survive site decisions and final checks.",
       },
     ],
   },
@@ -94,9 +94,9 @@ export const servicesCatalog: ServiceOption[] = [
     roman: "II",
     index: "02",
     title: "Construction Management",
-    tagline: "Built with accountability from foundation to final fixture.",
+    tagline: "From foundation to final fixing — on schedule.",
     summary:
-      "One team owns programme, quality, and cost on site — so the home you approved is the home that is delivered.",
+      "One team owns schedule, quality, and cost on site — so the house you approved is the house that is handed over.",
     image: img.buildHero,
     imageAlt: "Active construction site with scaffolding and frame rising",
     gallery: [
@@ -110,32 +110,32 @@ export const servicesCatalog: ServiceOption[] = [
       },
     ],
     youGet: [
-      "Programme and cost control",
+      "Schedule and cost control",
       "Trade coordination and site supervision",
       "Quality checks at every stage",
       "Clear client reporting",
-      "Handover and snagging to completion",
+      "Handover and final checks to completion",
     ],
     process: [
       {
         step: "01",
-        title: "Mobilise",
-        detail: "We set programme, appointments, and site rules before ground is broken.",
+        title: "Start on site",
+        detail: "We set schedule, trades, and site rules before ground is broken.",
       },
       {
         step: "02",
         title: "Build in sequence",
-        detail: "Structure, envelope, services, and finishes progress in a controlled order with weekly oversight.",
+        detail: "Structure, walls, services, and finishes move in a clear order with weekly site checks.",
       },
       {
         step: "03",
         title: "Protect quality",
-        detail: "Hold-points and inspections catch issues early — not at handover.",
+        detail: "Stage inspections catch issues early — not at handover.",
       },
       {
         step: "04",
         title: "Hand over cleanly",
-        detail: "Snagging, manuals, and a finished home ready to live in — not almost finished.",
+        detail: "Final checks and a finished home ready to live in — not almost finished.",
       },
     ],
   },
@@ -144,48 +144,48 @@ export const servicesCatalog: ServiceOption[] = [
     roman: "III",
     index: "03",
     title: "Landscape & Pools",
-    tagline: "Outdoor rooms shaped with stone, water, planting, and light.",
+    tagline: "Compound outdoor works — paths, planting, pool, and seating.",
     summary:
-      "Gardens, terraces, courtyards, and leisure pavilions designed as architecture without a roof — continuous with the house.",
+      "Compound landscaping, terraces, courtyards, and guest houses planned with the main building — not as an afterthought.",
     image: img.landHero,
-    imageAlt: "Infinity pool, stone terrace, and pavilion at golden hour",
+    imageAlt: "Pool, stone terrace, and guest house at golden hour",
     gallery: [
       {
         src: img.landGarden,
-        alt: "Formal garden path and water",
+        alt: "Compound garden path and planting",
       },
       {
         src: img.landPavilion,
-        alt: "Timber pool pavilion opening to water",
+        alt: "Guest house opening to the pool",
       },
     ],
     youGet: [
-      "Landscape master plan",
+      "Compound layout plan",
       "Terraces, courts, and planting design",
       "Pool and water features where required",
-      "Hardscape material specification",
-      "Implementation coordination with the build",
+      "Hard surface material specification",
+      "Coordination with the main build",
     ],
     process: [
       {
         step: "01",
-        title: "Read the ground",
-        detail: "Levels, aspect, trees, and views define what the landscape should protect and reveal.",
+        title: "Survey the plot",
+        detail: "Levels, shade, trees, and access define what the outdoor works should protect and open up.",
       },
       {
         step: "02",
-        title: "Draw outdoor rooms",
-        detail: "We compose terraces, planting, and water as a sequence — not a list of features.",
+        title: "Plan outdoor areas",
+        detail: "We set terraces, planting, and water as a clear sequence — not a list of extras.",
       },
       {
         step: "03",
         title: "Specify & set out",
-        detail: "Stone, planting, and pool engineering are detailed so the field matches the drawing.",
+        detail: "Stone, planting, and pool works are detailed so the site matches the drawing.",
       },
       {
         step: "04",
-        title: "Establish & settle",
-        detail: "Installation, planting establishment, and finishing so the garden feels inevitable from day one.",
+        title: "Install & finish",
+        detail: "Installation, planting, and finishing so the compound is usable from day one.",
       },
     ],
   },
@@ -194,59 +194,59 @@ export const servicesCatalog: ServiceOption[] = [
 export const designCategories: DesignCategory[] = [
   {
     id: "residences",
-    label: "Residences",
-    description: "Town and family homes composed for light, proportion, and daily life.",
+    label: "Houses & G+ Buildings",
+    description: "Private houses, family homes, and G+ residential buildings for daily life.",
   },
   {
     id: "leisure",
-    label: "Leisure",
-    description: "Pool houses and pavilions where landscape becomes the main room.",
+    label: "Guest House & Pool",
+    description: "Guest houses and pool areas that sit cleanly with the main compound.",
   },
   {
     id: "landscape",
-    label: "Landscape",
-    description: "Gardens, terraces, and outdoor rooms drawn with the same care as the house.",
+    label: "Compound Works",
+    description: "Paths, terraces, planting, and outdoor areas planned with the house.",
   },
 ];
 
 const categoryByProjectCategory: Record<string, string> = {
-  "Luxury Home": "residences",
+  "Private House": "residences",
   Residential: "residences",
   "Family Home": "residences",
-  "Pool & Leisure": "leisure",
+  "Guest House": "leisure",
   Landscape: "landscape",
 };
 
 const designDetailsBySlug: Record<string, string[]> = {
-  "the-hartley-hotel": [
-    "Limestone and bronze street presence with quiet grandeur",
-    "Double-height reception organised around a central stair",
-    "Floor-to-ceiling glass opening to a private street garden",
-    "Interiors prioritising proportion over ornament",
+  "private-villa-dire-dawa": [
+    "G+2 private house with stone cladding and aluminum windows",
+    "Living and kitchen on the ground floor; bedrooms above",
+    "Wide openings to a shaded compound yard",
+    "Finishes chosen for durability in daily use",
   ],
-  "serpentine-house": [
-    "Pale-brick Chelsea townhouse rewritten for garden light",
-    "Tall vertical windows pulling daylight deep into the plan",
-    "Family rooms on the garden level; quieter suites above",
-    "Furniture, joinery, and structure sharing one geometry",
+  "family-house-addis": [
+    "Family house with a clear street front and private back garden",
+    "Tall windows pulling daylight deep into the rooms",
+    "Living on the garden side; quieter bedrooms above",
+    "Cabinets, doors, and structure lined up as one build",
   ],
-  "azure-pavilion": [
-    "Dark-timber pavilion that dissolves into hills and sky",
-    "Infinity edge borrowing the horizon as the primary view",
-    "Low, quiet massing so landscape remains the main room",
-    "Architecture and planting designed as one continuous object",
+  "guest-house-pool": [
+    "Guest house beside the pool for a private compound",
+    "Deck and outdoor seating for day and evening use",
+    "Low, simple massing so the yard stays open",
+    "Building and planting planned together",
   ],
-  "thornfield-gardens": [
-    "Four hectares of formal garden rooms and water",
-    "Procession from arrival court to terrace, pond, and meadow",
-    "Existing mature oaks protected as the backbone of the plan",
-    "Stone, hedge, and water doing the heavy spatial lifting",
+  "compound-landscaping": [
+    "Compound outdoor areas across about 2,800 m²",
+    "Clear path from entrance court to terrace and pond",
+    "Existing trees kept where they give useful shade",
+    "Stone, gravel, and planting doing the practical work",
   ],
-  "meridian-tower": [
-    "Curved-glass family home softening an urban edge",
-    "Warm interiors readable through the façade after dark",
+  "g3-residential-dire-dawa": [
+    "G+3 residential building on a Dire Dawa city plot",
+    "Warm interiors readable through the elevation after dark",
     "Plan built around family flow and a protected courtyard",
-    "Design-and-build delivery held to one continuous specification",
+    "Design-and-build delivery under one continuous specification",
   ],
 };
 

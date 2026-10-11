@@ -45,8 +45,8 @@ export function Footer() {
               className="h-28 md:h-32 w-auto object-contain object-left"
             />
             <p className="mt-8 text-bone-100/55 text-sm max-w-sm leading-relaxed">
-              Blac Nova is a construction and design company delivering residences,
-              landscapes, and refined spaces. Crafted with precision — lived in with pride.
+              Blac Nova designs and builds houses, G+ buildings, and compound works across
+              Ethiopia. Solid structure, clean handover.
             </p>
           </div>
 
@@ -93,11 +93,11 @@ export function Footer() {
 
           <div className="md:col-span-4">
             <div className="text-[11px] tracking-widest-2 uppercase text-bone-50/45 mb-3">
-              The quarterly letter
+              Project updates
             </div>
             <p className="text-sm text-bone-100/65 mb-5 leading-relaxed">
-              Four times a year. New projects, essays on materials and method, and homes we
-              cannot stop thinking about.
+              Occasional notes on new builds, site progress, and finishing work — straight
+              from our team.
             </p>
             {subscribed ? (
               <p className="text-sm text-terracotta-400">Thank you — you&apos;re on the list.</p>

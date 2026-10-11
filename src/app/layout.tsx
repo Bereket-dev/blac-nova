@@ -18,7 +18,7 @@ const cormorant = Cormorant_Garamond({
 export const metadata: Metadata = {
   title: "Blac Nova — We Build Your Dream Home",
   description:
-    "Blac Nova is a construction and design company crafting residences, landscapes, and refined spaces. We build your dream home.",
+    "Blac Nova designs and builds houses, G+ buildings, and compound works across Ethiopia. We build your dream home.",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

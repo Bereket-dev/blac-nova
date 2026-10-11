@@ -33,7 +33,7 @@ export function FadeImage({
         fill
           ? // Parent must be position:relative with a real height (aspect-*, h-*, min-h-*).
             "absolute inset-0 overflow-hidden bg-bone-200"
-          : "relative overflow-hidden bg-bone-200 w-full h-full"
+          : "relative overflow-hidden bg-bone-200 w-full"
       }
     >
       {!loaded && (

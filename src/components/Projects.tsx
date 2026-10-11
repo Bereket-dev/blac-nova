@@ -20,7 +20,7 @@ export function Projects() {
   };
 
   return (
-    <section id="residences" className="relative bg-bone-50 py-24 md:py-32 overflow-hidden z-10">
+    <section id="projects" className="relative bg-bone-50 py-24 md:py-32 overflow-hidden z-10">
       <div className="max-w-7xl mx-auto px-6 md:px-10 lg:px-14">
         <div className="flex items-end justify-between flex-wrap gap-6 mb-12 md:mb-16">
           <FadeIn>
@@ -31,7 +31,7 @@ export function Projects() {
               </span>
             </div>
             <h2 className="font-serif-display text-4xl md:text-6xl lg:text-7xl leading-[1.02] tracking-[-0.015em] text-ink-900 font-light text-balance">
-              Projects that <span className="italic">refuse</span> to be ordinary.
+              Houses, G+ buildings &amp; <span className="italic">compound</span> works.
             </h2>
           </FadeIn>
           <FadeIn delayMs={80} className="flex items-center gap-3">
@@ -66,48 +66,42 @@ export function Projects() {
               >
                 <Link
                   href={`/projects/${project.slug}`}
-                  className="block relative aspect-[4/5] overflow-hidden rounded-xl bg-bone-200"
+                  className="block relative aspect-[16/10] overflow-hidden rounded-xl bg-bone-200"
                 >
                   <FadeImage
                     src={project.image}
                     alt={project.alt}
-                    className="w-full h-full object-cover object-top transition-transform duration-[1200ms] ease-out group-hover:scale-[1.06]"
+                    className="object-cover object-center"
                     sizes="(max-width: 768px) 78vw, 30vw"
                     eager
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-ink-900/40 via-transparent to-transparent" />
-                  <div className="absolute top-4 left-4 flex items-center gap-2 px-3 py-1.5 rounded-full bg-bone-50/90 backdrop-blur text-[11px] tracking-widest-2 uppercase text-ink-900">
+                  <div className="absolute top-4 left-4 flex items-center gap-2 px-3 py-1.5 rounded-full bg-bone-50/90 text-[11px] tracking-widest-2 uppercase text-ink-900">
                     {project.category}
                   </div>
-                  <div className="absolute top-4 right-4 font-serif-display italic text-bone-50 text-2xl">
+                  <div className="absolute top-4 right-4 font-serif-display italic text-bone-50 text-2xl mix-blend-difference">
                     /{project.index}
                   </div>
-                  <div className="absolute bottom-4 left-4 right-4 flex items-end justify-between">
-                    <div className="text-bone-50">
-                      <div className="font-serif-display text-2xl md:text-[28px] leading-tight">
-                        {project.title}
-                      </div>
-                      <div className="text-[12px] mt-1 opacity-80 tracking-wide">
-                        {project.location}
-                      </div>
-                    </div>
-                    <span className="w-10 h-10 rounded-full bg-bone-50 text-ink-900 flex items-center justify-center group-hover:bg-terracotta-500 group-hover:text-bone-50 transition-colors">
-                      <i className="ri-arrow-right-up-line text-base" />
-                    </span>
-                  </div>
+                  <span className="absolute bottom-4 right-4 w-10 h-10 rounded-full bg-bone-50 text-ink-900 flex items-center justify-center group-hover:bg-terracotta-500 group-hover:text-bone-50 transition-colors shadow-sm">
+                    <i className="ri-arrow-right-up-line text-base" />
+                  </span>
                 </Link>
-                <div className="mt-5 flex items-start justify-between gap-4 text-ink-900">
-                  <div>
-                    <div className="text-[11px] tracking-widest-2 uppercase text-ink-900/50 mb-1.5">
-                      {project.collaborator}
+                <div className="mt-5 text-ink-900">
+                  <Link href={`/projects/${project.slug}`} className="block group/title">
+                    <div className="font-serif-display text-2xl md:text-[28px] leading-tight group-hover/title:text-terracotta-500 transition-colors">
+                      {project.title}
                     </div>
-                    <div className="flex items-center gap-3 text-[13px] text-ink-900/70">
-                      <span>{project.area}</span>
-                      <span className="w-1 h-1 rounded-full bg-ink-900/30" />
-                      <span>{project.year}</span>
+                    <div className="text-[12px] mt-1 text-ink-900/55 tracking-wide">
+                      {project.location}
                     </div>
+                  </Link>
+                  <div className="mt-3 text-[11px] tracking-widest-2 uppercase text-ink-900/50 mb-1.5">
+                    {project.collaborator}
                   </div>
-                  <div className="font-serif-display text-xl text-ink-900">{project.value}</div>
+                  <div className="flex items-center gap-3 text-[13px] text-ink-900/70">
+                    <span>{project.area}</span>
+                    <span className="w-1 h-1 rounded-full bg-ink-900/30" />
+                    <span>{project.year}</span>
+                  </div>
                 </div>
                 {i === 0 && (
                   <div className="mt-3 h-px bg-ink-900/15 overflow-hidden">

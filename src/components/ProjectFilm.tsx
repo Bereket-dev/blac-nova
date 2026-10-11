@@ -70,8 +70,8 @@ export function ProjectFilm() {
               </span>
             </div>
             <h2 className="font-serif-display text-3xl md:text-5xl leading-[1.02] tracking-tight max-w-2xl font-light">
-              Explore an amazing project{" "}
-              <span className="italic">in motion</span>, not a brochure.
+              See the build{" "}
+              <span className="italic">on site</span>, not just on paper.
             </h2>
           </div>
           <p className="text-bone-100/70 text-sm md:text-base max-w-sm font-light">
@@ -162,7 +162,7 @@ export function ProjectFilm() {
           delayMs={200}
           className="mt-3 flex items-center justify-between flex-wrap gap-3 text-[10px] md:text-[11px] tracking-wide text-bone-50/45"
         >
-          <span>A short cinematic walkthrough of a Blac Nova residence.</span>
+          <span>A short site walkthrough of a finished house in Dire Dawa.</span>
           <span className="uppercase tracking-widest-2">© Blac Nova · No. BN-04812</span>
         </FadeIn>
       </div>

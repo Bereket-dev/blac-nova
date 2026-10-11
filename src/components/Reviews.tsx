@@ -17,7 +17,7 @@ export function Reviews() {
           </FadeIn>
           <FadeIn delayMs={80} className="lg:col-span-9">
             <h2 className="font-serif-display text-4xl md:text-6xl leading-[1.02] tracking-[-0.015em] text-ink-900 font-light text-balance">
-              Words from people who <span className="italic">live</span> in the work.
+              What clients say about <span className="italic">their</span> homes.
             </h2>
           </FadeIn>
         </div>
@@ -83,7 +83,7 @@ export function Reviews() {
           <div>
             <div className="font-serif-display text-2xl text-ink-900">12yr</div>
             <div className="text-[11px] tracking-widest-2 uppercase text-ink-900/50 mt-1">
-              Practice
+              Years building
             </div>
           </div>
         </FadeIn>

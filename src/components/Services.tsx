@@ -10,14 +10,14 @@ export function Services() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 mb-16 md:mb-20">
           <FadeIn className="lg:col-span-3">
             <p className="text-[11px] tracking-widest-2 uppercase text-ink-900/60 leading-relaxed">
-              The Practice <br />
+              What we do <br />
               No. 02 — Services
             </p>
           </FadeIn>
           <FadeIn delayMs={80} className="lg:col-span-9">
             <h2 className="font-serif-display text-4xl md:text-6xl lg:text-7xl leading-[1.02] tracking-[-0.015em] text-ink-900 font-light text-balance">
-              Three disciplines, <span className="italic">one quiet</span> obsession with
-              proportion, material, and permanence.
+              Design, build &amp; outdoor works — <span className="italic">one team</span> from
+              drawing to handover.
             </h2>
           </FadeIn>
         </div>
@@ -40,14 +40,14 @@ export function Services() {
                 Architecture & Design
               </h3>
               <p className="text-[13px] text-bone-100/60 leading-relaxed max-w-xs">
-                Full architectural services from concept to completion. We design homes that
-                respond to their context, respect their materials, and outlast their brief.
+                House and G+ design from concept to working drawings — plans that fit the
+                plot, the climate, and how your family lives.
               </p>
               <Link
                 href="/services"
                 className="mt-7 flex items-center gap-2 text-[12px] tracking-widest-2 uppercase text-bone-50/70 group-hover:text-terracotta-400 transition-colors"
               >
-                Read approach
+                See how we work
                 <i className="ri-arrow-right-up-line text-base transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
               </Link>
             </div>
@@ -75,7 +75,7 @@ export function Services() {
             </div>
             <div className="absolute bottom-0 left-0 right-0 p-7 md:p-8 text-bone-50">
               <h3 className="font-serif-display text-2xl md:text-3xl leading-tight font-light max-w-xs">
-                Built with accountability from foundation to final fixture.
+                Site supervision from foundation to final fixing — on time and to drawing.
               </h3>
             </div>
           </FadeIn>
@@ -93,15 +93,14 @@ export function Services() {
                 Landscape & Pools
               </h3>
               <p className="text-[13px] text-ink-900/55 leading-relaxed max-w-xs mt-4">
-                Gardens, terraces, courtyards, and water. We treat landscape as architecture
-                without a roof — spatial design at ground level, using stone, water, planting,
-                and light to shape outdoor rooms.
+                Compound paths, terraces, planting, and pools planned with the main house —
+                so the outdoor space works from day one.
               </p>
               <Link
                 href="/services"
                 className="mt-6 inline-flex items-center gap-2 text-[12px] tracking-widest-2 uppercase text-ink-900/60 group-hover:text-terracotta-500 transition-colors"
               >
-                Explore services
+                View services
                 <i className="ri-arrow-right-line" />
               </Link>
             </div>
@@ -122,7 +121,7 @@ export function Services() {
             href="/services"
             className="inline-flex items-center gap-2 text-[12px] tracking-widest-2 uppercase text-ink-900 hover:text-terracotta-500 transition-colors"
           >
-            View all services & shape your brief
+            View all services &amp; start an inquiry
             <i className="ri-arrow-right-line" />
           </Link>
         </FadeIn>

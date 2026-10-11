@@ -38,9 +38,11 @@ export function ProjectDetail({ project, others }: ProjectDetailProps) {
                 </p>
               </div>
               <div className="text-right">
-                <div className="font-serif-display text-3xl text-ink-900">{project.value}</div>
-                <div className="mt-1 text-[12px] tracking-wide text-ink-900/50">
+                <div className="font-serif-display text-2xl md:text-3xl text-ink-900">
                   {project.location}
+                </div>
+                <div className="mt-1 text-[12px] tracking-wide text-ink-900/50">
+                  {project.year}
                 </div>
               </div>
             </div>
@@ -51,7 +53,7 @@ export function ProjectDetail({ project, others }: ProjectDetailProps) {
               <FadeImage
                 src={project.image}
                 alt={project.alt}
-                className="object-cover object-top"
+                className="object-cover object-center"
                 sizes="(max-width: 1280px) 100vw, 1200px"
                 eager
               />
@@ -83,7 +85,7 @@ export function ProjectDetail({ project, others }: ProjectDetailProps) {
           <FadeIn className="lg:col-span-7 space-y-8">
             <div>
               <h2 className="font-serif-display text-3xl md:text-4xl font-light text-ink-900">
-                The brief
+                About this build
               </h2>
               <p className="mt-5 text-ink-900/70 leading-relaxed text-base md:text-[17px]">
                 {project.description}
@@ -148,7 +150,7 @@ export function ProjectDetail({ project, others }: ProjectDetailProps) {
               <div className="flex items-center gap-3 mb-5">
                 <span className="w-10 h-px bg-ink-900/40" />
                 <span className="text-[11px] tracking-widest-2 uppercase text-ink-900/55">
-                  More from the practice
+                  More projects
                 </span>
               </div>
               <h2 className="font-serif-display text-3xl md:text-5xl font-light text-ink-900">
@@ -174,7 +176,7 @@ export function ProjectDetail({ project, others }: ProjectDetailProps) {
 
           <FadeIn delayMs={120} className="mt-16 md:mt-20 text-center">
             <p className="font-serif-display text-2xl md:text-3xl font-light text-ink-900 mb-6">
-              Have a plot, a brief, or a house in mind?
+              Have a plot or a house in mind?
             </p>
             <Link
               href="/about#inquire"
