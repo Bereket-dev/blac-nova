@@ -5,23 +5,35 @@ import { useState, type FormEvent } from "react";
 import {
   INQUIRY_EMAIL,
   INQUIRY_TELEGRAM,
-  designCategories,
-  getDesign,
+  findCategoryLabel,
   selectionToSearchParams,
+  type DesignCategory,
+  type DesignOption,
   type InquirySelection,
 } from "@/lib/services";
 import { FadeImage } from "./FadeImage";
 
 type InquiryFormProps = {
   initialSelection: InquirySelection;
+  categories: DesignCategory[];
+  designs: DesignOption[];
 };
 
-export function InquiryForm({ initialSelection }: InquiryFormProps) {
+export function InquiryForm({
+  initialSelection,
+  categories,
+  designs,
+}: InquiryFormProps) {
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [submitted, setSubmitted] = useState(false);
 
-  const design = initialSelection.design ? getDesign(initialSelection.design) : undefined;
+  const design = initialSelection.design
+    ? designs.find(
+        (item) =>
+          item.id === initialSelection.design || item.slug === initialSelection.design,
+      )
+    : undefined;
   const exploreHref = `/services${selectionToSearchParams(initialSelection)}#designs`;
 
   const onSubmit = (e: FormEvent<HTMLFormElement>) => {
@@ -33,9 +45,7 @@ export function InquiryForm({ initialSelection }: InquiryFormProps) {
       design
         ? `Selected design: ${design.title} (${design.location})`
         : "Selected design: (none — exploring generally)",
-      design
-        ? `Category: ${designCategories.find((c) => c.id === design.categoryId)?.label ?? ""}`
-        : "",
+      design ? `Category: ${findCategoryLabel(categories, design.categoryId)}` : "",
       design ? `Project: /projects/${design.slug}` : "",
     ].filter(Boolean);
 

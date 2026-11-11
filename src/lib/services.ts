@@ -1,5 +1,8 @@
-import { projects, type Project } from "./data";
 import { img } from "./images";
+import type { DesignCategory, DesignOption } from "./types";
+
+export type { DesignCategory, DesignOption } from "./types";
+export type { Project } from "./types";
 
 export type ServiceOption = {
   id: string;
@@ -13,29 +16,6 @@ export type ServiceOption = {
   gallery: { src: string; alt: string }[];
   youGet: string[];
   process: { step: string; title: string; detail: string }[];
-};
-
-export type DesignCategory = {
-  id: string;
-  label: string;
-  description: string;
-};
-
-export type DesignOption = {
-  id: string;
-  slug: string;
-  categoryId: string;
-  title: string;
-  location: string;
-  tagline: string;
-  summary: string;
-  details: string[];
-  materials: string[];
-  area: string;
-  year: string;
-  image: string;
-  alt: string;
-  project: Project;
 };
 
 export const servicesCatalog: ServiceOption[] = [
@@ -191,90 +171,6 @@ export const servicesCatalog: ServiceOption[] = [
   },
 ];
 
-export const designCategories: DesignCategory[] = [
-  {
-    id: "residences",
-    label: "Houses & G+ Buildings",
-    description: "Private houses, family homes, and G+ residential buildings for daily life.",
-  },
-  {
-    id: "leisure",
-    label: "Guest House & Pool",
-    description: "Guest houses and pool areas that sit cleanly with the main compound.",
-  },
-  {
-    id: "landscape",
-    label: "Compound Works",
-    description: "Paths, terraces, planting, and outdoor areas planned with the house.",
-  },
-];
-
-const categoryByProjectCategory: Record<string, string> = {
-  "Private House": "residences",
-  Residential: "residences",
-  "Family Home": "residences",
-  "Guest House": "leisure",
-  Landscape: "landscape",
-};
-
-const designDetailsBySlug: Record<string, string[]> = {
-  "private-villa-dire-dawa": [
-    "G+2 private house with stone cladding and aluminum windows",
-    "Living and kitchen on the ground floor; bedrooms above",
-    "Wide openings to a shaded compound yard",
-    "Finishes chosen for durability in daily use",
-  ],
-  "family-house-addis": [
-    "Family house with a clear street front and private back garden",
-    "Tall windows pulling daylight deep into the rooms",
-    "Living on the garden side; quieter bedrooms above",
-    "Cabinets, doors, and structure lined up as one build",
-  ],
-  "guest-house-pool": [
-    "Guest house beside the pool for a private compound",
-    "Deck and outdoor seating for day and evening use",
-    "Low, simple massing so the yard stays open",
-    "Building and planting planned together",
-  ],
-  "compound-landscaping": [
-    "Compound outdoor areas across about 2,800 m²",
-    "Clear path from entrance court to terrace and pond",
-    "Existing trees kept where they give useful shade",
-    "Stone, gravel, and planting doing the practical work",
-  ],
-  "g3-residential-dire-dawa": [
-    "G+3 residential building on a Dire Dawa city plot",
-    "Warm interiors readable through the elevation after dark",
-    "Plan built around family flow and a protected courtyard",
-    "Design-and-build delivery under one continuous specification",
-  ],
-};
-
-export const designCatalog: DesignOption[] = projects.map((project) => ({
-  id: project.slug,
-  slug: project.slug,
-  categoryId: categoryByProjectCategory[project.category] ?? "residences",
-  title: project.title,
-  location: project.location,
-  tagline: project.summary,
-  summary: project.description,
-  details: designDetailsBySlug[project.slug] ?? project.scope,
-  materials: project.materials,
-  area: project.area,
-  year: project.year,
-  image: project.image,
-  alt: project.alt,
-  project,
-}));
-
-export function getDesign(id: string): DesignOption | undefined {
-  return designCatalog.find((design) => design.id === id || design.slug === id);
-}
-
-export function designsByCategory(categoryId: string): DesignOption[] {
-  return designCatalog.filter((design) => design.categoryId === categoryId);
-}
-
 export type InquirySelection = {
   design: string;
 };
@@ -285,6 +181,7 @@ export const emptySelection = (): InquirySelection => ({
 
 export function parseInquirySelection(
   searchParams: URLSearchParams | Record<string, string | string[] | undefined>,
+  designs?: DesignOption[],
 ): InquirySelection {
   const get = (key: string) => {
     if (searchParams instanceof URLSearchParams) {
@@ -296,9 +193,10 @@ export function parseInquirySelection(
   };
 
   const designId = get("design");
-  return {
-    design: getDesign(designId) ? designId : "",
-  };
+  if (!designId) return { design: "" };
+  if (!designs) return { design: designId };
+  const exists = designs.some((design) => design.id === designId || design.slug === designId);
+  return { design: exists ? designId : "" };
 }
 
 export function selectionToSearchParams(selection: InquirySelection): string {
@@ -308,11 +206,38 @@ export function selectionToSearchParams(selection: InquirySelection): string {
   return qs ? `?${qs}` : "";
 }
 
-export function summarizeSelection(selection: InquirySelection): string[] {
+export function summarizeSelection(
+  selection: InquirySelection,
+  designs: DesignOption[],
+): string[] {
   if (!selection.design) return [];
-  const design = getDesign(selection.design);
+  const design = designs.find(
+    (item) => item.id === selection.design || item.slug === selection.design,
+  );
   if (!design) return [];
   return [`Design interest: ${design.title} — ${design.location}`];
+}
+
+export function findCategoryLabel(
+  categories: DesignCategory[],
+  categoryId: string,
+): string {
+  return categories.find((category) => category.id === categoryId)?.label ?? "";
+}
+
+/** Pure client-safe helpers — work on already-fetched arrays. */
+export function designsByCategory(
+  designs: DesignOption[],
+  categoryId: string,
+): DesignOption[] {
+  return designs.filter((design) => design.categoryId === categoryId);
+}
+
+export function findDesign(
+  designs: DesignOption[],
+  id: string,
+): DesignOption | undefined {
+  return designs.find((design) => design.id === id || design.slug === id);
 }
 
 export const INQUIRY_EMAIL = "hello@blacnova.com";

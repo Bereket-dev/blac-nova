@@ -4,7 +4,7 @@ import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
 import { FadeIn } from "@/components/FadeIn";
 import { ProjectCard } from "@/components/ProjectCard";
-import { projects } from "@/lib/data";
+import { getProjects } from "@/lib/projects";
 
 export const metadata: Metadata = {
   title: "Projects",
@@ -12,7 +12,9 @@ export const metadata: Metadata = {
     "Houses, G+ buildings, guest houses, and compound works by Blac Nova Construction & Design.",
 };
 
-export default function ProjectsPage() {
+export default async function ProjectsPage() {
+  const projects = await getProjects();
+
   return (
     <main className="bg-bone-50 text-ink-900 overflow-hidden">
       <Header solid />

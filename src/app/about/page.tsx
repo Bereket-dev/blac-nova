@@ -4,6 +4,7 @@ import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
 import { InquiryForm } from "@/components/InquiryForm";
 import { Owner } from "@/components/Owner";
+import { getDesignCatalog, getDesignCategories } from "@/lib/designs";
 import { parseInquirySelection } from "@/lib/services";
 
 export const metadata: Metadata = {
@@ -27,10 +28,20 @@ function InquiryFallback() {
 async function InquiryContent({
   searchParams,
 }: Pick<AboutPageProps, "searchParams">) {
-  const resolved = await searchParams;
-  const selection = parseInquirySelection(resolved);
+  const [resolved, categories, designs] = await Promise.all([
+    searchParams,
+    getDesignCategories(),
+    getDesignCatalog(),
+  ]);
+  const selection = parseInquirySelection(resolved, designs);
 
-  return <InquiryForm initialSelection={selection} />;
+  return (
+    <InquiryForm
+      initialSelection={selection}
+      categories={categories}
+      designs={designs}
+    />
+  );
 }
 
 export default function AboutPage({ searchParams }: AboutPageProps) {

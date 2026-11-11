@@ -8,8 +8,11 @@ import { Projects } from "@/components/Projects";
 import { Services } from "@/components/Services";
 import { ProjectFilm } from "@/components/ProjectFilm";
 import { Reviews } from "@/components/Reviews";
+import { getProjects } from "@/lib/projects";
 
-export default function Home() {
+export default async function Home() {
+  const projects = await getProjects();
+
   return (
     <main className="bg-bone-50 text-ink-900 overflow-hidden">
       <Header />
@@ -17,7 +20,7 @@ export default function Home() {
       <Marquee />
       <ProjectFilm />
       <Services />
-      <Projects />
+      <Projects projects={projects} />
       <Owner />
       <Reviews />
       <Inquiry />

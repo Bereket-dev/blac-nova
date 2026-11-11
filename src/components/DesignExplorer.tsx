@@ -6,46 +6,58 @@ import { useMemo, useState, type FormEvent } from "react";
 import {
   INQUIRY_EMAIL,
   INQUIRY_TELEGRAM,
-  designCategories,
   designsByCategory,
-  getDesign,
+  findDesign,
   parseInquirySelection,
   selectionToSearchParams,
+  type DesignCategory,
+  type DesignOption,
 } from "@/lib/services";
 import { FadeImage } from "./FadeImage";
 import { FadeIn } from "./FadeIn";
 
-export function DesignExplorer() {
+type DesignExplorerProps = {
+  categories: DesignCategory[];
+  designs: DesignOption[];
+};
+
+export function DesignExplorer({ categories, designs: allDesigns }: DesignExplorerProps) {
   const searchParams = useSearchParams();
-  const initial = parseInquirySelection(searchParams);
-  const initialDesign = getDesign(initial.design);
+  const initial = parseInquirySelection(searchParams, allDesigns);
+  const initialDesign = findDesign(allDesigns, initial.design);
 
   const [categoryId, setCategoryId] = useState(
-    () => initialDesign?.categoryId ?? designCategories[0]?.id ?? "residences",
+    () => initialDesign?.categoryId ?? categories[0]?.id ?? "residences",
   );
   const [activeId, setActiveId] = useState(
-    () => initialDesign?.id ?? designsByCategory(categoryId)[0]?.id ?? "",
+    () =>
+      initialDesign?.id ??
+      designsByCategory(allDesigns, categoryId)[0]?.id ??
+      "",
   );
   const [selectedId, setSelectedId] = useState(initial.design);
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [submitted, setSubmitted] = useState(false);
 
-  const designs = useMemo(() => designsByCategory(categoryId), [categoryId]);
+  const designs = useMemo(
+    () => designsByCategory(allDesigns, categoryId),
+    [allDesigns, categoryId],
+  );
   const active = designs.find((d) => d.id === activeId) ?? designs[0];
-  const selected = selectedId ? getDesign(selectedId) : undefined;
+  const selected = selectedId ? findDesign(allDesigns, selectedId) : undefined;
 
   const inquiryHref = `/about${selectionToSearchParams({ design: selectedId })}#inquire`;
 
   const switchCategory = (id: string) => {
     setCategoryId(id);
-    const next = designsByCategory(id);
+    const next = designsByCategory(allDesigns, id);
     setActiveId(next[0]?.id ?? "");
   };
 
   const onSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const design = selectedId ? getDesign(selectedId) : undefined;
+    const design = selectedId ? findDesign(allDesigns, selectedId) : undefined;
     const lines = [
       `Name: ${name}`,
       `Phone: ${phone}`,
@@ -54,7 +66,7 @@ export function DesignExplorer() {
         ? `Selected design: ${design.title} (${design.location})`
         : "Selected design: (none — exploring generally)",
       design
-        ? `Category: ${designCategories.find((c) => c.id === design.categoryId)?.label ?? ""}`
+        ? `Category: ${categories.find((c) => c.id === design.categoryId)?.label ?? ""}`
         : "",
       design ? `Project: /projects/${design.slug}` : "",
     ].filter(Boolean);
@@ -93,7 +105,7 @@ export function DesignExplorer() {
               role="tablist"
               aria-label="Design categories"
             >
-              {designCategories.map((category) => {
+              {categories.map((category) => {
                 const activeTab = category.id === categoryId;
                 return (
                   <button
@@ -114,7 +126,7 @@ export function DesignExplorer() {
               })}
             </div>
             <p className="mb-8 text-sm text-ink-900/55 max-w-xl">
-              {designCategories.find((c) => c.id === categoryId)?.description}
+              {categories.find((c) => c.id === categoryId)?.description}
             </p>
           </FadeIn>
 

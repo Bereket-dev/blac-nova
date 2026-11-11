@@ -6,22 +6,29 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "seed": "tsx scripts/seed-firestore.ts"
   },
   "dependencies": {
+    "cloudinary": "^2.11.0",
+    "firebase": "^13.2.0",
+    "firebase-admin": "^14.5.0",
     "next": "16.4.0",
     "react": "19.3.0",
     "react-dom": "19.3.0",
-    "remixicon": "^4.9.1"
+    "remixicon": "^4.9.1",
+    "server-only": "^0.0.1"
   },
   "devDependencies": {
     "@tailwindcss/turbopack": "^4",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "dotenv": "^18.0.10",
     "eslint": "^9",
     "eslint-config-next": "16.4.0",
     "tailwindcss": "^4",
+    "tsx": "^4.23.15",
     "typescript": "^5"
   }
 }

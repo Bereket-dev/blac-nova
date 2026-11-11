@@ -2,11 +2,15 @@
 
 import Link from "next/link";
 import { useRef, useState } from "react";
-import { projects } from "@/lib/data";
+import type { Project } from "@/lib/types";
 import { FadeIn } from "./FadeIn";
 import { FadeImage } from "./FadeImage";
 
-export function Projects() {
+type ProjectsProps = {
+  projects: Project[];
+};
+
+export function Projects({ projects }: ProjectsProps) {
   const scrollerRef = useRef<HTMLDivElement>(null);
   const [active, setActive] = useState(0);
 
@@ -16,7 +20,7 @@ export function Projects() {
     const card = el.querySelector("article");
     const amount = card ? card.clientWidth + 24 : 320;
     el.scrollBy({ left: dir * amount, behavior: "smooth" });
-    setActive((prev) => Math.min(projects.length - 1, Math.max(0, prev + dir)));
+    setActive((prev) => Math.min(Math.max(projects.length - 1, 0), Math.max(0, prev + dir)));
   };
 
   return (
