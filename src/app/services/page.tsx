@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
 import { Footer } from "@/components/Footer";
+
+export const ensureStatic = "navigation";
 import { Header } from "@/components/Header";
 import { DesignExplorer } from "@/components/DesignExplorer";
 import { ServicesGuide } from "@/components/ServicesGuide";

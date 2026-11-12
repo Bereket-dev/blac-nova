@@ -1,29 +1,31 @@
 "use client";
 
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import { useState, type FormEvent } from "react";
 import {
   INQUIRY_EMAIL,
   INQUIRY_TELEGRAM,
   findCategoryLabel,
+  parseInquirySelection,
   selectionToSearchParams,
   type DesignCategory,
   type DesignOption,
-  type InquirySelection,
 } from "@/lib/services";
 import { FadeImage } from "./FadeImage";
 
 type InquiryFormProps = {
-  initialSelection: InquirySelection;
   categories: DesignCategory[];
   designs: DesignOption[];
 };
 
 export function InquiryForm({
-  initialSelection,
   categories,
   designs,
 }: InquiryFormProps) {
+  const rawSearchParams = useSearchParams();
+  const initialSelection = parseInquirySelection(rawSearchParams, designs);
+
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [submitted, setSubmitted] = useState(false);

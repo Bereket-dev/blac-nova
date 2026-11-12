@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Footer } from "@/components/Footer";
+
+export const ensureStatic = "navigation";
 import { Header } from "@/components/Header";
 import { FadeIn } from "@/components/FadeIn";
 import { ProjectCard } from "@/components/ProjectCard";

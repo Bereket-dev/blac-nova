@@ -1,5 +1,8 @@
 import { Suspense } from "react";
 import { Footer } from "@/components/Footer";
+
+export const ensureStatic = "navigation";
+
 import { Header } from "@/components/Header";
 import { Hero } from "@/components/Hero";
 import { Inquiry } from "@/components/Inquiry";
