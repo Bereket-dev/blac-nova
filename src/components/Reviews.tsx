@@ -1,9 +1,13 @@
-import { reviews } from "@/lib/data";
+import { getTestimonials } from "@/lib/testimonials";
 import { FadeIn } from "./FadeIn";
-import { FadeImage } from "./FadeImage";
+import { TestimonialAvatar } from "./TestimonialAvatar";
 
-export function Reviews() {
-  const [featured, ...rest] = reviews;
+export async function Reviews() {
+  const testimonials = await getTestimonials();
+  const featured = testimonials.find((t) => t.featured) ?? testimonials[0];
+  const rest = testimonials.filter((t) => t.id !== featured?.id);
+
+  if (!featured) return null;
 
   return (
     <section id="reviews" className="relative bg-bone-50 py-24 md:py-32 z-10">
@@ -24,18 +28,11 @@ export function Reviews() {
 
         <FadeIn>
           <blockquote className="font-serif-display text-2xl md:text-4xl lg:text-5xl leading-[1.18] tracking-[-0.01em] text-ink-900 font-light text-balance max-w-4xl">
-            <span className="text-terracotta-500 mr-2">“</span>
+            <span className="text-terracotta-500 mr-2">"</span>
             {featured.quote}
           </blockquote>
           <div className="mt-8 flex items-center gap-4">
-            <div className="relative w-12 h-12 rounded-full overflow-hidden bg-bone-200">
-              <FadeImage
-                src={featured.avatar}
-                alt={featured.name}
-                className="object-cover object-top"
-                sizes="48px"
-              />
-            </div>
+            <TestimonialAvatar testimonial={featured} size={48} />
             <div>
               <div className="font-medium text-sm text-ink-900">{featured.name}</div>
               <div className="text-[12px] text-ink-900/55">{featured.role}</div>
@@ -43,29 +40,24 @@ export function Reviews() {
           </div>
         </FadeIn>
 
-        <div className="mt-16 md:mt-20 grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-10 border-t border-ink-900/10 pt-12 md:pt-16">
-          {rest.map((review, i) => (
-            <FadeIn key={review.name} delayMs={i * 80} as="article">
-              <p className="text-ink-900/75 leading-relaxed text-lg font-light">
-                “{review.quote}”
-              </p>
-              <div className="mt-6 flex items-center gap-3">
-                <div className="relative w-10 h-10 rounded-full overflow-hidden bg-bone-200">
-                  <FadeImage
-                    src={review.avatar}
-                    alt={review.name}
-                    className="object-cover object-top"
-                    sizes="40px"
-                  />
+        {rest.length > 0 && (
+          <div className="mt-16 md:mt-20 grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-10 border-t border-ink-900/10 pt-12 md:pt-16">
+            {rest.map((t, i) => (
+              <FadeIn key={t.id} delayMs={i * 80} as="article">
+                <p className="text-ink-900/75 leading-relaxed text-lg font-light">
+                  "{t.quote}"
+                </p>
+                <div className="mt-6 flex items-center gap-3">
+                  <TestimonialAvatar testimonial={t} size={40} />
+                  <div>
+                    <div className="font-medium text-sm text-ink-900">{t.name}</div>
+                    <div className="text-[12px] text-ink-900/55">{t.role}</div>
+                  </div>
                 </div>
-                <div>
-                  <div className="font-medium text-sm text-ink-900">{review.name}</div>
-                  <div className="text-[12px] text-ink-900/55">{review.role}</div>
-                </div>
-              </div>
-            </FadeIn>
-          ))}
-        </div>
+              </FadeIn>
+            ))}
+          </div>
+        )}
 
         <FadeIn delayMs={100} className="mt-14 md:mt-16 grid grid-cols-3 gap-6 max-w-lg">
           <div>

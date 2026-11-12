@@ -35,6 +35,17 @@ export type DesignCategory = {
   description: string;
 };
 
+export type Testimonial = {
+  id: string;
+  quote: string;
+  name: string;
+  role: string;
+  avatar: string;
+  sex: "male" | "female";
+  order: number;
+  featured: boolean;
+};
+
 export type DesignOption = {
   id: string;
   slug: string;

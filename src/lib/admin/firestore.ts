@@ -11,7 +11,7 @@ import {
   setDoc,
 } from "firebase/firestore";
 import { getClientDb } from "@/lib/firebase/client";
-import type { Project, ProjectCategory } from "@/lib/types";
+import type { Project, ProjectCategory, Testimonial } from "@/lib/types";
 
 export async function listCategoriesClient(): Promise<ProjectCategory[]> {
   const snap = await getDocs(
@@ -115,4 +115,35 @@ export function slugify(value: string): string {
     .trim()
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/^-|-$/g, "");
+}
+
+export async function listTestimonialsClient(): Promise<Testimonial[]> {
+  const snap = await getDocs(
+    query(collection(getClientDb(), "testimonials"), orderBy("order", "asc")),
+  );
+  return snap.docs.map((item) => {
+    const data = item.data();
+    return {
+      id: (data.id as string) ?? item.id,
+      quote: (data.quote as string) ?? "",
+      name: (data.name as string) ?? "",
+      role: (data.role as string) ?? "",
+      avatar: (data.avatar as string) ?? "",
+      sex: (["male", "female"].includes(data.sex as string)
+        ? data.sex
+        : "male") as Testimonial["sex"],
+      order: typeof data.order === "number" ? data.order : 0,
+      featured: data.featured === true,
+    } satisfies Testimonial;
+  });
+}
+
+export async function saveTestimonialClient(testimonial: Testimonial) {
+  await setDoc(doc(getClientDb(), "testimonials", testimonial.id), testimonial, {
+    merge: true,
+  });
+}
+
+export async function deleteTestimonialClient(id: string) {
+  await deleteDoc(doc(getClientDb(), "testimonials", id));
 }

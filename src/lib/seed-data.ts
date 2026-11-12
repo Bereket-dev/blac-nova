@@ -1,5 +1,5 @@
 import { img } from "./images";
-import type { Project, ProjectCategory } from "./types";
+import type { Project, ProjectCategory, Testimonial } from "./types";
 
 export const seedCategories: ProjectCategory[] = [
   {
@@ -197,5 +197,41 @@ export const seedProjects: Project[] = [
     status: "In progress — 2026",
     order: 5,
     published: true,
+  },
+];
+
+export const seedTestimonials: Testimonial[] = [
+  {
+    id: "abebe-tadesse",
+    quote:
+      "Blac Nova builds the kind of house you can actually live in for years. Ours feels solid, finished properly, and right for the plot.",
+    name: "Abebe Tadesse",
+    role: "Private Client, Dire Dawa",
+    avatar: img.avatar2,
+    sex: "male" as const,
+    order: 1,
+    featured: true,
+  },
+  {
+    id: "sara-mekonnen",
+    quote:
+      "Schedule, quality, and cost stayed clear from foundation to final fixing. We always knew who owned the next decision — and the house matches the drawings we approved.",
+    name: "Sara Mekonnen",
+    role: "Private Client, Addis Ababa",
+    avatar: img.avatar1,
+    sex: "female" as const,
+    order: 2,
+    featured: false,
+  },
+  {
+    id: "daniel-haile",
+    quote:
+      "They treated the compound as part of the house. The terrace, planting, and pool work together with the building — clean, practical, and completely ours.",
+    name: "Daniel Haile",
+    role: "Private Client, Adama",
+    avatar: img.avatar3,
+    sex: "male" as const,
+    order: 3,
+    featured: false,
   },
 ];
