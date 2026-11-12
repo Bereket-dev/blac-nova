@@ -7,6 +7,7 @@ import {
   saveCategoryClient,
   slugify,
 } from "@/lib/admin/firestore";
+import { revalidateCategories } from "@/lib/admin/actions";
 import type { ProjectCategory } from "@/lib/types";
 
 const inputCls =
@@ -80,6 +81,7 @@ export default function AdminCategoriesPage() {
         });
       }
       resetForm();
+      await revalidateCategories(editingId ?? slugify(form.label));
       await load();
     } catch (err) {
       setError(err instanceof Error ? err.message : "Save failed");
@@ -100,6 +102,7 @@ export default function AdminCategoriesPage() {
         saveCategoryClient({ ...a, order: b.order }),
         saveCategoryClient({ ...b, order: a.order }),
       ]);
+      await revalidateCategories();
       await load();
     } finally {
       setReordering(false);
@@ -116,6 +119,7 @@ export default function AdminCategoriesPage() {
         c.order !== i + 1 ? saveCategoryClient({ ...c, order: i + 1 }) : Promise.resolve(),
       ),
     );
+    await revalidateCategories(id);
     await load();
   };
 

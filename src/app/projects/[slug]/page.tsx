@@ -49,10 +49,15 @@ async function ProjectPageContent({
   params,
 }: Pick<ProjectPageProps, "params">) {
   const { slug } = await params;
-  const project = await getProject(slug);
-  if (!project) notFound();
 
-  const others = await getOtherProjects(slug);
+  // Fetch project and full list in parallel — getProjects is cached so the
+  // second call is free; both resolve from the same cache entry.
+  const [project, others] = await Promise.all([
+    getProject(slug),
+    getOtherProjects(slug),
+  ]);
+
+  if (!project) notFound();
   return <ProjectDetail project={project} others={others} />;
 }
 

@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { deleteProjectClient, listProjectsClient } from "@/lib/admin/firestore";
+import { revalidateProjects } from "@/lib/admin/actions";
 import type { Project } from "@/lib/types";
 
 export default function AdminProjectsPage() {
@@ -29,6 +30,7 @@ export default function AdminProjectsPage() {
   const onDelete = async (slug: string, title: string) => {
     if (!confirm(`Delete "${title}"? This cannot be undone.`)) return;
     await deleteProjectClient(slug);
+    await revalidateProjects(slug);
     await load();
   };
 

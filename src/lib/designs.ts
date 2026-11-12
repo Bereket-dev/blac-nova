@@ -1,4 +1,5 @@
 import "server-only";
+import { cacheLife, cacheTag } from "next/cache";
 import { getCategories } from "./categories";
 import { getProjects } from "./projects";
 import type { DesignCategory, DesignOption, Project } from "./types";
@@ -23,6 +24,10 @@ export function projectToDesign(project: Project): DesignOption {
 }
 
 export async function getDesignCategories(): Promise<DesignCategory[]> {
+  "use cache";
+  cacheLife("hours");
+  cacheTag("categories");
+
   const categories = await getCategories();
   return categories.map(({ id, label, description }) => ({
     id,
@@ -32,6 +37,10 @@ export async function getDesignCategories(): Promise<DesignCategory[]> {
 }
 
 export async function getDesignCatalog(): Promise<DesignOption[]> {
+  "use cache";
+  cacheLife("hours");
+  cacheTag("projects");
+
   const projects = await getProjects();
   return projects.map(projectToDesign);
 }

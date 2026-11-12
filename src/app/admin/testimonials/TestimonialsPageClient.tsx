@@ -7,6 +7,7 @@ import {
   saveTestimonialClient,
   slugify,
 } from "@/lib/admin/firestore";
+import { revalidateTestimonials } from "@/lib/admin/actions";
 import { uploadProjectImage } from "@/lib/admin/upload";
 import { useAdminAuth } from "@/lib/admin/auth";
 import { TestimonialAvatar } from "@/components/TestimonialAvatar";
@@ -122,6 +123,7 @@ export default function AdminTestimonialsPage() {
         await saveTestimonialClient({ id, ...form, avatar, order: maxOrder + 1 });
       }
       resetForm();
+      await revalidateTestimonials();
       await load();
     } catch (err) {
       setError(err instanceof Error ? err.message : "Save failed");
@@ -140,6 +142,7 @@ export default function AdminTestimonialsPage() {
         t.order !== i + 1 ? saveTestimonialClient({ ...t, order: i + 1 }) : Promise.resolve(),
       ),
     );
+    await revalidateTestimonials();
     await load();
   };
 

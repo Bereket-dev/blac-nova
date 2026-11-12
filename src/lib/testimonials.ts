@@ -1,4 +1,5 @@
 import "server-only";
+import { cacheLife, cacheTag } from "next/cache";
 import type { Testimonial } from "./types";
 import { getAdminDb, isAdminConfigured } from "./firebase/admin";
 import { reviews } from "./data";
@@ -20,6 +21,10 @@ function mapTestimonial(id: string, data: Record<string, unknown>): Testimonial 
 
 /** Returns testimonials ordered by `order` asc. Falls back to static data if Firestore is unavailable. */
 export async function getTestimonials(): Promise<Testimonial[]> {
+  "use cache";
+  cacheLife("hours");
+  cacheTag("testimonials");
+
   if (!isAdminConfigured()) return staticFallback();
 
   try {

@@ -1,4 +1,5 @@
 import "server-only";
+import { cacheLife, cacheTag } from "next/cache";
 import type { Project } from "./types";
 import { getAdminDb, isAdminConfigured } from "./firebase/admin";
 
@@ -31,6 +32,10 @@ function mapProject(slug: string, data: Record<string, unknown>): Project {
 export async function getProjects(options?: {
   includeUnpublished?: boolean;
 }): Promise<Project[]> {
+  "use cache";
+  cacheLife("hours");
+  cacheTag("projects");
+
   if (!isAdminConfigured()) return [];
 
   const db = getAdminDb();
@@ -47,6 +52,10 @@ export async function getProject(
   slug: string,
   options?: { includeUnpublished?: boolean },
 ): Promise<Project | undefined> {
+  "use cache";
+  cacheLife("hours");
+  cacheTag("projects", `project-${slug}`);
+
   if (!isAdminConfigured()) return undefined;
 
   const db = getAdminDb();
@@ -58,9 +67,9 @@ export async function getProject(
   return project;
 }
 
-export async function getOtherProjects(slug: string): Promise<Project[]> {
-  const projects = await getProjects();
-  return projects.filter((project) => project.slug !== slug);
+export async function getOtherProjects(currentSlug: string, allProjects?: Project[]): Promise<Project[]> {
+  const projects = allProjects ?? await getProjects();
+  return projects.filter((project) => project.slug !== currentSlug);
 }
 
 export async function getProjectSlugs(): Promise<string[]> {

@@ -1,4 +1,5 @@
 import "server-only";
+import { cacheLife, cacheTag } from "next/cache";
 import type { ProjectCategory } from "./types";
 import { getAdminDb, isAdminConfigured } from "./firebase/admin";
 
@@ -12,6 +13,10 @@ function mapCategory(id: string, data: Record<string, unknown>): ProjectCategory
 }
 
 export async function getCategories(): Promise<ProjectCategory[]> {
+  "use cache";
+  cacheLife("hours");
+  cacheTag("categories");
+
   if (!isAdminConfigured()) return [];
 
   const db = getAdminDb();
@@ -22,6 +27,10 @@ export async function getCategories(): Promise<ProjectCategory[]> {
 }
 
 export async function getCategory(id: string): Promise<ProjectCategory | undefined> {
+  "use cache";
+  cacheLife("hours");
+  cacheTag("categories", `category-${id}`);
+
   if (!isAdminConfigured()) return undefined;
 
   const db = getAdminDb();

@@ -8,6 +8,7 @@ import {
   saveProjectClient,
   slugify,
 } from "@/lib/admin/firestore";
+import { revalidateProjects } from "@/lib/admin/actions";
 import { uploadProjectImage } from "@/lib/admin/upload";
 import type { Project, ProjectCategory } from "@/lib/types";
 
@@ -171,6 +172,7 @@ export function ProjectForm({ initial, mode }: ProjectFormProps) {
       };
 
       await saveProjectClient(payload);
+      await revalidateProjects(slug);
       router.push("/admin/projects");
       router.refresh();
     } catch (err) {
