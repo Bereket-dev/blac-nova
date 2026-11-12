@@ -4,21 +4,51 @@ import Image from "next/image";
 import { FormEvent, useState } from "react";
 import { useAdminAuth } from "@/lib/admin/auth";
 
+function EyeIcon({ open }: { open: boolean }) {
+  return open ? (
+    // Eye open
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4">
+      <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+      <circle cx="12" cy="12" r="3" />
+    </svg>
+  ) : (
+    // Eye off
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4">
+      <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94" />
+      <path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19" />
+      <line x1="1" y1="1" x2="23" y2="23" />
+    </svg>
+  );
+}
+
 export default function AdminLoginPage() {
   const { login } = useAdminAuth();
-  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
   const [submitting, setSubmitting] = useState(false);
+
+  /** Normalize Ethiopian phone to canonical 09xxxxxxxx form.
+   *  Accepts:  09xxxxxxxx  |  +2519xxxxxxxx  |  2519xxxxxxxx
+   *  Returns:  09xxxxxxxx
+   */
+  const normalizePhone = (raw: string): string => {
+    const p = raw.trim();
+    if (p.startsWith("+2519")) return "0" + p.slice(4);   // +2519x… → 09x…
+    if (p.startsWith("2519"))  return "0" + p.slice(3);   // 2519x…  → 09x…
+    return p;                                               // already 09x…
+  };
 
   const onSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setError("");
     setSubmitting(true);
     try {
-      await login(email.trim(), password);
+      const email = `${normalizePhone(phone)}@blacnova.com`;
+      await login(email, password);
     } catch {
-      setError("Incorrect email or password.");
+      setError("Incorrect phone number or password.");
     } finally {
       setSubmitting(false);
     }
@@ -49,15 +79,15 @@ export default function AdminLoginPage() {
         >
           <div>
             <label className="block text-xs font-semibold text-gray-700 mb-1.5">
-              Email
+              Phone Number
             </label>
             <input
               required
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              type="tel"
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
               className="w-full border border-gray-300 rounded-md px-3 py-2.5 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent"
-              placeholder="admin@example.com"
+              placeholder="09xxxxxxxx"
               autoComplete="username"
               autoFocus
             />
@@ -67,14 +97,24 @@ export default function AdminLoginPage() {
             <label className="block text-xs font-semibold text-gray-700 mb-1.5">
               Password
             </label>
-            <input
-              required
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="w-full border border-gray-300 rounded-md px-3 py-2.5 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent"
-              autoComplete="current-password"
-            />
+            <div className="relative">
+              <input
+                required
+                type={showPassword ? "text" : "password"}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="w-full border border-gray-300 rounded-md px-3 py-2.5 pr-10 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent"
+                autoComplete="current-password"
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword((v) => !v)}
+                className="absolute inset-y-0 right-0 flex items-center px-3 text-gray-400 hover:text-gray-600 transition-colors"
+                aria-label={showPassword ? "Hide password" : "Show password"}
+              >
+                <EyeIcon open={showPassword} />
+              </button>
+            </div>
           </div>
 
           {error ? (
