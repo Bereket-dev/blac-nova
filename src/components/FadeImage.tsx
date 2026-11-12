@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 type FadeImageProps = {
   src: string;
@@ -26,6 +26,17 @@ export function FadeImage({
   height,
 }: FadeImageProps) {
   const [loaded, setLoaded] = useState(false);
+  const imgRef = useRef<HTMLImageElement | null>(null);
+
+  useEffect(() => {
+    // When the image is served from the browser cache, the browser may decode
+    // it synchronously and never fire the `onLoad` event. Check img.complete
+    // after mount so cached images are never stuck invisible.
+    const img = imgRef.current;
+    if (img?.complete) {
+      setLoaded(true);
+    }
+  }, []);
 
   return (
     <div
@@ -40,6 +51,7 @@ export function FadeImage({
         <div className="absolute inset-0 shimmer z-10 pointer-events-none" aria-hidden />
       )}
       <Image
+        ref={imgRef}
         src={src}
         alt={alt}
         fill={fill}
