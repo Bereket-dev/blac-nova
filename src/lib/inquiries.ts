@@ -72,7 +72,12 @@ export async function submitInquiry(
   if (!name || name.length < 2) return { ok: false, error: "Name is required." };
   if (!phone || phone.length < 7) return { ok: false, error: "Phone number is required." };
 
-  const db = getAdminDb();
+  let db: ReturnType<typeof getAdminDb>;
+  try {
+    db = getAdminDb();
+  } catch {
+    return { ok: false, error: "Service temporarily unavailable. Please try again." };
+  }
   const ref = db.collection("inquiries").doc(); // auto-id
 
   const inquiry: Inquiry = {

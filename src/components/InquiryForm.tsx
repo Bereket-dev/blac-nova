@@ -46,21 +46,25 @@ export function InquiryForm({ categories, designs }: InquiryFormProps) {
     setSubmitting(true);
     setError("");
 
-    const result = await submitInquiry({
-      name,
-      phone,
-      message: message || undefined,
-      designTitle: design?.title,
-      designSlug: design?.slug,
-      designCategory: design ? findCategoryLabel(categories, design.categoryId) : undefined,
-    });
+    try {
+      const result = await submitInquiry({
+        name,
+        phone,
+        message: message || undefined,
+        designTitle: design?.title,
+        designSlug: design?.slug,
+        designCategory: design ? findCategoryLabel(categories, design.categoryId) : undefined,
+      });
 
-    setSubmitting(false);
-
-    if (result.ok) {
-      setSubmitted(true);
-    } else {
-      setError(result.error);
+      if (result.ok) {
+        setSubmitted(true);
+      } else {
+        setError(result.error);
+      }
+    } catch {
+      setError("Something went wrong. Please try again or contact us via Telegram.");
+    } finally {
+      setSubmitting(false);
     }
   };
 
