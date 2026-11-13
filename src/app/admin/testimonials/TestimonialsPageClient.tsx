@@ -1,6 +1,8 @@
 "use client";
 
 import { FormEvent, useEffect, useState } from "react";
+import { AdminFormActions } from "@/components/admin/AdminFormActions";
+import { ConfirmModal } from "@/components/admin/ConfirmModal";
 import {
   deleteTestimonialClient,
   listTestimonialsClient,
@@ -37,6 +39,8 @@ export default function AdminTestimonialsPage() {
   const [reordering, setReordering] = useState(false);
   const [error, setError] = useState("");
   const [formOpen, setFormOpen] = useState(false);
+  const [pendingDelete, setPendingDelete] = useState<{ id: string; name: string } | null>(null);
+  const [deleting, setDeleting] = useState(false);
 
   const sorted = [...testimonials].sort((a, b) => a.order - b.order);
 
@@ -132,8 +136,10 @@ export default function AdminTestimonialsPage() {
     }
   };
 
-  const onDelete = async (id: string, name: string) => {
-    if (!confirm(`Delete testimonial from "${name}"? This cannot be undone.`)) return;
+  const confirmDelete = async () => {
+    if (!pendingDelete) return;
+    const { id } = pendingDelete;
+    setDeleting(true);
     await deleteTestimonialClient(id);
     if (editingId === id) resetForm();
     const remaining = sorted.filter((t) => t.id !== id);
@@ -142,6 +148,8 @@ export default function AdminTestimonialsPage() {
         t.order !== i + 1 ? saveTestimonialClient({ ...t, order: i + 1 }) : Promise.resolve(),
       ),
     );
+    setPendingDelete(null);
+    setDeleting(false);
     await revalidateTestimonials();
     await load();
   };
@@ -169,6 +177,15 @@ export default function AdminTestimonialsPage() {
 
   return (
     <div className="space-y-5">
+      <ConfirmModal
+        open={!!pendingDelete}
+        title="Delete testimonial"
+        message={`Delete testimonial from "${pendingDelete?.name}"? This cannot be undone.`}
+        confirmLabel="Delete"
+        loading={deleting}
+        onConfirm={() => void confirmDelete()}
+        onCancel={() => setPendingDelete(null)}
+      />
       {/* Header */}
       <div className="flex items-center justify-between gap-4">
         <div>
@@ -428,7 +445,7 @@ export default function AdminTestimonialsPage() {
                     </button>
                     <button
                       type="button"
-                      onClick={() => onDelete(t.id, t.name)}
+                      onClick={() => setPendingDelete({ id: t.id, name: t.name })}
                       className="px-3 py-1.5 text-xs font-medium text-red-600 bg-red-50 rounded-lg hover:bg-red-100 active:bg-red-200 transition-colors"
                     >
                       Delete

@@ -5,7 +5,7 @@ import {
   useCallback,
   useContext,
   useEffect,
-  useState,
+  useSyncExternalStore,
   type ReactNode,
 } from "react";
 import { uiCopy, type UiCopy } from "./ui-copy";
@@ -13,58 +13,85 @@ import { uiCopy, type UiCopy } from "./ui-copy";
 export type Language = "en" | "am";
 
 type LanguageContextValue = {
-  lang: Language;
   toggle: () => void;
-  isAmharic: boolean;
-  ui: UiCopy;
 };
 
 const LanguageContext = createContext<LanguageContextValue>({
-  lang: "en",
   toggle: () => {},
-  isAmharic: false,
-  ui: uiCopy.en,
 });
 
 const STORAGE_KEY = "blacnova_lang";
+const CHANGE_EVENT = "blacnova-lang-change";
 
+function getStoredLang(): Language {
+  try {
+    const stored = localStorage.getItem(STORAGE_KEY);
+    if (stored === "am" || stored === "en") return stored;
+  } catch {
+    // Ignore private-mode / blocked storage.
+  }
+  return "en";
+}
+
+function subscribe(onStoreChange: () => void) {
+  const handler = () => onStoreChange();
+  window.addEventListener("storage", handler);
+  window.addEventListener(CHANGE_EVENT, handler);
+  return () => {
+    window.removeEventListener("storage", handler);
+    window.removeEventListener(CHANGE_EVENT, handler);
+  };
+}
+
+/** Always English during SSR + each island's hydration pass. */
+function getServerSnapshot(): Language {
+  return "en";
+}
+
+function useLangStore(): Language {
+  // Called in every consumer so late Suspense islands still hydrate with
+  // getServerSnapshot ("en"), matching their server HTML — even if earlier
+  // siblings already flipped to the localStorage language.
+  return useSyncExternalStore(subscribe, getStoredLang, getServerSnapshot);
+}
+
+function setStoredLang(next: Language) {
+  localStorage.setItem(STORAGE_KEY, next);
+  window.dispatchEvent(new Event(CHANGE_EVENT));
+}
+
+/** Sets <html lang> after mount; language itself is read per-component from the store. */
 export function LanguageProvider({ children }: { children: ReactNode }) {
-  const [lang, setLang] = useState<Language>("en");
-
-  // Hydrate from localStorage after mount (avoids SSR mismatch)
-  useEffect(() => {
-    const stored = localStorage.getItem(STORAGE_KEY) as Language | null;
-    if (stored === "am" || stored === "en") setLang(stored);
-  }, []);
+  const lang = useLangStore();
 
   useEffect(() => {
     document.documentElement.lang = lang === "am" ? "am" : "en";
   }, [lang]);
 
   const toggle = useCallback(() => {
-    setLang((prev) => {
-      const next: Language = prev === "en" ? "am" : "en";
-      localStorage.setItem(STORAGE_KEY, next);
-      return next;
-    });
+    setStoredLang(getStoredLang() === "en" ? "am" : "en");
   }, []);
 
-  const ui = uiCopy[lang];
-
   return (
-    <LanguageContext.Provider value={{ lang, toggle, isAmharic: lang === "am", ui }}>
-      {children}
-    </LanguageContext.Provider>
+    <LanguageContext.Provider value={{ toggle }}>{children}</LanguageContext.Provider>
   );
 }
 
 export function useLanguage() {
-  return useContext(LanguageContext);
+  const { toggle } = useContext(LanguageContext);
+  const lang = useLangStore();
+  return {
+    lang,
+    toggle,
+    isAmharic: lang === "am",
+    ui: uiCopy[lang],
+  };
 }
 
 /** Current-language UI dictionary (header, hero, sections, forms, etc.). */
 export function useUi(): UiCopy {
-  return useContext(LanguageContext).ui;
+  const lang = useLangStore();
+  return uiCopy[lang];
 }
 
 /** Return `amharic` text if language is "am" and the value is non-empty, otherwise fall back to `english`. */

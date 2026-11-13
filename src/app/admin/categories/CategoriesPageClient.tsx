@@ -1,6 +1,8 @@
 "use client";
 
 import { FormEvent, useEffect, useState } from "react";
+import { AdminFormActions } from "@/components/admin/AdminFormActions";
+import { ConfirmModal } from "@/components/admin/ConfirmModal";
 import {
   deleteCategoryClient,
   listCategoriesClient,
@@ -24,6 +26,8 @@ export default function AdminCategoriesPage() {
   const [reordering, setReordering] = useState(false);
   const [error, setError] = useState("");
   const [formOpen, setFormOpen] = useState(false);
+  const [pendingDelete, setPendingDelete] = useState<{ id: string; label: string } | null>(null);
+  const [deleting, setDeleting] = useState(false);
 
   const sorted = [...categories].sort((a, b) => a.order - b.order);
 
@@ -109,8 +113,10 @@ export default function AdminCategoriesPage() {
     }
   };
 
-  const onDelete_ = async (id: string, label: string) => {
-    if (!confirm(`Delete "${label}"? This cannot be undone.`)) return;
+  const confirmDelete = async () => {
+    if (!pendingDelete) return;
+    const { id } = pendingDelete;
+    setDeleting(true);
     await deleteCategoryClient(id);
     if (editingId === id) resetForm();
     const remaining = sorted.filter((c) => c.id !== id);
@@ -119,12 +125,23 @@ export default function AdminCategoriesPage() {
         c.order !== i + 1 ? saveCategoryClient({ ...c, order: i + 1 }) : Promise.resolve(),
       ),
     );
+    setPendingDelete(null);
+    setDeleting(false);
     await revalidateCategories(id);
     await load();
   };
 
   return (
     <div className="space-y-5">
+      <ConfirmModal
+        open={!!pendingDelete}
+        title="Delete category"
+        message={`Delete "${pendingDelete?.label}"? This cannot be undone.`}
+        confirmLabel="Delete"
+        loading={deleting}
+        onConfirm={() => void confirmDelete()}
+        onCancel={() => setPendingDelete(null)}
+      />
       {/* Header */}
       <div className="flex items-center justify-between gap-4">
         <div>
@@ -162,7 +179,7 @@ export default function AdminCategoriesPage() {
             </button>
           </div>
 
-          <form onSubmit={onSubmit} className="p-5 space-y-4">
+          <form onSubmit={onSubmit} className="p-5 space-y-4 pb-28 md:pb-5">
             <div>
               <label className="block text-xs font-semibold text-gray-700 mb-2">
                 Label
@@ -204,22 +221,11 @@ export default function AdminCategoriesPage() {
               </div>
             ) : null}
 
-            <button
-              type="submit"
-              disabled={saving}
-              className="w-full flex items-center justify-center gap-2 bg-gray-900 text-white text-sm font-semibold py-3.5 rounded-xl hover:bg-gray-700 transition-colors disabled:opacity-50 active:scale-[0.98]"
-            >
-              {saving ? (
-                <>
-                  <span className="w-3.5 h-3.5 border-2 border-white/40 border-t-white rounded-full animate-spin" />
-                  Saving…
-                </>
-              ) : editingId ? (
-                "Update category"
-              ) : (
-                "Create category"
-              )}
-            </button>
+            <AdminFormActions
+              saving={saving}
+              submitLabel={editingId ? "Update category" : "Create category"}
+              onCancel={resetForm}
+            />
           </form>
         </div>
       )}
@@ -300,7 +306,7 @@ export default function AdminCategoriesPage() {
                   </button>
                   <button
                     type="button"
-                    onClick={() => onDelete_(category.id, category.label)}
+                    onClick={() => setPendingDelete({ id: category.id, label: category.label })}
                     className="px-3 py-1.5 text-xs font-medium text-red-600 bg-red-50 rounded-lg hover:bg-red-100 active:bg-red-200 transition-colors"
                   >
                     Delete

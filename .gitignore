@@ -39,3 +39,10 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# loose downloaded images in project root (temp files)
+/*.jpg
+/*.jpeg
+/*.png
+/*.gif
+/*.webp

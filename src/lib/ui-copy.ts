@@ -133,7 +133,8 @@ export const uiCopy = {
       headlineItalic: "their",
       headlineAfter: "homes.",
       onTime: "On-time delivery",
-      years: "Years building",
+      experienceValue: "Proven",
+      experienceLabel: "On challenging sites",
     },
     inquiry: {
       eyebrow: "Project inquiry — Reply within 48h",
@@ -347,7 +348,8 @@ export const uiCopy = {
       headlineItalic: "ቤታቸው",
       headlineAfter: "ምን ይላሉ።",
       onTime: "በጊዜ አቅርቦት",
-      years: "ዓመታት ግንባታ",
+      experienceValue: "የተረጋገጠ",
+      experienceLabel: "በፈታኝ ቦታዎች",
     },
     inquiry: {
       eyebrow: "የፕሮጀክት ጥያቄ — በ48 ሰዓት ውስጥ መልስ",

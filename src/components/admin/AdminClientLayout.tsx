@@ -179,6 +179,10 @@ function AdminShell({ children }: { children: ReactNode }) {
   const router = useRouter();
   const [drawerOpen, setDrawerOpen] = useState(false);
   const isLogin = pathname === "/admin/login";
+  // Dedicated project forms need the full bottom edge for Update/Cancel.
+  const hideBottomNav =
+    pathname === "/admin/projects/new" ||
+    /^\/admin\/projects\/[^/]+\/edit$/.test(pathname);
 
   useEffect(() => {
     if (loading) return;
@@ -291,39 +295,45 @@ function AdminShell({ children }: { children: ReactNode }) {
         logout={logout}
       />
 
-      {/* Page content — pad bottom for mobile bottom nav */}
-      <main className="max-w-5xl mx-auto px-4 py-6 pb-24 md:pb-8">
+      {/* Page content — pad bottom for mobile tab bar or sticky form actions */}
+      <main
+        className={`max-w-5xl mx-auto px-4 py-6 md:pb-8 ${
+          hideBottomNav ? "pb-28" : "pb-24"
+        }`}
+      >
         {children}
       </main>
 
-      {/* Bottom tab bar (mobile only) */}
-      <nav className="md:hidden fixed bottom-0 inset-x-0 z-30 bg-white border-t border-gray-200 safe-bottom">
-        <div className="flex items-stretch h-16">
-          {nav.map((item) => {
-            const active = item.exact
-              ? pathname === item.href
-              : pathname.startsWith(item.href);
-            return (
-              <Link
-                key={item.href}
-                href={item.href}
-                className={`flex-1 flex flex-col items-center justify-center gap-1 text-[10px] font-medium transition-colors ${
-                  active ? "text-gray-900" : "text-gray-400"
-                }`}
-              >
-                <span
-                  className={`flex items-center justify-center w-10 h-6 rounded-full transition-colors ${
-                    active ? "bg-gray-900 text-white" : ""
+      {/* Bottom tab bar (mobile only) — hidden on project create/edit so form actions stay visible */}
+      {!hideBottomNav ? (
+        <nav className="md:hidden fixed bottom-0 inset-x-0 z-30 bg-white border-t border-gray-200 safe-bottom">
+          <div className="flex items-stretch h-16">
+            {nav.map((item) => {
+              const active = item.exact
+                ? pathname === item.href
+                : pathname.startsWith(item.href);
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className={`flex-1 flex flex-col items-center justify-center gap-1 text-[10px] font-medium transition-colors ${
+                    active ? "text-gray-900" : "text-gray-400"
                   }`}
                 >
-                  {item.icon}
-                </span>
-                {item.label}
-              </Link>
-            );
-          })}
-        </div>
-      </nav>
+                  <span
+                    className={`flex items-center justify-center w-10 h-6 rounded-full transition-colors ${
+                      active ? "bg-gray-900 text-white" : ""
+                    }`}
+                  >
+                    {item.icon}
+                  </span>
+                  {item.label}
+                </Link>
+              );
+            })}
+          </div>
+        </nav>
+      ) : null}
     </div>
   );
 }
