@@ -4,6 +4,15 @@ import Link from "next/link";
 
 const sections = [
   {
+    href: "/admin/inquiries",
+    emoji: "📬",
+    title: "Inquiries",
+    description: "New customer inquiries. Contact via Telegram or call.",
+    action: "Open inquiries",
+    addHref: null,
+    addLabel: null,
+  },
+  {
     href: "/admin/projects",
     emoji: "🗂",
     title: "Projects",
@@ -83,6 +92,13 @@ export default function AdminDashboardPage() {
           Quick links
         </h2>
         <div className="flex flex-col gap-2">
+          <Link
+            href="/admin/inquiries"
+            className="flex items-center justify-between py-3 px-4 bg-gray-50 rounded-xl active:bg-gray-100 transition-colors"
+          >
+            <span className="text-sm font-medium text-gray-900">View inquiries</span>
+            <span className="text-gray-400 text-sm">→</span>
+          </Link>
           <Link
             href="/admin/projects/new"
             className="flex items-center justify-between py-3 px-4 bg-gray-50 rounded-xl active:bg-gray-100 transition-colors"

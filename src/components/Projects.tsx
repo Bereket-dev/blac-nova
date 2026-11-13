@@ -5,6 +5,7 @@ import { useRef, useState } from "react";
 import type { Project } from "@/lib/types";
 import { FadeIn } from "./FadeIn";
 import { FadeImage } from "./FadeImage";
+import { useLanguage, t } from "@/lib/language";
 
 type ProjectsProps = {
   projects: Project[];
@@ -13,6 +14,7 @@ type ProjectsProps = {
 export function Projects({ projects }: ProjectsProps) {
   const scrollerRef = useRef<HTMLDivElement>(null);
   const [active, setActive] = useState(0);
+  const { lang } = useLanguage();
 
   const scrollByCard = (dir: -1 | 1) => {
     const el = scrollerRef.current;
@@ -79,8 +81,15 @@ export function Projects({ projects }: ProjectsProps) {
                     sizes="(max-width: 768px) 78vw, 30vw"
                     eager
                   />
-                  <div className="absolute top-4 left-4 flex items-center gap-2 px-3 py-1.5 rounded-full bg-bone-50/90 text-[11px] tracking-widest-2 uppercase text-ink-900">
-                    {project.category}
+                  <div className="absolute top-4 left-4 flex items-center gap-2">
+                    <span className="px-3 py-1.5 rounded-full bg-bone-50/90 text-[11px] tracking-widest-2 uppercase text-ink-900">
+                      {project.category}
+                    </span>
+                    {project.isOngoing && (
+                      <span className="px-3 py-1.5 rounded-full bg-amber-400/90 text-[11px] tracking-widest-2 uppercase text-amber-900 font-medium">
+                        Ongoing
+                      </span>
+                    )}
                   </div>
                   <div className="absolute top-4 right-4 font-serif-display italic text-bone-50 text-2xl mix-blend-difference">
                     /{project.index}
@@ -92,7 +101,7 @@ export function Projects({ projects }: ProjectsProps) {
                 <div className="mt-5 text-ink-900">
                   <Link href={`/projects/${project.slug}`} className="block group/title">
                     <div className="font-serif-display text-2xl md:text-[28px] leading-tight group-hover/title:text-terracotta-500 transition-colors">
-                      {project.title}
+                      {t(project.title, project.title_am, lang)}
                     </div>
                     <div className="text-[12px] mt-1 text-ink-900/55 tracking-wide">
                       {project.location}
@@ -119,7 +128,7 @@ export function Projects({ projects }: ProjectsProps) {
           <div className="mt-8 flex items-center justify-between flex-wrap gap-4">
             <div className="text-[12px] tracking-wide text-ink-900/55">
               {String(active + 1).padStart(2, "0")} / {String(projects.length).padStart(2, "0")}{" "}
-              — <span className="font-serif-display italic">{projects[active]?.title}</span>
+              — <span className="font-serif-display italic">{t(projects[active]?.title ?? "", projects[active]?.title_am, lang)}</span>
             </div>
             <Link
               href="/projects"

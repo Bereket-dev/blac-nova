@@ -39,13 +39,13 @@ export function Footer() {
           <div className="md:col-span-4">
             <Image
               src="/logo-light.png"
-              alt="Blac Nova"
+              alt="Blac Nova Homes"
               width={1019}
               height={942}
               className="h-28 md:h-32 w-auto object-contain object-left"
             />
             <p className="mt-8 text-bone-100/55 text-sm max-w-sm leading-relaxed">
-              Blac Nova designs and builds houses, G+ buildings, and compound works across
+              Blac Nova Homes designs and builds houses, G+ buildings, and compound works across
               Ethiopia. Solid structure, clean handover.
             </p>
           </div>
@@ -136,7 +136,7 @@ export function Footer() {
         </div>
 
         <div className="relative border-t border-bone-50/8 px-8 md:px-12 lg:px-16 py-6 flex items-center justify-between flex-wrap gap-3 text-[11px] tracking-wide text-bone-50/40">
-          <div>© 2026 Blac Nova Construction & Design Ltd.</div>
+          <div>© 2026 Blac Nova Homes Construction & Design Ltd.</div>
           <div className="flex items-center gap-5">
             <a href="#" className="hover:text-bone-50">
               Privacy

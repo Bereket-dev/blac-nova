@@ -24,7 +24,7 @@ const blankProject = (): Project => ({
   category: "",
   categoryId: "",
   index: "01",
-  collaborator: "Blac Nova",
+  collaborator: "Blac Nova Homes",
   area: "",
   year: String(new Date().getFullYear()),
   image: "",
@@ -36,8 +36,14 @@ const blankProject = (): Project => ({
   materials: [],
   details: [],
   status: "",
+  isOngoing: false,
   order: 1,
   published: true,
+  title_am: "",
+  summary_am: "",
+  description_am: "",
+  approach_am: "",
+  status_am: "",
 });
 
 function linesToList(value: string): string[] {
@@ -372,6 +378,63 @@ export function ProjectForm({ initial, mode }: ProjectFormProps) {
         </Field>
       </SectionCard>
 
+      {/* ── Amharic translations ────────────────────────────────────── */}
+      <SectionCard title="Amharic content (አማርኛ)">
+        <p className="text-xs text-gray-400 -mt-1">
+          Optional. When a visitor switches to Amharic, these replace the English text.
+        </p>
+
+        <Field label="Title — አማርኛ">
+          <input
+            value={form.title_am ?? ""}
+            onChange={(e) => setField("title_am", e.target.value)}
+            className={inputCls}
+            placeholder="ፕሮጀክቱ ስም"
+            lang="am"
+          />
+        </Field>
+
+        <Field label="Status — አማርኛ">
+          <input
+            value={form.status_am ?? ""}
+            onChange={(e) => setField("status_am", e.target.value)}
+            className={inputCls}
+            placeholder="ተጠናቋል 2025"
+            lang="am"
+          />
+        </Field>
+
+        <Field label="Summary — አማርኛ" hint="Short one-liner shown on project cards">
+          <textarea
+            rows={2}
+            value={form.summary_am ?? ""}
+            onChange={(e) => setField("summary_am", e.target.value)}
+            className={inputCls}
+            lang="am"
+          />
+        </Field>
+
+        <Field label="Description — አማርኛ" hint="Main project description paragraph">
+          <textarea
+            rows={5}
+            value={form.description_am ?? ""}
+            onChange={(e) => setField("description_am", e.target.value)}
+            className={inputCls}
+            lang="am"
+          />
+        </Field>
+
+        <Field label="Approach — አማርኛ" hint="Design approach or concept notes">
+          <textarea
+            rows={3}
+            value={form.approach_am ?? ""}
+            onChange={(e) => setField("approach_am", e.target.value)}
+            className={inputCls}
+            lang="am"
+          />
+        </Field>
+      </SectionCard>
+
       {/* ── Lists ───────────────────────────────────────────────────── */}
       <SectionCard title="Lists">
         <p className="text-xs text-gray-400 -mt-1">One item per line.</p>
@@ -408,7 +471,7 @@ export function ProjectForm({ initial, mode }: ProjectFormProps) {
       </SectionCard>
 
       {/* ── Visibility ──────────────────────────────────────────────── */}
-      <SectionCard title="Visibility">
+      <SectionCard title="Visibility & Status">
         <label className="flex items-center gap-4 py-2 cursor-pointer">
           <input
             type="checkbox"
@@ -420,6 +483,21 @@ export function ProjectForm({ initial, mode }: ProjectFormProps) {
             <p className="text-sm font-medium text-gray-900">Published</p>
             <p className="text-xs text-gray-400">
               Show this project on the public site
+            </p>
+          </div>
+        </label>
+
+        <label className="flex items-center gap-4 py-2 cursor-pointer border-t border-gray-100">
+          <input
+            type="checkbox"
+            checked={form.isOngoing ?? false}
+            onChange={(e) => setField("isOngoing", e.target.checked)}
+            className="w-5 h-5 rounded border-gray-300 accent-amber-500 shrink-0"
+          />
+          <div>
+            <p className="text-sm font-medium text-gray-900">Ongoing project</p>
+            <p className="text-xs text-gray-400">
+              Shows an &quot;Ongoing&quot; badge on the project card and detail page. Leave unchecked for completed.
             </p>
           </div>
         </label>

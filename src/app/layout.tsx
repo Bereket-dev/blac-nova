@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Cormorant_Garamond, Outfit } from "next/font/google";
 import "./globals.css";
+import { LanguageProvider } from "@/lib/language";
 
 const outfit = Outfit({
   variable: "--font-outfit",
@@ -15,10 +16,10 @@ const cormorant = Cormorant_Garamond({
   style: ["normal", "italic"],
 });
 
-const siteName = "Blac Nova";
-const title = "Blac Nova — We Build Your Dream Home";
+const siteName = "Blac Nova Homes";
+const title = "Blac Nova Homes — We Build Your Dream Home";
 const description =
-  "Blac Nova designs and builds houses, G+ buildings, and compound works across Ethiopia. Solid structure, clean handover.";
+  "Blac Nova Homes designs and builds houses, G+ buildings, and compound works across Ethiopia. Solid structure, clean handover.";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://blacnova.com"),
@@ -28,10 +29,11 @@ export const metadata: Metadata = {
   },
   description,
   applicationName: siteName,
-  authors: [{ name: "Blac Nova Construction & Design" }],
-  creator: "Blac Nova Construction & Design",
-  publisher: "Blac Nova Construction & Design Ltd.",
+  authors: [{ name: "Blac Nova Homes Construction & Design" }],
+  creator: "Blac Nova Homes Construction & Design",
+  publisher: "Blac Nova Homes Construction & Design Ltd.",
   keywords: [
+    "Blac Nova Homes",
     "Blac Nova",
     "construction Ethiopia",
     "house design",
@@ -58,7 +60,7 @@ export const metadata: Metadata = {
         url: "/hero.png",
         width: 1671,
         height: 941,
-        alt: "Blac Nova — construction and design in Ethiopia",
+        alt: "Blac Nova Homes — construction and design in Ethiopia",
       },
     ],
   },
@@ -81,7 +83,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       data-scroll-behavior="smooth"
       className={`${outfit.variable} ${cormorant.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col bg-bone-50 text-ink-900">{children}</body>
+      <body className="min-h-full flex flex-col bg-bone-50 text-ink-900">
+        <LanguageProvider>{children}</LanguageProvider>
+      </body>
     </html>
   );
 }

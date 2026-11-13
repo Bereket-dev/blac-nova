@@ -4,7 +4,6 @@ import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useState, type FormEvent } from "react";
 import {
-  INQUIRY_EMAIL,
   INQUIRY_TELEGRAM,
   findCategoryLabel,
   parseInquirySelection,
@@ -12,6 +11,7 @@ import {
   type DesignCategory,
   type DesignOption,
 } from "@/lib/services";
+import { submitInquiry } from "@/lib/inquiries";
 import { FadeImage } from "./FadeImage";
 
 type InquiryFormProps = {
@@ -19,16 +19,16 @@ type InquiryFormProps = {
   designs: DesignOption[];
 };
 
-export function InquiryForm({
-  categories,
-  designs,
-}: InquiryFormProps) {
+export function InquiryForm({ categories, designs }: InquiryFormProps) {
   const rawSearchParams = useSearchParams();
   const initialSelection = parseInquirySelection(rawSearchParams, designs);
 
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
+  const [message, setMessage] = useState("");
+  const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [error, setError] = useState("");
 
   const design = initialSelection.design
     ? designs.find(
@@ -36,28 +36,81 @@ export function InquiryForm({
           item.id === initialSelection.design || item.slug === initialSelection.design,
       )
     : undefined;
+
   const exploreHref = `/services${selectionToSearchParams(initialSelection)}#designs`;
 
-  const onSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const lines = [
-      `Name: ${name}`,
-      `Phone: ${phone}`,
-      "",
-      design
-        ? `Selected design: ${design.title} (${design.location})`
-        : "Selected design: (none — exploring generally)",
-      design ? `Category: ${findCategoryLabel(categories, design.categoryId)}` : "",
-      design ? `Project: /projects/${design.slug}` : "",
-    ].filter(Boolean);
+    setSubmitting(true);
+    setError("");
 
-    const subject = encodeURIComponent(
-      design ? `Inquiry — ${design.title} — ${name}` : `Project inquiry — ${name}`,
-    );
-    const body = encodeURIComponent(lines.join("\n"));
-    window.location.href = `mailto:${INQUIRY_EMAIL}?subject=${subject}&body=${body}`;
-    setSubmitted(true);
+    const result = await submitInquiry({
+      name,
+      phone,
+      message: message || undefined,
+      designTitle: design?.title,
+      designSlug: design?.slug,
+      designCategory: design ? findCategoryLabel(categories, design.categoryId) : undefined,
+    });
+
+    setSubmitting(false);
+
+    if (result.ok) {
+      setSubmitted(true);
+    } else {
+      setError(result.error);
+    }
   };
+
+  if (submitted) {
+    return (
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16">
+        <div className="lg:col-span-5">
+          <div className="flex items-center gap-3 mb-5">
+            <span className="w-10 h-px bg-ink-900/40" />
+            <span className="text-[11px] tracking-widest-2 uppercase text-ink-900/55">
+              Project inquiry
+            </span>
+          </div>
+          <h2 className="font-serif-display text-4xl md:text-5xl lg:text-6xl font-light text-ink-900 text-balance leading-[1.05]">
+            We&apos;ve got your inquiry.
+          </h2>
+          <p className="mt-5 text-ink-900/60 leading-relaxed max-w-md">
+            Our team will reach out within 48 hours. You can also message us directly on
+            Telegram for a faster response.
+          </p>
+          <a
+            href={INQUIRY_TELEGRAM}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-8 inline-flex items-center gap-2 rounded-full bg-[#2AABEE] text-white px-6 py-3 text-[13px] tracking-wide uppercase hover:bg-[#229ED9] transition-colors"
+          >
+            <i className="ri-telegram-fill text-base" />
+            Message on Telegram
+          </a>
+        </div>
+        <div className="lg:col-span-7 flex items-center">
+          <div className="border border-ink-900/10 bg-bone-50 p-6 md:p-8 w-full">
+            <div className="flex items-center gap-3 mb-4">
+              <span className="w-10 h-10 rounded-full bg-terracotta-500 text-bone-50 flex items-center justify-center">
+                <i className="ri-check-line text-xl" />
+              </span>
+              <p className="text-sm font-medium text-ink-900">Inquiry received</p>
+            </div>
+            <p className="text-sm text-ink-900/60">
+              <strong className="text-ink-900">{name}</strong> · {phone}
+              {design ? (
+                <>
+                  <br />
+                  Design: {design.title}
+                </>
+              ) : null}
+            </p>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16">
@@ -149,13 +202,40 @@ export function InquiryForm({
             </label>
           </div>
 
+          <label className="block">
+            <span className="text-[11px] tracking-widest-2 uppercase text-ink-900/45">
+              Message <span className="text-ink-900/30">(optional)</span>
+            </span>
+            <textarea
+              rows={3}
+              value={message}
+              onChange={(e) => setMessage(e.target.value)}
+              placeholder="Tell us about your plot, budget, or what you have in mind…"
+              className="mt-2 w-full border border-ink-900/10 bg-bone-50 px-4 py-3 text-sm text-ink-900 focus:outline-none focus:border-ink-900/40 resize-none"
+            />
+          </label>
+
+          {error ? (
+            <p className="text-sm text-red-600">{error}</p>
+          ) : null}
+
           <div className="flex flex-col sm:flex-row gap-3 pt-2">
             <button
               type="submit"
-              className="inline-flex items-center justify-center gap-2 rounded-full bg-ink-900 text-bone-50 px-6 py-3 text-[13px] tracking-wide uppercase hover:bg-terracotta-500 transition-colors"
+              disabled={submitting}
+              className="inline-flex items-center justify-center gap-2 rounded-full bg-ink-900 text-bone-50 px-6 py-3 text-[13px] tracking-wide uppercase hover:bg-terracotta-500 transition-colors disabled:opacity-60"
             >
-              Send inquiry
-              <i className="ri-arrow-right-line text-base" />
+              {submitting ? (
+                <>
+                  <span className="w-3.5 h-3.5 border-2 border-bone-50/40 border-t-bone-50 rounded-full animate-spin" />
+                  Sending…
+                </>
+              ) : (
+                <>
+                  Send inquiry
+                  <i className="ri-arrow-right-line text-base" />
+                </>
+              )}
             </button>
             <a
               href={INQUIRY_TELEGRAM}
@@ -168,17 +248,11 @@ export function InquiryForm({
             </a>
           </div>
 
-          {submitted ? (
-            <p className="text-sm text-terracotta-500">
-              Your email client should open with the inquiry ready to send.
-            </p>
-          ) : (
-            <p className="text-[11px] tracking-wide text-ink-900/45 leading-relaxed">
-              Submitting opens your email to {INQUIRY_EMAIL}
-              {design ? " with your selected design included" : ""}. We never share inquiry details
-              outside the company.
-            </p>
-          )}
+          <p className="text-[11px] tracking-wide text-ink-900/45 leading-relaxed">
+            Your inquiry goes directly to our team
+            {design ? " with your selected design included" : ""}. We never share your
+            details outside the company.
+          </p>
         </form>
       </div>
     </div>

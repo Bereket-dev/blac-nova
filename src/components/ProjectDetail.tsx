@@ -1,8 +1,11 @@
+"use client";
+
 import Link from "next/link";
 import type { Project } from "@/lib/data";
 import { FadeImage } from "./FadeImage";
 import { FadeIn } from "./FadeIn";
 import { ProjectCard } from "./ProjectCard";
+import { useLanguage, t } from "@/lib/language";
 
 type ProjectDetailProps = {
   project: Project;
@@ -10,6 +13,7 @@ type ProjectDetailProps = {
 };
 
 export function ProjectDetail({ project, others }: ProjectDetailProps) {
+  const { lang } = useLanguage();
   return (
     <>
       <section className="relative pt-28 md:pt-32 pb-16 md:pb-24 bg-bone-50">
@@ -29,12 +33,18 @@ export function ProjectDetail({ project, others }: ProjectDetailProps) {
                   <span className="text-[11px] tracking-widest-2 uppercase text-ink-900/55">
                     Project /{project.index} — {project.category}
                   </span>
+                  {project.isOngoing && (
+                    <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-100 text-[10px] tracking-widest-2 uppercase text-amber-700 font-semibold border border-amber-200">
+                      <span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse" />
+                      Ongoing
+                    </span>
+                  )}
                 </div>
                 <h1 className="font-serif-display text-4xl md:text-6xl lg:text-7xl leading-[1.02] tracking-[-0.015em] text-ink-900 font-light text-balance">
-                  {project.title}
+                  {t(project.title, project.title_am, lang)}
                 </h1>
                 <p className="mt-5 text-ink-900/65 text-base md:text-lg font-light max-w-2xl leading-relaxed">
-                  {project.summary}
+                  {t(project.summary, project.summary_am, lang)}
                 </p>
               </div>
               <div className="text-right">
@@ -66,7 +76,12 @@ export function ProjectDetail({ project, others }: ProjectDetailProps) {
                 { label: "Location", value: project.location },
                 { label: "Year", value: project.year },
                 { label: "Area", value: project.area },
-                { label: "Status", value: project.status },
+                {
+                  label: "Status",
+                  value: project.isOngoing
+                    ? (lang === "am" ? "በሂደት ላይ" : "Ongoing")
+                    : t(project.status || "Completed", project.status_am, lang),
+                },
               ].map((item) => (
                 <div key={item.label}>
                   <dt className="text-[11px] tracking-widest-2 uppercase text-ink-900/45">
@@ -88,7 +103,7 @@ export function ProjectDetail({ project, others }: ProjectDetailProps) {
                 About this build
               </h2>
               <p className="mt-5 text-ink-900/70 leading-relaxed text-base md:text-[17px]">
-                {project.description}
+                {t(project.description, project.description_am, lang)}
               </p>
             </div>
             <div>
@@ -96,7 +111,7 @@ export function ProjectDetail({ project, others }: ProjectDetailProps) {
                 Approach
               </h2>
               <p className="mt-5 text-ink-900/70 leading-relaxed text-base md:text-[17px]">
-                {project.approach}
+                {t(project.approach, project.approach_am, lang)}
               </p>
             </div>
           </FadeIn>

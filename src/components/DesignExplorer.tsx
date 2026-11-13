@@ -4,7 +4,6 @@ import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useMemo, useState, type FormEvent } from "react";
 import {
-  INQUIRY_EMAIL,
   INQUIRY_TELEGRAM,
   designsByCategory,
   findDesign,
@@ -13,6 +12,7 @@ import {
   type DesignCategory,
   type DesignOption,
 } from "@/lib/services";
+import { submitInquiry } from "@/lib/inquiries";
 import { FadeImage } from "./FadeImage";
 import { FadeIn } from "./FadeIn";
 
@@ -38,7 +38,9 @@ export function DesignExplorer({ categories, designs: allDesigns }: DesignExplor
   const [selectedId, setSelectedId] = useState(initial.design);
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
+  const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [submitError, setSubmitError] = useState("");
 
   const designs = useMemo(
     () => designsByCategory(allDesigns, categoryId),
@@ -55,28 +57,29 @@ export function DesignExplorer({ categories, designs: allDesigns }: DesignExplor
     setActiveId(next[0]?.id ?? "");
   };
 
-  const onSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const design = selectedId ? findDesign(allDesigns, selectedId) : undefined;
-    const lines = [
-      `Name: ${name}`,
-      `Phone: ${phone}`,
-      "",
-      design
-        ? `Selected design: ${design.title} (${design.location})`
-        : "Selected design: (none — exploring generally)",
-      design
-        ? `Category: ${categories.find((c) => c.id === design.categoryId)?.label ?? ""}`
-        : "",
-      design ? `Project: /projects/${design.slug}` : "",
-    ].filter(Boolean);
+    setSubmitting(true);
+    setSubmitError("");
 
-    const subject = encodeURIComponent(
-      design ? `Inquiry — ${design.title} — ${name}` : `Project inquiry — ${name}`,
-    );
-    const body = encodeURIComponent(lines.join("\n"));
-    window.location.href = `mailto:${INQUIRY_EMAIL}?subject=${subject}&body=${body}`;
-    setSubmitted(true);
+    const design = selectedId ? findDesign(allDesigns, selectedId) : undefined;
+    const result = await submitInquiry({
+      name,
+      phone,
+      designTitle: design?.title,
+      designSlug: design?.slug,
+      designCategory: design
+        ? categories.find((c) => c.id === design.categoryId)?.label
+        : undefined,
+    });
+
+    setSubmitting(false);
+
+    if (result.ok) {
+      setSubmitted(true);
+    } else {
+      setSubmitError(result.error);
+    }
   };
 
   return (
@@ -389,10 +392,20 @@ export function DesignExplorer({ categories, designs: allDesigns }: DesignExplor
                 <div className="flex flex-col sm:flex-row gap-3 pt-2">
                   <button
                     type="submit"
-                    className="inline-flex items-center justify-center gap-2 rounded-full bg-bone-50 text-ink-900 px-6 py-3 text-[13px] tracking-wide uppercase hover:bg-terracotta-500 hover:text-bone-50 transition-colors"
+                    disabled={submitting}
+                    className="inline-flex items-center justify-center gap-2 rounded-full bg-bone-50 text-ink-900 px-6 py-3 text-[13px] tracking-wide uppercase hover:bg-terracotta-500 hover:text-bone-50 transition-colors disabled:opacity-60"
                   >
-                    Send inquiry
-                    <i className="ri-arrow-right-line text-base" />
+                    {submitting ? (
+                      <>
+                        <span className="w-3.5 h-3.5 border-2 border-ink-900/40 border-t-ink-900 rounded-full animate-spin" />
+                        Sending…
+                      </>
+                    ) : (
+                      <>
+                        Send inquiry
+                        <i className="ri-arrow-right-line text-base" />
+                      </>
+                    )}
                   </button>
                   <a
                     href={INQUIRY_TELEGRAM}
@@ -405,13 +418,16 @@ export function DesignExplorer({ categories, designs: allDesigns }: DesignExplor
                   </a>
                 </div>
 
-                {submitted ? (
+                {submitError ? (
+                  <p className="text-sm text-red-400">{submitError}</p>
+                ) : submitted ? (
                   <p className="text-sm text-terracotta-400">
-                    Your email client should open with the inquiry ready to send.
+                    Got it — we&apos;ll be in touch within 48 hours.
+                    {selected ? ` We'll include ${selected.title} as your starting point.` : ""}
                   </p>
                 ) : (
                   <p className="text-[11px] tracking-wide text-bone-50/40 leading-relaxed">
-                    Sends via email to {INQUIRY_EMAIL}
+                    Your inquiry goes directly to our team
                     {selectedId ? " with your selected design attached" : ""}. Or open the{" "}
                     <Link href={inquiryHref} className="underline hover:text-terracotta-400">
                       about & inquiry page

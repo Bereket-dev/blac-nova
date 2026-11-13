@@ -4,12 +4,14 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
+import { useLanguage } from "@/lib/language";
 
 const nav = [
   { href: "/", label: "Home" },
   { href: "/projects", label: "Projects" },
   { href: "/services", label: "Services" },
   { href: "/about", label: "About" },
+  { href: "/about#inquire", label: "Inquire" },
 ];
 
 type HeaderProps = {
@@ -21,6 +23,7 @@ export function Header({ solid = false }: HeaderProps) {
   const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
+  const { lang, toggle } = useLanguage();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
@@ -50,11 +53,11 @@ export function Header({ solid = false }: HeaderProps) {
         <Link
           href="/"
           className="relative flex items-center shrink-0 h-12 md:h-14"
-          aria-label="Blac Nova home"
+          aria-label="Blac Nova Homes home"
         >
           <Image
             src={onLight ? "/logo-mark.png" : "/logo-mark-light.png"}
-            alt="Blac Nova"
+            alt="Blac Nova Homes"
             width={1019}
             height={790}
             priority
@@ -75,6 +78,22 @@ export function Header({ solid = false }: HeaderProps) {
         </nav>
 
         <div className="hidden md:flex items-center gap-4">
+          {/* Language toggle */}
+          <button
+            type="button"
+            onClick={toggle}
+            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[11px] tracking-widest-2 uppercase font-medium transition-colors border ${
+              onLight
+                ? "border-ink-900/15 text-ink-900 hover:border-ink-900/40"
+                : "border-bone-50/30 text-bone-50 hover:border-bone-50/60"
+            }`}
+            aria-label={lang === "en" ? "Switch to Amharic" : "Switch to English"}
+            title={lang === "en" ? "Switch to Amharic / አማርኛ" : "Switch to English"}
+          >
+            <span>{lang === "en" ? "EN" : "አማ"}</span>
+            <i className="ri-translate-2 text-sm" />
+          </button>
+
           <Link
             href="/about#inquire"
             className="group relative inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-[13px] tracking-wide uppercase transition-all duration-300 whitespace-nowrap bg-bone-50 text-ink-900 hover:bg-terracotta-500 hover:text-bone-50"
@@ -117,6 +136,14 @@ export function Header({ solid = false }: HeaderProps) {
             >
               Project Inquiry
             </Link>
+            <button
+              type="button"
+              onClick={toggle}
+              className="inline-flex items-center justify-center gap-2 rounded-full border border-ink-900/15 px-5 py-2.5 text-[13px] tracking-wide uppercase text-ink-900"
+            >
+              <i className="ri-translate-2 text-base" />
+              {lang === "en" ? "አማርኛ (Amharic)" : "English"}
+            </button>
           </nav>
         </div>
       )}

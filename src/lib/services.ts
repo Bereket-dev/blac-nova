@@ -240,5 +240,4 @@ export function findDesign(
   return designs.find((design) => design.id === id || design.slug === id);
 }
 
-export const INQUIRY_EMAIL = "hello@blacnova.com";
 export const INQUIRY_TELEGRAM = "https://t.me/+251911369200";

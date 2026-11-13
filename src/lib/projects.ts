@@ -24,8 +24,14 @@ function mapProject(slug: string, data: Record<string, unknown>): Project {
     materials: Array.isArray(data.materials) ? (data.materials as string[]) : [],
     details: Array.isArray(data.details) ? (data.details as string[]) : [],
     status: (data.status as string) ?? "",
+    isOngoing: data.isOngoing === true,
     order: typeof data.order === "number" ? data.order : 0,
     published: data.published !== false,
+    title_am: data.title_am as string | undefined,
+    summary_am: data.summary_am as string | undefined,
+    description_am: data.description_am as string | undefined,
+    approach_am: data.approach_am as string | undefined,
+    status_am: data.status_am as string | undefined,
   };
 }
 
