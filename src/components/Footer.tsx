@@ -2,13 +2,7 @@
 
 import Image from "next/image";
 import { useState, type FormEvent } from "react";
-
-const explore = [
-  { href: "/projects", label: "Projects" },
-  { href: "/services", label: "Services" },
-  { href: "/about", label: "About" },
-  { href: "/about#inquire", label: "Inquiry" },
-];
+import { useUi } from "@/lib/language";
 
 const social = [
   {
@@ -25,6 +19,14 @@ const social = [
 
 export function Footer() {
   const [subscribed, setSubscribed] = useState(false);
+  const ui = useUi();
+
+  const explore = [
+    { href: "/projects", label: ui.footer.projects },
+    { href: "/services", label: ui.footer.services },
+    { href: "/about", label: ui.footer.about },
+    { href: "/about#inquire", label: ui.footer.inquiry },
+  ];
 
   const onSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -45,14 +47,13 @@ export function Footer() {
               className="h-28 md:h-32 w-auto object-contain object-left"
             />
             <p className="mt-8 text-bone-100/55 text-sm max-w-sm leading-relaxed">
-              Blac Nova Homes designs and builds houses, G+ buildings, and compound works across
-              Ethiopia. Solid structure, clean handover.
+              {ui.footer.blurb}
             </p>
           </div>
 
           <div className="md:col-span-2">
             <div className="text-[11px] tracking-widest-2 uppercase text-bone-50/45 mb-5">
-              Explore
+              {ui.footer.explore}
             </div>
             <ul className="space-y-3 text-sm">
               {explore.map((item) => (
@@ -70,7 +71,7 @@ export function Footer() {
 
           <div className="md:col-span-2">
             <div className="text-[11px] tracking-widest-2 uppercase text-bone-50/45 mb-5">
-              Follow
+              {ui.footer.follow}
             </div>
             <ul className="space-y-3 text-sm">
               {social.map((item) => (
@@ -93,14 +94,13 @@ export function Footer() {
 
           <div className="md:col-span-4">
             <div className="text-[11px] tracking-widest-2 uppercase text-bone-50/45 mb-3">
-              Project updates
+              {ui.footer.updates}
             </div>
             <p className="text-sm text-bone-100/65 mb-5 leading-relaxed">
-              Occasional notes on new builds, site progress, and finishing work — straight
-              from our team.
+              {ui.footer.updatesBody}
             </p>
             {subscribed ? (
-              <p className="text-sm text-terracotta-400">Thank you — you&apos;re on the list.</p>
+              <p className="text-sm text-terracotta-400">{ui.footer.thanks}</p>
             ) : (
               <form
                 onSubmit={onSubmit}
@@ -108,7 +108,7 @@ export function Footer() {
               >
                 <input
                   required
-                  placeholder="Your email"
+                  placeholder={ui.footer.emailPlaceholder}
                   className="flex-1 bg-transparent px-4 py-2 text-sm text-bone-50 placeholder-bone-50/40 focus:outline-none"
                   type="email"
                   name="email"
@@ -116,15 +116,14 @@ export function Footer() {
                 <button
                   type="submit"
                   className="w-10 h-10 rounded-full bg-bone-50 text-ink-900 hover:bg-terracotta-500 hover:text-bone-50 transition-colors flex items-center justify-center"
-                  aria-label="Subscribe"
+                  aria-label={ui.footer.subscribe}
                 >
                   <i className="ri-arrow-right-line text-lg" />
                 </button>
               </form>
             )}
             <div className="mt-6 flex items-center gap-3 text-[11px] tracking-wide text-bone-50/45">
-              <i className="ri-shield-check-line" /> No sharing, ever. Unsubscribe in one
-              click.
+              <i className="ri-shield-check-line" /> {ui.footer.privacyNote}
             </div>
           </div>
         </div>
@@ -136,16 +135,16 @@ export function Footer() {
         </div>
 
         <div className="relative border-t border-bone-50/8 px-8 md:px-12 lg:px-16 py-6 flex items-center justify-between flex-wrap gap-3 text-[11px] tracking-wide text-bone-50/40">
-          <div>© 2026 Blac Nova Homes Construction & Design Ltd.</div>
+          <div>{ui.footer.copyright}</div>
           <div className="flex items-center gap-5">
             <a href="#" className="hover:text-bone-50">
-              Privacy
+              {ui.footer.privacy}
             </a>
             <a href="#" className="hover:text-bone-50">
-              Terms
+              {ui.footer.terms}
             </a>
             <a href="#" className="hover:text-bone-50">
-              Cookies
+              {ui.footer.cookies}
             </a>
           </div>
         </div>

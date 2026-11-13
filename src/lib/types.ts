@@ -4,8 +4,6 @@ export type Project = {
   location: string;
   category: string;
   categoryId: string;
-  index: string;
-  collaborator: string;
   area: string;
   year: string;
   image: string;
@@ -13,15 +11,18 @@ export type Project = {
   alt: string;
   summary: string;
   description: string;
-  approach: string;
-  scope: string[];
-  materials: string[];
-  details: string[];
   status: string;
   /** Whether the project is still in progress (true = ongoing, false/undefined = completed) */
   isOngoing?: boolean;
-  order: number;
   published: boolean;
+  // ── Legacy / computed fields (kept for display compatibility) ──
+  index?: string;
+  collaborator?: string;
+  order?: number;
+  approach?: string;
+  scope?: string[];
+  materials?: string[];
+  details?: string[];
   // ── Amharic translations (optional) ──────────────────────────
   title_am?: string;
   location_am?: string;

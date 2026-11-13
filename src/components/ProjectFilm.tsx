@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { PROJECT_FILM } from "@/lib/data";
+import { useUi } from "@/lib/language";
 import { FadeIn } from "./FadeIn";
 
 export function ProjectFilm() {
@@ -10,6 +11,8 @@ export function ProjectFilm() {
   const sectionRef = useRef<HTMLElement | null>(null);
   const [playing, setPlaying] = useState(false);
   const [started, setStarted] = useState(false);
+  const ui = useUi();
+  const film = ui.film;
 
   useEffect(() => {
     const section = sectionRef.current;
@@ -66,16 +69,17 @@ export function ProjectFilm() {
             <div className="flex items-center gap-3 mb-5">
               <span className="w-10 h-px bg-bone-50/40" />
               <span className="text-[11px] tracking-widest-2 uppercase text-bone-50/60">
-                Project film — {PROJECT_FILM.duration}
+                {film.eyebrow} — {film.duration}
               </span>
             </div>
             <h2 className="font-serif-display text-3xl md:text-5xl leading-[1.02] tracking-tight max-w-2xl font-light">
-              See the build{" "}
-              <span className="italic">on site</span>, not just on paper.
+              {film.headlineBefore}{" "}
+              <span className="italic">{film.headlineItalic}</span>
+              {film.headlineAfter}
             </h2>
           </div>
           <p className="text-bone-100/70 text-sm md:text-base max-w-sm font-light">
-            {PROJECT_FILM.description}
+            {film.description}
           </p>
         </FadeIn>
 
@@ -89,11 +93,11 @@ export function ProjectFilm() {
                 playing ? "bg-terracotta-400 animate-pulse" : "bg-bone-50/40"
               }`}
             />
-            {playing ? "Playing" : "Short film"}
+            {playing ? film.playing : film.shortFilm}
           </div>
 
           <div className="absolute top-4 right-4 z-20 text-[11px] tracking-widest-2 uppercase text-bone-50/70">
-            {PROJECT_FILM.location}
+            {film.location}
           </div>
 
           <div className="relative w-full aspect-[16/10] bg-ink-900">
@@ -113,7 +117,7 @@ export function ProjectFilm() {
             {!started && (
               <Image
                 src={PROJECT_FILM.poster}
-                alt={PROJECT_FILM.title}
+                alt={film.title}
                 fill
                 sizes="(max-width: 1280px) 100vw, 1200px"
                 className="object-cover"
@@ -136,7 +140,7 @@ export function ProjectFilm() {
               className={`absolute inset-0 z-10 flex items-center justify-center transition-opacity duration-300 ${
                 playing ? "opacity-0 hover:opacity-100" : "opacity-100"
               }`}
-              aria-label={playing ? "Pause project film" : "Play project film"}
+              aria-label={playing ? film.pause : film.play}
             >
               <span className="inline-flex h-16 w-16 md:h-20 md:w-20 items-center justify-center rounded-full bg-bone-50 text-ink-900 shadow-lg transition-transform hover:scale-105">
                 <i
@@ -149,10 +153,10 @@ export function ProjectFilm() {
 
             <div className="absolute bottom-0 left-0 right-0 z-20 p-5 md:p-7 pointer-events-none">
               <p className="font-serif-display text-xl md:text-3xl font-light tracking-tight">
-                {PROJECT_FILM.title}
+                {film.title}
               </p>
               <p className="mt-1 text-[11px] md:text-xs tracking-widest-2 uppercase text-bone-50/65">
-                {PROJECT_FILM.subtitle}
+                {film.subtitle}
               </p>
             </div>
           </div>
@@ -162,7 +166,7 @@ export function ProjectFilm() {
           delayMs={200}
           className="mt-3 flex items-center justify-between flex-wrap gap-3 text-[10px] md:text-[11px] tracking-wide text-bone-50/45"
         >
-          <span>A short site walkthrough of a finished house in Dire Dawa.</span>
+          <span>{film.caption}</span>
           <span className="uppercase tracking-widest-2">© Blac Nova · No. BN-04812</span>
         </FadeIn>
       </div>

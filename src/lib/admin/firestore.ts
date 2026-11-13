@@ -114,7 +114,11 @@ export async function getProjectClient(slug: string): Promise<Project | null> {
 }
 
 export async function saveProjectClient(project: Project) {
-  await setDoc(doc(getClientDb(), "projects", project.slug), project, {
+  // Firestore rejects undefined values — strip them before writing
+  const data = Object.fromEntries(
+    Object.entries(project).filter(([, v]) => v !== undefined && v !== ""),
+  );
+  await setDoc(doc(getClientDb(), "projects", project.slug), data, {
     merge: true,
   });
 }

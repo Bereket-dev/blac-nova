@@ -1,5 +1,8 @@
+"use client";
+
 import Link from "next/link";
 import type { Project } from "@/lib/data";
+import { useLanguage, t } from "@/lib/language";
 import { FadeImage } from "./FadeImage";
 
 type ProjectCardProps = {
@@ -8,6 +11,8 @@ type ProjectCardProps = {
 };
 
 export function ProjectCard({ project, eager = false }: ProjectCardProps) {
+  const { lang } = useLanguage();
+
   return (
     <article className="group relative">
       <Link
@@ -36,9 +41,11 @@ export function ProjectCard({ project, eager = false }: ProjectCardProps) {
       <div className="mt-5 text-ink-900">
         <Link href={`/projects/${project.slug}`} className="block group/title">
           <div className="font-serif-display text-2xl md:text-[28px] leading-tight group-hover/title:text-terracotta-500 transition-colors">
-            {project.title}
+            {t(project.title, project.title_am, lang)}
           </div>
-          <div className="text-[12px] mt-1 text-ink-900/55 tracking-wide">{project.location}</div>
+          <div className="text-[12px] mt-1 text-ink-900/55 tracking-wide">
+            {t(project.location, project.location_am, lang)}
+          </div>
         </Link>
         {project.collaborator ? (
           <div className="mt-3 text-[11px] tracking-widest-2 uppercase text-ink-900/50 mb-1.5">

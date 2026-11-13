@@ -1,7 +1,10 @@
-import { marqueeItems } from "@/lib/data";
+"use client";
+
+import { useUi } from "@/lib/language";
 
 export function Marquee() {
-  const items = [...marqueeItems, ...marqueeItems];
+  const ui = useUi();
+  const items = [...ui.marquee, ...ui.marquee];
 
   return (
     <section className="relative bg-bone-50 border-y border-ink-900/8 overflow-hidden z-10">

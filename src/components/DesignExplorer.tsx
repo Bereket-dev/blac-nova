@@ -13,6 +13,7 @@ import {
   type DesignOption,
 } from "@/lib/services";
 import { submitInquiry } from "@/lib/inquiries";
+import { useUi } from "@/lib/language";
 import { FadeImage } from "./FadeImage";
 import { FadeIn } from "./FadeIn";
 
@@ -25,6 +26,7 @@ export function DesignExplorer({ categories, designs: allDesigns }: DesignExplor
   const searchParams = useSearchParams();
   const initial = parseInquirySelection(searchParams, allDesigns);
   const initialDesign = findDesign(allDesigns, initial.design);
+  const designsCopy = useUi().designs;
 
   const [categoryId, setCategoryId] = useState(
     () => initialDesign?.categoryId ?? categories[0]?.id ?? "residences",
@@ -90,15 +92,14 @@ export function DesignExplorer({ categories, designs: allDesigns }: DesignExplor
             <div className="flex items-center gap-3 mb-5">
               <span className="w-10 h-px bg-ink-900/40" />
               <span className="text-[11px] tracking-widest-2 uppercase text-ink-900/55">
-                Designs by category
+                {designsCopy.eyebrow}
               </span>
             </div>
             <h2 className="font-serif-display text-3xl md:text-5xl font-light text-ink-900 text-balance">
-              Browse finished work by type.
+              {designsCopy.headline}
             </h2>
             <p className="mt-5 text-ink-900/60 leading-relaxed max-w-2xl">
-              Open a design for details, select one if you like, then leave your name and phone —
-              we follow up with clear next steps.
+              {designsCopy.body}
             </p>
           </FadeIn>
 
