@@ -75,7 +75,8 @@ export async function submitInquiry(
   let db: ReturnType<typeof getAdminDb>;
   try {
     db = getAdminDb();
-  } catch {
+  } catch (err) {
+    console.error("[submitInquiry] Firebase Admin init failed:", err);
     return { ok: false, error: "Service temporarily unavailable. Please try again." };
   }
   const ref = db.collection("inquiries").doc(); // auto-id
