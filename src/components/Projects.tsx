@@ -91,9 +91,11 @@ export function Projects({ projects }: ProjectsProps) {
                       </span>
                     )}
                   </div>
-                  <div className="absolute top-4 right-4 font-serif-display italic text-bone-50 text-2xl mix-blend-difference">
-                    /{project.index}
-                  </div>
+                  {project.index ? (
+                    <div className="absolute top-4 right-4 font-serif-display italic text-bone-50 text-2xl mix-blend-difference">
+                      /{project.index}
+                    </div>
+                  ) : null}
                   <span className="absolute bottom-4 right-4 w-10 h-10 rounded-full bg-bone-50 text-ink-900 flex items-center justify-center group-hover:bg-terracotta-500 group-hover:text-bone-50 transition-colors shadow-sm">
                     <i className="ri-arrow-right-up-line text-base" />
                   </span>
@@ -104,16 +106,20 @@ export function Projects({ projects }: ProjectsProps) {
                       {t(project.title, project.title_am, lang)}
                     </div>
                     <div className="text-[12px] mt-1 text-ink-900/55 tracking-wide">
-                      {project.location}
+                      {t(project.location, project.location_am, lang)}
                     </div>
                   </Link>
-                  <div className="mt-3 text-[11px] tracking-widest-2 uppercase text-ink-900/50 mb-1.5">
-                    {project.collaborator}
-                  </div>
-                  <div className="flex items-center gap-3 text-[13px] text-ink-900/70">
-                    <span>{project.area}</span>
-                    <span className="w-1 h-1 rounded-full bg-ink-900/30" />
-                    <span>{project.year}</span>
+                  {project.collaborator ? (
+                    <div className="mt-3 text-[11px] tracking-widest-2 uppercase text-ink-900/50 mb-1.5">
+                      {project.collaborator}
+                    </div>
+                  ) : null}
+                  <div className="flex items-center gap-3 text-[13px] text-ink-900/70 mt-3">
+                    {project.area ? <span>{project.area}</span> : null}
+                    {project.area && project.year ? (
+                      <span className="w-1 h-1 rounded-full bg-ink-900/30" />
+                    ) : null}
+                    {project.year ? <span>{project.year}</span> : null}
                   </div>
                 </div>
                 {i === 0 && (

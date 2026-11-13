@@ -24,6 +24,7 @@ export type Project = {
   published: boolean;
   // ── Amharic translations (optional) ──────────────────────────
   title_am?: string;
+  location_am?: string;
   summary_am?: string;
   description_am?: string;
   approach_am?: string;

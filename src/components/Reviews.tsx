@@ -59,13 +59,7 @@ export async function Reviews() {
           </div>
         )}
 
-        <FadeIn delayMs={100} className="mt-14 md:mt-16 grid grid-cols-3 gap-6 max-w-lg">
-          <div>
-            <div className="font-serif-display text-2xl text-ink-900">120+</div>
-            <div className="text-[11px] tracking-widest-2 uppercase text-ink-900/50 mt-1">
-              Homes delivered
-            </div>
-          </div>
+        <FadeIn delayMs={100} className="mt-14 md:mt-16 grid grid-cols-2 gap-6 max-w-xs">
           <div>
             <div className="font-serif-display text-2xl text-ink-900">98%</div>
             <div className="text-[11px] tracking-widest-2 uppercase text-ink-900/50 mt-1">

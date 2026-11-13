@@ -27,19 +27,29 @@ export function Services() {
             as="article"
             className="group relative bg-ink-900 text-bone-50 rounded-2xl p-7 md:p-8 min-h-[420px] flex flex-col justify-between overflow-hidden transition-transform duration-500 hover:-translate-y-1"
           >
-            <div className="flex items-start justify-between">
-              <div className="w-11 h-11 rounded-full bg-ink-700 flex items-center justify-center text-bone-50 font-serif-display text-lg">
+            <div className="absolute inset-0">
+              <FadeImage
+                src={img.architectureCard}
+                alt="Modern structure in Addis Ababa"
+                className="w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-105"
+                sizes="(max-width: 768px) 100vw, 33vw"
+                eager
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-ink-900 via-ink-900/75 to-ink-900/45" />
+            </div>
+            <div className="relative z-10 flex items-start justify-between">
+              <div className="w-11 h-11 rounded-full bg-ink-700/80 backdrop-blur-sm flex items-center justify-center text-bone-50 font-serif-display text-lg">
                 I
               </div>
               <span className="text-[10px] tracking-widest-2 uppercase text-bone-50/40">
                 01 / 03
               </span>
             </div>
-            <div>
+            <div className="relative z-10">
               <h3 className="font-serif-display text-3xl md:text-4xl leading-tight font-light mb-5">
                 Architecture & Design
               </h3>
-              <p className="text-[13px] text-bone-100/60 leading-relaxed max-w-xs">
+              <p className="text-[13px] text-bone-100/70 leading-relaxed max-w-xs">
                 House and G+ design from concept to working drawings — plans that fit the
                 plot, the climate, and how your family lives.
               </p>

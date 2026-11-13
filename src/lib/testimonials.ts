@@ -2,7 +2,7 @@ import "server-only";
 import { cacheLife, cacheTag } from "next/cache";
 import type { Testimonial } from "./types";
 import { getAdminDb, isAdminConfigured } from "./firebase/admin";
-import { reviews } from "./data";
+// import { reviews } from "./data";
 
 function mapTestimonial(id: string, data: Record<string, unknown>): Testimonial {
   return {

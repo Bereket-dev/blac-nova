@@ -8,12 +8,11 @@ export const marqueeItems = [
   "Residential design & build",
   "Solid structure, clean handover",
   "Houses, G+ buildings & renovations",
-  "120+ homes completed",
   "We build your dream home",
 ];
 
 export const PROJECT_FILM = {
-  title: "G+2 House, Dire Dawa",
+  title: "Villa House, Dire Dawa",
   subtitle: "Dire Dawa · Site walkthrough",
   location: "Dire Dawa · Ethiopia",
   duration: "Short cut",
@@ -45,26 +44,26 @@ export const OWNER = {
   ],
 };
 
-export const reviews = [
-  {
-    quote:
-      "Blac Nova builds the kind of house you can actually live in for years. Ours feels solid, finished properly, and right for the plot.",
-    name: "Abebe Tadesse",
-    role: "Private Client, Dire Dawa",
-    avatar: img.avatar2,
-  },
-  {
-    quote:
-      "Schedule, quality, and cost stayed clear from foundation to final fixing. We always knew who owned the next decision — and the house matches the drawings we approved.",
-    name: "Sara Mekonnen",
-    role: "Private Client, Addis Ababa",
-    avatar: img.avatar1,
-  },
-  {
-    quote:
-      "They treated the compound as part of the house. The terrace, planting, and pool work together with the building — clean, practical, and completely ours.",
-    name: "Daniel Haile",
-    role: "Private Client, Adama",
-    avatar: img.avatar3,
-  },
-];
+// export const reviews = [
+//   {
+//     quote:
+//       "Blac Nova builds the kind of house you can actually live in for years. Ours feels solid, finished properly, and right for the plot.",
+//     name: "Abebe Tadesse",
+//     role: "Private Client, Dire Dawa",
+//     avatar: img.avatar2,
+//   },
+//   {
+//     quote:
+//       "Schedule, quality, and cost stayed clear from foundation to final fixing. We always knew who owned the next decision — and the house matches the drawings we approved.",
+//     name: "Sara Mekonnen",
+//     role: "Private Client, Addis Ababa",
+//     avatar: img.avatar1,
+//   },
+//   {
+//     quote:
+//       "They treated the compound as part of the house. The terrace, planting, and pool work together with the building — clean, practical, and completely ours.",
+//     name: "Daniel Haile",
+//     role: "Private Client, Adama",
+//     avatar: img.avatar3,
+//   },
+// ];

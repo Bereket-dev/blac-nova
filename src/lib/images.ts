@@ -30,11 +30,12 @@ export const img = {
   landPavilion: u("photo-1600566752355-35792bedcfea", 1000),
 
   // Home services cards
+  architectureCard: u("photo-1566581131858-c756364c7658", 1000), // Addis Ababa structure
   stoneDetail: u("photo-1581094794329-c8112a89af12", 1000),
   landscapeCard: u("photo-1564013799919-ab600027ffc6", 1000),
 
-  // Client review avatars
-  avatar1: u("photo-1573496359142-b8d87734a5a2", 160),
-  avatar2: u("photo-1472099645785-5658abf4ff4e", 160),
-  avatar3: u("photo-1580489944761-15a19d654956", 160),
+  // Hero team avatars — East African / Ethiopian professionals
+  avatar1: u("photo-1531123414780-f74242c2b052", 160), // smiling woman, professional
+  avatar2: u("photo-1614023342667-6f060e9d1e04", 160), // man in black shirt, glasses
+  avatar3: u("photo-1522529599102-193c0d76b5b6", 160), // smiling young man
 };
