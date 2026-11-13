@@ -1,23 +1,29 @@
+"use client";
+
 import Link from "next/link";
 import { img } from "@/lib/images";
+import { useUi } from "@/lib/language";
 import { FadeIn } from "./FadeIn";
 import { FadeImage } from "./FadeImage";
 
 export function Services() {
+  const ui = useUi();
+  const s = ui.servicesHome;
+
   return (
     <section id="services" className="relative bg-bone-100 py-24 md:py-32 z-10">
       <div className="max-w-7xl mx-auto px-6 md:px-10 lg:px-14">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 mb-16 md:mb-20">
           <FadeIn className="lg:col-span-3">
             <p className="text-[11px] tracking-widest-2 uppercase text-ink-900/60 leading-relaxed">
-              What we do <br />
-              No. 02 — Services
+              {s.eyebrow} <br />
+              {s.eyebrowSub}
             </p>
           </FadeIn>
           <FadeIn delayMs={80} className="lg:col-span-9">
             <h2 className="font-serif-display text-4xl md:text-6xl lg:text-7xl leading-[1.02] tracking-[-0.015em] text-ink-900 font-light text-balance">
-              Design, build &amp; outdoor works — <span className="italic">one team</span> from
-              drawing to handover.
+              {s.headlineBefore} <span className="italic">{s.headlineItalic}</span>{" "}
+              {s.headlineAfter}
             </h2>
           </FadeIn>
         </div>
@@ -47,17 +53,16 @@ export function Services() {
             </div>
             <div className="relative z-10">
               <h3 className="font-serif-display text-3xl md:text-4xl leading-tight font-light mb-5">
-                Architecture & Design
+                {s.archTitle}
               </h3>
               <p className="text-[13px] text-bone-100/70 leading-relaxed max-w-xs">
-                House and G+ design from concept to working drawings — plans that fit the
-                plot, the climate, and how your family lives.
+                {s.archBody}
               </p>
               <Link
                 href="/services"
                 className="mt-7 flex items-center gap-2 text-[12px] tracking-widest-2 uppercase text-bone-50/70 group-hover:text-terracotta-400 transition-colors"
               >
-                See how we work
+                {s.archCta}
                 <i className="ri-arrow-right-up-line text-base transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
               </Link>
             </div>
@@ -68,8 +73,8 @@ export function Services() {
             delayMs={100}
             className="group relative rounded-2xl overflow-hidden min-h-[420px] transition-transform duration-500 hover:-translate-y-1"
           >
-            <Link href="/services" className="absolute inset-0 z-10" aria-label="Construction management">
-              <span className="sr-only">View construction management</span>
+            <Link href="/services" className="absolute inset-0 z-10" aria-label={s.buildAria}>
+              <span className="sr-only">{s.buildAria}</span>
             </Link>
             <FadeImage
               src={img.stoneDetail}
@@ -81,11 +86,11 @@ export function Services() {
             <div className="absolute inset-0 bg-gradient-to-t from-ink-900/70 via-ink-900/10 to-transparent" />
             <div className="absolute top-5 left-5 flex items-center gap-2 px-3 py-1.5 rounded-full bg-ink-900/60 backdrop-blur-sm text-bone-50 text-[11px] tracking-widest-2 uppercase">
               <i className="ri-compass-3-line text-sm" />
-              Construction Management
+              {s.buildBadge}
             </div>
             <div className="absolute bottom-0 left-0 right-0 p-7 md:p-8 text-bone-50">
               <h3 className="font-serif-display text-2xl md:text-3xl leading-tight font-light max-w-xs">
-                Site supervision from foundation to final fixing — on time and to drawing.
+                {s.buildHeadline}
               </h3>
             </div>
           </FadeIn>
@@ -100,17 +105,16 @@ export function Services() {
                 03 / 03
               </span>
               <h3 className="font-serif-display text-3xl md:text-4xl leading-tight font-light mt-3 text-ink-900">
-                Landscape & Pools
+                {s.landTitle}
               </h3>
               <p className="text-[13px] text-ink-900/55 leading-relaxed max-w-xs mt-4">
-                Compound paths, terraces, planting, and pools planned with the main house —
-                so the outdoor space works from day one.
+                {s.landBody}
               </p>
               <Link
                 href="/services"
                 className="mt-6 inline-flex items-center gap-2 text-[12px] tracking-widest-2 uppercase text-ink-900/60 group-hover:text-terracotta-500 transition-colors"
               >
-                View services
+                {s.landCta}
                 <i className="ri-arrow-right-line" />
               </Link>
             </div>
@@ -131,7 +135,7 @@ export function Services() {
             href="/services"
             className="inline-flex items-center gap-2 text-[12px] tracking-widest-2 uppercase text-ink-900 hover:text-terracotta-500 transition-colors"
           >
-            View all services &amp; start an inquiry
+            {s.allCta}
             <i className="ri-arrow-right-line" />
           </Link>
         </FadeIn>

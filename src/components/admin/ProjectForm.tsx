@@ -233,10 +233,10 @@ export function ProjectForm({ initial, mode }: ProjectFormProps) {
       const summary = form.summary.trim() || description;
 
       let index = form.index;
-      let order = form.order;
+      let order: number = form.order ?? 0;
       if (mode === "create") {
         const existing = await listProjectsClient();
-        order = existing.reduce((max, p) => Math.max(max, p.order), 0) + 1;
+        order = existing.reduce((max, p) => Math.max(max, p.order ?? 0), 0) + 1;
         index = String(order).padStart(2, "0");
       } else if (!index) {
         index = String(order || 1).padStart(2, "0");

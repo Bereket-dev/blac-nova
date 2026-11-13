@@ -12,6 +12,7 @@ import {
   type DesignOption,
 } from "@/lib/services";
 import { submitInquiry } from "@/lib/inquiries";
+import { useUi } from "@/lib/language";
 import { FadeImage } from "./FadeImage";
 
 type InquiryFormProps = {
@@ -22,6 +23,7 @@ type InquiryFormProps = {
 export function InquiryForm({ categories, designs }: InquiryFormProps) {
   const rawSearchParams = useSearchParams();
   const initialSelection = parseInquirySelection(rawSearchParams, designs);
+  const copy = useUi().inquiryForm;
 
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
@@ -69,16 +71,13 @@ export function InquiryForm({ categories, designs }: InquiryFormProps) {
           <div className="flex items-center gap-3 mb-5">
             <span className="w-10 h-px bg-ink-900/40" />
             <span className="text-[11px] tracking-widest-2 uppercase text-ink-900/55">
-              Project inquiry
+              {copy.eyebrow}
             </span>
           </div>
           <h2 className="font-serif-display text-4xl md:text-5xl lg:text-6xl font-light text-ink-900 text-balance leading-[1.05]">
-            We&apos;ve got your inquiry.
+            {copy.successHeadline}
           </h2>
-          <p className="mt-5 text-ink-900/60 leading-relaxed max-w-md">
-            Our team will reach out within 48 hours. You can also message us directly on
-            Telegram for a faster response.
-          </p>
+          <p className="mt-5 text-ink-900/60 leading-relaxed max-w-md">{copy.successBody}</p>
           <a
             href={INQUIRY_TELEGRAM}
             target="_blank"
@@ -86,7 +85,7 @@ export function InquiryForm({ categories, designs }: InquiryFormProps) {
             className="mt-8 inline-flex items-center gap-2 rounded-full bg-[#2AABEE] text-white px-6 py-3 text-[13px] tracking-wide uppercase hover:bg-[#229ED9] transition-colors"
           >
             <i className="ri-telegram-fill text-base" />
-            Message on Telegram
+            {copy.telegram}
           </a>
         </div>
         <div className="lg:col-span-7 flex items-center">
@@ -95,14 +94,14 @@ export function InquiryForm({ categories, designs }: InquiryFormProps) {
               <span className="w-10 h-10 rounded-full bg-terracotta-500 text-bone-50 flex items-center justify-center">
                 <i className="ri-check-line text-xl" />
               </span>
-              <p className="text-sm font-medium text-ink-900">Inquiry received</p>
+              <p className="text-sm font-medium text-ink-900">{copy.received}</p>
             </div>
             <p className="text-sm text-ink-900/60">
               <strong className="text-ink-900">{name}</strong> · {phone}
               {design ? (
                 <>
                   <br />
-                  Design: {design.title}
+                  {copy.designLabel}: {design.title}
                 </>
               ) : null}
             </p>
@@ -118,16 +117,13 @@ export function InquiryForm({ categories, designs }: InquiryFormProps) {
         <div className="flex items-center gap-3 mb-5">
           <span className="w-10 h-px bg-ink-900/40" />
           <span className="text-[11px] tracking-widest-2 uppercase text-ink-900/55">
-            Project inquiry
+            {copy.eyebrow}
           </span>
         </div>
         <h2 className="font-serif-display text-4xl md:text-5xl lg:text-6xl font-light text-ink-900 text-balance leading-[1.05]">
-          Name, phone, and an optional design.
+          {copy.headline}
         </h2>
-        <p className="mt-5 text-ink-900/60 leading-relaxed max-w-md">
-          That&apos;s all we need to start. We reply within 48 hours — with clearer next steps
-          if you&apos;ve already picked a design.
-        </p>
+        <p className="mt-5 text-ink-900/60 leading-relaxed max-w-md">{copy.body}</p>
 
         {design ? (
           <div className="mt-10 flex gap-4 items-stretch">
@@ -141,7 +137,7 @@ export function InquiryForm({ categories, designs }: InquiryFormProps) {
             </div>
             <div className="py-1">
               <div className="text-[11px] tracking-widest-2 uppercase text-ink-900/45 mb-2">
-                Selected design
+                {copy.selectedDesign}
               </div>
               <div className="font-serif-display text-2xl font-light text-ink-900">
                 {design.title}
@@ -151,17 +147,17 @@ export function InquiryForm({ categories, designs }: InquiryFormProps) {
                 href={exploreHref}
                 className="mt-3 inline-block text-[11px] tracking-widest-2 uppercase text-ink-900/55 hover:text-terracotta-500 transition-colors"
               >
-                Change design
+                {copy.changeDesign}
               </Link>
             </div>
           </div>
         ) : (
           <p className="mt-10 text-sm text-ink-900/55 leading-relaxed">
-            No design selected.{" "}
+            {copy.noDesign}{" "}
             <Link href="/services#designs" className="underline hover:text-terracotta-500">
-              Browse designs on services
+              {copy.browseDesigns}
             </Link>{" "}
-            first, or continue below.
+            {copy.noDesignRest}
           </p>
         )}
       </div>
@@ -174,7 +170,7 @@ export function InquiryForm({ categories, designs }: InquiryFormProps) {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <label className="block">
               <span className="text-[11px] tracking-widest-2 uppercase text-ink-900/45">
-                Name
+                {copy.name}
               </span>
               <input
                 required
@@ -187,7 +183,7 @@ export function InquiryForm({ categories, designs }: InquiryFormProps) {
             </label>
             <label className="block">
               <span className="text-[11px] tracking-widest-2 uppercase text-ink-900/45">
-                Phone
+                {copy.phone}
               </span>
               <input
                 required
@@ -204,13 +200,13 @@ export function InquiryForm({ categories, designs }: InquiryFormProps) {
 
           <label className="block">
             <span className="text-[11px] tracking-widest-2 uppercase text-ink-900/45">
-              Message <span className="text-ink-900/30">(optional)</span>
+              {copy.message} <span className="text-ink-900/30">{copy.optional}</span>
             </span>
             <textarea
               rows={3}
               value={message}
               onChange={(e) => setMessage(e.target.value)}
-              placeholder="Tell us about your plot, budget, or what you have in mind…"
+              placeholder={copy.messagePlaceholder}
               className="mt-2 w-full border border-ink-900/10 bg-bone-50 px-4 py-3 text-sm text-ink-900 focus:outline-none focus:border-ink-900/40 resize-none"
             />
           </label>
@@ -228,11 +224,11 @@ export function InquiryForm({ categories, designs }: InquiryFormProps) {
               {submitting ? (
                 <>
                   <span className="w-3.5 h-3.5 border-2 border-bone-50/40 border-t-bone-50 rounded-full animate-spin" />
-                  Sending…
+                  {copy.sending}
                 </>
               ) : (
                 <>
-                  Send inquiry
+                  {copy.send}
                   <i className="ri-arrow-right-line text-base" />
                 </>
               )}
@@ -244,14 +240,12 @@ export function InquiryForm({ categories, designs }: InquiryFormProps) {
               className="inline-flex items-center justify-center gap-2 rounded-full border border-ink-900/15 px-6 py-3 text-[13px] tracking-wide uppercase text-ink-900 hover:border-ink-900/40 transition-colors"
             >
               <i className="ri-telegram-fill text-base" />
-              Message on Telegram
+              {copy.telegram}
             </a>
           </div>
 
           <p className="text-[11px] tracking-wide text-ink-900/45 leading-relaxed">
-            Your inquiry goes directly to our team
-            {design ? " with your selected design included" : ""}. We never share your
-            details outside the company.
+            {design ? copy.privacyWithDesign : copy.privacy}
           </p>
         </form>
       </div>
