@@ -2,11 +2,14 @@
 
 import { useEffect, useRef, useState } from "react";
 import { CTA_IMAGE } from "@/lib/data";
+import { useUi } from "@/lib/language";
 import { FadeIn } from "./FadeIn";
 
 export function Inquiry() {
   const sectionRef = useRef<HTMLElement>(null);
   const [visible, setVisible] = useState(false);
+  const ui = useUi();
+  const copy = ui.inquiry;
 
   useEffect(() => {
     const el = sectionRef.current;
@@ -48,28 +51,26 @@ export function Inquiry() {
           <div className="flex items-center gap-3 mb-7 text-bone-50/80">
             <span className="w-10 h-px bg-bone-50/50" />
             <span className="text-[11px] tracking-widest-2 uppercase">
-              Project inquiry — Reply within 48h
+              {copy.eyebrow}
             </span>
           </div>
           <h2 className="font-serif-display text-bone-50 text-5xl md:text-7xl lg:text-[88px] leading-[0.98] tracking-[-0.02em] font-light text-balance">
-            Tell us about <span className="italic">your</span> <br /> project.
+            {copy.headlineBefore} <span className="italic">{copy.headlineItalic}</span>{" "}
+            <br /> {copy.headlineAfter}
           </h2>
         </FadeIn>
 
         <FadeIn delayMs={100} className="lg:col-span-5 self-end ml-auto w-full max-w-md">
           <div className="bg-bone-50/95 backdrop-blur-md rounded-2xl p-6 md:p-7 border border-bone-50/40">
             <div className="text-[11px] tracking-widest-2 uppercase text-ink-900/55 mb-5">
-              Blac Nova · Project Inquiry
+              {copy.cardEyebrow}
             </div>
-            <p className="text-sm text-ink-900/70 leading-relaxed mb-6">
-              Share your plot, budget, and what you want to build. We reply within 48 hours
-              with clear next steps.
-            </p>
+            <p className="text-sm text-ink-900/70 leading-relaxed mb-6">{copy.cardBody}</p>
             <a
               href="/about#inquire"
               className="group w-full inline-flex items-center justify-between gap-3 pl-5 pr-2 py-2 rounded-full bg-ink-900 text-bone-50 hover:bg-terracotta-500 transition-colors text-sm tracking-wide whitespace-nowrap"
             >
-              Start your inquiry
+              {copy.start}
               <span className="w-9 h-9 flex items-center justify-center rounded-full bg-bone-50 text-ink-900 group-hover:bg-ink-900 group-hover:text-bone-50 transition-colors">
                 <i className="ri-arrow-right-line text-base" />
               </span>
@@ -78,24 +79,23 @@ export function Inquiry() {
               href="/services#designs"
               className="mt-3 block text-center text-[11px] tracking-widest-2 uppercase text-ink-900/50 hover:text-terracotta-500 transition-colors"
             >
-              Or browse designs first
+              {copy.browseFirst}
             </a>
             <p className="mt-4 text-[10px] tracking-wide text-ink-900/45 leading-relaxed">
-              Your inquiry stays with our team. We never share your details outside the
-              company.
+              {copy.privacy}
             </p>
           </div>
         </FadeIn>
 
         <div className="lg:col-span-12 flex items-end justify-between text-bone-50/85 flex-wrap gap-4">
           <FadeIn as="p" className="text-sm md:text-base max-w-md font-light leading-relaxed">
-            Prefer to meet in person? Visit our office by appointment.
+            {copy.meet}
           </FadeIn>
           <FadeIn
             delayMs={80}
             className="flex items-center gap-5 text-[12px] tracking-widest-2 uppercase"
           >
-            <span>Dire Dawa · Addis Ababa · Adama</span>
+            <span>{copy.cities}</span>
             <span className="w-1 h-1 rounded-full bg-bone-50/50" />
             <span>+251 911 369 200</span>
           </FadeIn>

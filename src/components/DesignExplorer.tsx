@@ -4,67 +4,84 @@ import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useMemo, useState, type FormEvent } from "react";
 import {
-  INQUIRY_EMAIL,
   INQUIRY_TELEGRAM,
-  designCategories,
   designsByCategory,
-  getDesign,
+  findDesign,
   parseInquirySelection,
   selectionToSearchParams,
+  type DesignCategory,
+  type DesignOption,
 } from "@/lib/services";
+import { submitInquiry } from "@/lib/inquiries";
+import { useUi } from "@/lib/language";
 import { FadeImage } from "./FadeImage";
 import { FadeIn } from "./FadeIn";
 
-export function DesignExplorer() {
+type DesignExplorerProps = {
+  categories: DesignCategory[];
+  designs: DesignOption[];
+};
+
+export function DesignExplorer({ categories, designs: allDesigns }: DesignExplorerProps) {
   const searchParams = useSearchParams();
-  const initial = parseInquirySelection(searchParams);
-  const initialDesign = getDesign(initial.design);
+  const initial = parseInquirySelection(searchParams, allDesigns);
+  const initialDesign = findDesign(allDesigns, initial.design);
+  const designsCopy = useUi().designs;
 
   const [categoryId, setCategoryId] = useState(
-    () => initialDesign?.categoryId ?? designCategories[0]?.id ?? "residences",
+    () => initialDesign?.categoryId ?? categories[0]?.id ?? "residences",
   );
   const [activeId, setActiveId] = useState(
-    () => initialDesign?.id ?? designsByCategory(categoryId)[0]?.id ?? "",
+    () =>
+      initialDesign?.id ??
+      designsByCategory(allDesigns, categoryId)[0]?.id ??
+      "",
   );
   const [selectedId, setSelectedId] = useState(initial.design);
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
+  const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [submitError, setSubmitError] = useState("");
 
-  const designs = useMemo(() => designsByCategory(categoryId), [categoryId]);
+  const designs = useMemo(
+    () => designsByCategory(allDesigns, categoryId),
+    [allDesigns, categoryId],
+  );
   const active = designs.find((d) => d.id === activeId) ?? designs[0];
-  const selected = selectedId ? getDesign(selectedId) : undefined;
+  const selected = selectedId ? findDesign(allDesigns, selectedId) : undefined;
 
   const inquiryHref = `/about${selectionToSearchParams({ design: selectedId })}#inquire`;
 
   const switchCategory = (id: string) => {
     setCategoryId(id);
-    const next = designsByCategory(id);
+    const next = designsByCategory(allDesigns, id);
     setActiveId(next[0]?.id ?? "");
   };
 
-  const onSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const design = selectedId ? getDesign(selectedId) : undefined;
-    const lines = [
-      `Name: ${name}`,
-      `Phone: ${phone}`,
-      "",
-      design
-        ? `Selected design: ${design.title} (${design.location})`
-        : "Selected design: (none — exploring generally)",
-      design
-        ? `Category: ${designCategories.find((c) => c.id === design.categoryId)?.label ?? ""}`
-        : "",
-      design ? `Project: /projects/${design.slug}` : "",
-    ].filter(Boolean);
+    setSubmitting(true);
+    setSubmitError("");
 
-    const subject = encodeURIComponent(
-      design ? `Inquiry — ${design.title} — ${name}` : `Project inquiry — ${name}`,
-    );
-    const body = encodeURIComponent(lines.join("\n"));
-    window.location.href = `mailto:${INQUIRY_EMAIL}?subject=${subject}&body=${body}`;
-    setSubmitted(true);
+    const design = selectedId ? findDesign(allDesigns, selectedId) : undefined;
+    const result = await submitInquiry({
+      name,
+      phone,
+      designTitle: design?.title,
+      designSlug: design?.slug,
+      designCategory: design
+        ? categories.find((c) => c.id === design.categoryId)?.label
+        : undefined,
+    });
+
+    setSubmitting(false);
+
+    if (result.ok) {
+      setSubmitted(true);
+    } else {
+      setSubmitError(result.error);
+    }
   };
 
   return (
@@ -75,15 +92,14 @@ export function DesignExplorer() {
             <div className="flex items-center gap-3 mb-5">
               <span className="w-10 h-px bg-ink-900/40" />
               <span className="text-[11px] tracking-widest-2 uppercase text-ink-900/55">
-                Designs by category
+                {designsCopy.eyebrow}
               </span>
             </div>
             <h2 className="font-serif-display text-3xl md:text-5xl font-light text-ink-900 text-balance">
-              Browse finished work by type.
+              {designsCopy.headline}
             </h2>
             <p className="mt-5 text-ink-900/60 leading-relaxed max-w-2xl">
-              Open a design for details, select one if you like, then leave your name and phone —
-              we follow up with clear next steps.
+              {designsCopy.body}
             </p>
           </FadeIn>
 
@@ -93,7 +109,7 @@ export function DesignExplorer() {
               role="tablist"
               aria-label="Design categories"
             >
-              {designCategories.map((category) => {
+              {categories.map((category) => {
                 const activeTab = category.id === categoryId;
                 return (
                   <button
@@ -114,7 +130,7 @@ export function DesignExplorer() {
               })}
             </div>
             <p className="mb-8 text-sm text-ink-900/55 max-w-xl">
-              {designCategories.find((c) => c.id === categoryId)?.description}
+              {categories.find((c) => c.id === categoryId)?.description}
             </p>
           </FadeIn>
 
@@ -377,10 +393,20 @@ export function DesignExplorer() {
                 <div className="flex flex-col sm:flex-row gap-3 pt-2">
                   <button
                     type="submit"
-                    className="inline-flex items-center justify-center gap-2 rounded-full bg-bone-50 text-ink-900 px-6 py-3 text-[13px] tracking-wide uppercase hover:bg-terracotta-500 hover:text-bone-50 transition-colors"
+                    disabled={submitting}
+                    className="inline-flex items-center justify-center gap-2 rounded-full bg-bone-50 text-ink-900 px-6 py-3 text-[13px] tracking-wide uppercase hover:bg-terracotta-500 hover:text-bone-50 transition-colors disabled:opacity-60"
                   >
-                    Send inquiry
-                    <i className="ri-arrow-right-line text-base" />
+                    {submitting ? (
+                      <>
+                        <span className="w-3.5 h-3.5 border-2 border-ink-900/40 border-t-ink-900 rounded-full animate-spin" />
+                        Sending…
+                      </>
+                    ) : (
+                      <>
+                        Send inquiry
+                        <i className="ri-arrow-right-line text-base" />
+                      </>
+                    )}
                   </button>
                   <a
                     href={INQUIRY_TELEGRAM}
@@ -393,13 +419,16 @@ export function DesignExplorer() {
                   </a>
                 </div>
 
-                {submitted ? (
+                {submitError ? (
+                  <p className="text-sm text-red-400">{submitError}</p>
+                ) : submitted ? (
                   <p className="text-sm text-terracotta-400">
-                    Your email client should open with the inquiry ready to send.
+                    Got it — we&apos;ll be in touch within 48 hours.
+                    {selected ? ` We'll include ${selected.title} as your starting point.` : ""}
                   </p>
                 ) : (
                   <p className="text-[11px] tracking-wide text-bone-50/40 leading-relaxed">
-                    Sends via email to {INQUIRY_EMAIL}
+                    Your inquiry goes directly to our team
                     {selectedId ? " with your selected design attached" : ""}. Or open the{" "}
                     <Link href={inquiryHref} className="underline hover:text-terracotta-400">
                       about & inquiry page

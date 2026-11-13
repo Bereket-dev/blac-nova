@@ -1,9 +1,12 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
 import { Footer } from "@/components/Footer";
+
+export const ensureStatic = "navigation";
 import { Header } from "@/components/Header";
 import { DesignExplorer } from "@/components/DesignExplorer";
 import { ServicesGuide } from "@/components/ServicesGuide";
+import { getDesignCatalog, getDesignCategories } from "@/lib/designs";
 
 export const metadata: Metadata = {
   title: "Services",
@@ -29,13 +32,22 @@ function ExplorerFallback() {
   );
 }
 
+async function DesignExplorerSection() {
+  const [categories, designs] = await Promise.all([
+    getDesignCategories(),
+    getDesignCatalog(),
+  ]);
+
+  return <DesignExplorer categories={categories} designs={designs} />;
+}
+
 export default function ServicesPage() {
   return (
     <main className="bg-bone-50 text-ink-900 overflow-hidden">
       <Header solid />
       <ServicesGuide />
       <Suspense fallback={<ExplorerFallback />}>
-        <DesignExplorer />
+        <DesignExplorerSection />
       </Suspense>
       <Footer />
     </main>

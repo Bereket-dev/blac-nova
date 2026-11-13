@@ -21,10 +21,18 @@ export function FadeIn({
     const el = ref.current;
     if (!el) return;
 
+    const show = () => {
+      if (delayMs > 0) {
+        window.setTimeout(() => el.classList.add("is-visible"), delayMs);
+      } else {
+        el.classList.add("is-visible");
+      }
+    };
+
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
-          window.setTimeout(() => el.classList.add("is-visible"), delayMs);
+          show();
           observer.disconnect();
         }
       },
@@ -32,6 +40,21 @@ export function FadeIn({
     );
 
     observer.observe(el);
+
+    // If the element is already in the viewport when the observer attaches
+    // (e.g. the browser restored scroll position on a normal reload), the
+    // intersection callback may not fire because nothing crossed the threshold.
+    // Check immediately via getBoundingClientRect so above-fold content is
+    // never stuck invisible.
+    const rect = el.getBoundingClientRect();
+    const inView =
+      rect.top < window.innerHeight * 0.92 && // accounts for the -8% rootMargin
+      rect.bottom > 0;
+    if (inView) {
+      show();
+      observer.disconnect();
+    }
+
     return () => observer.disconnect();
   }, [delayMs]);
 

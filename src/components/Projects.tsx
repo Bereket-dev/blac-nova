@@ -2,13 +2,21 @@
 
 import Link from "next/link";
 import { useRef, useState } from "react";
-import { projects } from "@/lib/data";
+import type { Project } from "@/lib/types";
 import { FadeIn } from "./FadeIn";
 import { FadeImage } from "./FadeImage";
+import { useLanguage, useUi, t } from "@/lib/language";
 
-export function Projects() {
+type ProjectsProps = {
+  projects: Project[];
+};
+
+export function Projects({ projects }: ProjectsProps) {
   const scrollerRef = useRef<HTMLDivElement>(null);
   const [active, setActive] = useState(0);
+  const { lang } = useLanguage();
+  const ui = useUi();
+  const copy = ui.projectsHome;
 
   const scrollByCard = (dir: -1 | 1) => {
     const el = scrollerRef.current;
@@ -16,7 +24,7 @@ export function Projects() {
     const card = el.querySelector("article");
     const amount = card ? card.clientWidth + 24 : 320;
     el.scrollBy({ left: dir * amount, behavior: "smooth" });
-    setActive((prev) => Math.min(projects.length - 1, Math.max(0, prev + dir)));
+    setActive((prev) => Math.min(Math.max(projects.length - 1, 0), Math.max(0, prev + dir)));
   };
 
   return (
@@ -27,11 +35,12 @@ export function Projects() {
             <div className="flex items-center gap-3 mb-5">
               <span className="w-10 h-px bg-ink-900/40" />
               <span className="text-[11px] tracking-widest-2 uppercase text-ink-900/55">
-                Featured projects — 2023–2026
+                {copy.eyebrow}
               </span>
             </div>
             <h2 className="font-serif-display text-4xl md:text-6xl lg:text-7xl leading-[1.02] tracking-[-0.015em] text-ink-900 font-light text-balance">
-              Houses, G+ buildings &amp; <span className="italic">compound</span> works.
+              {copy.headlineBefore} <span className="italic">{copy.headlineItalic}</span>{" "}
+              {copy.headlineAfter}
             </h2>
           </FadeIn>
           <FadeIn delayMs={80} className="flex items-center gap-3">
@@ -39,7 +48,7 @@ export function Projects() {
               type="button"
               onClick={() => scrollByCard(-1)}
               className="w-12 h-12 rounded-full border border-ink-900/15 bg-bone-50 hover:bg-ink-900 hover:text-bone-50 transition-colors flex items-center justify-center"
-              aria-label="Previous project"
+              aria-label={copy.prev}
             >
               <i className="ri-arrow-left-line text-lg" />
             </button>
@@ -47,7 +56,7 @@ export function Projects() {
               type="button"
               onClick={() => scrollByCard(1)}
               className="w-12 h-12 rounded-full border border-ink-900/15 bg-bone-50 hover:bg-ink-900 hover:text-bone-50 transition-colors flex items-center justify-center"
-              aria-label="Next project"
+              aria-label={copy.next}
             >
               <i className="ri-arrow-right-line text-lg" />
             </button>
@@ -75,12 +84,21 @@ export function Projects() {
                     sizes="(max-width: 768px) 78vw, 30vw"
                     eager
                   />
-                  <div className="absolute top-4 left-4 flex items-center gap-2 px-3 py-1.5 rounded-full bg-bone-50/90 text-[11px] tracking-widest-2 uppercase text-ink-900">
-                    {project.category}
+                  <div className="absolute top-4 left-4 flex items-center gap-2">
+                    <span className="px-3 py-1.5 rounded-full bg-bone-50/90 text-[11px] tracking-widest-2 uppercase text-ink-900">
+                      {project.category}
+                    </span>
+                    {project.isOngoing && (
+                      <span className="px-3 py-1.5 rounded-full bg-amber-400/90 text-[11px] tracking-widest-2 uppercase text-amber-900 font-medium">
+                        {copy.ongoing}
+                      </span>
+                    )}
                   </div>
-                  <div className="absolute top-4 right-4 font-serif-display italic text-bone-50 text-2xl mix-blend-difference">
-                    /{project.index}
-                  </div>
+                  {project.index ? (
+                    <div className="absolute top-4 right-4 font-serif-display italic text-bone-50 text-2xl mix-blend-difference">
+                      /{project.index}
+                    </div>
+                  ) : null}
                   <span className="absolute bottom-4 right-4 w-10 h-10 rounded-full bg-bone-50 text-ink-900 flex items-center justify-center group-hover:bg-terracotta-500 group-hover:text-bone-50 transition-colors shadow-sm">
                     <i className="ri-arrow-right-up-line text-base" />
                   </span>
@@ -88,19 +106,23 @@ export function Projects() {
                 <div className="mt-5 text-ink-900">
                   <Link href={`/projects/${project.slug}`} className="block group/title">
                     <div className="font-serif-display text-2xl md:text-[28px] leading-tight group-hover/title:text-terracotta-500 transition-colors">
-                      {project.title}
+                      {t(project.title, project.title_am, lang)}
                     </div>
                     <div className="text-[12px] mt-1 text-ink-900/55 tracking-wide">
-                      {project.location}
+                      {t(project.location, project.location_am, lang)}
                     </div>
                   </Link>
-                  <div className="mt-3 text-[11px] tracking-widest-2 uppercase text-ink-900/50 mb-1.5">
-                    {project.collaborator}
-                  </div>
-                  <div className="flex items-center gap-3 text-[13px] text-ink-900/70">
-                    <span>{project.area}</span>
-                    <span className="w-1 h-1 rounded-full bg-ink-900/30" />
-                    <span>{project.year}</span>
+                  {project.collaborator ? (
+                    <div className="mt-3 text-[11px] tracking-widest-2 uppercase text-ink-900/50 mb-1.5">
+                      {project.collaborator}
+                    </div>
+                  ) : null}
+                  <div className="flex items-center gap-3 text-[13px] text-ink-900/70 mt-3">
+                    {project.area ? <span>{project.area}</span> : null}
+                    {project.area && project.year ? (
+                      <span className="w-1 h-1 rounded-full bg-ink-900/30" />
+                    ) : null}
+                    {project.year ? <span>{project.year}</span> : null}
                   </div>
                 </div>
                 {i === 0 && (
@@ -115,13 +137,13 @@ export function Projects() {
           <div className="mt-8 flex items-center justify-between flex-wrap gap-4">
             <div className="text-[12px] tracking-wide text-ink-900/55">
               {String(active + 1).padStart(2, "0")} / {String(projects.length).padStart(2, "0")}{" "}
-              — <span className="font-serif-display italic">{projects[active]?.title}</span>
+              — <span className="font-serif-display italic">{t(projects[active]?.title ?? "", projects[active]?.title_am, lang)}</span>
             </div>
             <Link
               href="/projects"
               className="inline-flex items-center gap-2 text-[12px] tracking-widest-2 uppercase text-ink-900 hover:text-terracotta-500 transition-colors whitespace-nowrap"
             >
-              View all projects
+              {copy.viewAll}
               <i className="ri-arrow-right-line" />
             </Link>
           </div>

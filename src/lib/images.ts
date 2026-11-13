@@ -1,40 +1,37 @@
-/** Unique Unsplash assets — each photo ID used once across the site. */
-
-const u = (id: string, w = 1400) =>
-  `https://images.unsplash.com/${id}?auto=format&fit=crop&w=${w}&q=80`;
+/** Static site images served from /public/designs. Project shots live on Cloudinary after seed. */
 
 export const img = {
-  // Projects — landscape finished homes & compounds (consistent 16:10 feel)
-  projectG2: u("photo-1600596542815-ffad4c1539a9", 1400),
-  projectFamily: u("photo-1600585154340-be6161a56a0c", 1400),
-  projectGuest: u("photo-1512917774080-9991f1c4c750", 1400),
-  projectLandscape: u("photo-1600585152220-90363fe7e115", 1400),
-  projectG3: u("photo-1613490493576-7fde63acd811", 1400),
+  // Project seed sources — uploaded to Cloudinary by `npm run seed`
+  projectG2: "/designs/g2-private-house.jpg",
+  projectBuilding: "/designs/building-slab.jpg",
+  projectCommercial: "/designs/commercial-foundation.jpg",
+  projectCompound: "/designs/compound-lounge.jpg",
 
   // Inquiry CTA
-  cta: u("photo-1600607687939-ce8a6c25118c", 1600),
+  cta: "/designs/inquiry-cta.jpg",
 
   // Architecture service
-  archHero: u("photo-1600047509807-ba8b99d40030", 1600),
-  archInterior: u("photo-1600210492493-0946911123ea", 1000),
-  archDetail: u("photo-1600585154526-990dced4db0d", 1000),
+  archHero: "/designs/addis-apartment-elevation.jpg",
+  archInterior: "/designs/architecture-interior.jpg",
+  archDetail: "/designs/aluminum-window-detail.jpg",
 
   // Construction service
-  buildHero: u("photo-1504307651254-35680f356dfd", 1600),
-  buildStair: u("photo-1541888946425-d81bb19240f5", 1000),
-  buildKitchen: u("photo-1503387762-592deb58ef4e", 1000),
+  buildHero: "/designs/addis-construction-2.jpg",
+  buildStair: "/designs/addis-construction-1.jpg",
+  buildKitchen: "/designs/construction-crew.jpg",
 
   // Landscape service
-  landHero: u("photo-1416879595882-3373a0480b5b", 1600),
-  landGarden: u("photo-1558904541-efa843a96f01", 1000),
-  landPavilion: u("photo-1600566752355-35792bedcfea", 1000),
+  landHero: "/designs/landscape-pool-hero.jpg",
+  landGarden: "/designs/compound-garden-path.jpg",
+  landPavilion: "/designs/landscape-pavilion.jpg",
 
   // Home services cards
-  stoneDetail: u("photo-1581094794329-c8112a89af12", 1000),
-  landscapeCard: u("photo-1564013799919-ab600027ffc6", 1000),
+  architectureCard: "/designs/addis-apartment-corner.jpg",
+  stoneDetail: "/designs/addis-construction-3.jpg",
+  landscapeCard: "/designs/landscape-card.jpg",
 
-  // Client review avatars
-  avatar1: u("photo-1573496359142-b8d87734a5a2", 160),
-  avatar2: u("photo-1472099645785-5658abf4ff4e", 160),
-  avatar3: u("photo-1580489944761-15a19d654956", 160),
+  // Hero / testimonial avatars
+  avatar1: "/designs/avatar-1.jpg",
+  avatar2: "/designs/avatar-2.jpg",
+  avatar3: "/designs/avatar-3.jpg",
 };

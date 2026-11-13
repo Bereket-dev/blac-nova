@@ -3,15 +3,16 @@
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { HERO_IMAGE, teamAvatars } from "@/lib/data";
-
-const lines = [
-  { text: "We build", italic: false },
-  { text: "your dream", italic: true },
-  { text: "home.", italic: false },
-];
+import { useUi } from "@/lib/language";
 
 export function Hero() {
   const [ready, setReady] = useState(false);
+  const ui = useUi();
+  const lines = [
+    { text: ui.hero.line1, italic: false },
+    { text: ui.hero.line2, italic: true },
+    { text: ui.hero.line3, italic: false },
+  ];
 
   useEffect(() => {
     const id = window.requestAnimationFrame(() => setReady(true));
@@ -27,7 +28,7 @@ export function Hero() {
       <div className="absolute inset-0">
         <Image
           src={HERO_IMAGE}
-          alt="Blac Nova founder on a construction site"
+          alt={ui.hero.alt}
           fill
           priority
           unoptimized
@@ -50,7 +51,7 @@ export function Hero() {
           >
             <span className="w-10 h-px bg-bone-50/60" />
             <span className="text-[11px] tracking-widest-2 uppercase">
-              Blac Nova — Construction &amp; Design
+              {ui.hero.eyebrow}
             </span>
           </div>
         </div>
@@ -61,7 +62,7 @@ export function Hero() {
               <h1 className="font-serif-display text-bone-50 text-[15vw] sm:text-[12vw] lg:text-[9.5vw] xl:text-[8.5vw] leading-[0.92] tracking-[-0.02em] font-light">
                 {lines.map((line, i) => (
                   <span
-                    key={line.text}
+                    key={`${line.text}-${i}`}
                     className={`reveal-line block ${line.italic ? "italic" : ""}`}
                   >
                     <span
@@ -81,8 +82,7 @@ export function Hero() {
                   ready ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
                 }`}
               >
-                Blac Nova designs and builds houses, G+ buildings, and compound works —
-                solid structure, clean finishes, and a home you can live in for years.
+                {ui.hero.body}
               </p>
               <div
                 className={`mt-8 flex flex-wrap items-center gap-4 transition-all duration-1000 delay-500 ${
@@ -93,7 +93,7 @@ export function Hero() {
                   href="#projects"
                   className="group inline-flex items-center gap-3 pl-5 pr-2 py-2 rounded-full bg-bone-50 text-ink-900 hover:bg-terracotta-500 hover:text-bone-50 transition-all duration-300 whitespace-nowrap text-sm tracking-wide"
                 >
-                  See our projects
+                  {ui.hero.ctaProjects}
                   <span className="w-9 h-9 flex items-center justify-center rounded-full bg-ink-900 text-bone-50 group-hover:bg-bone-50 group-hover:text-ink-900 transition-all">
                     <i className="ri-arrow-right-line text-base" />
                   </span>
@@ -102,7 +102,7 @@ export function Hero() {
                   href="/about"
                   className="text-bone-50/90 hover:text-bone-50 text-sm tracking-wide whitespace-nowrap underline-offset-4 hover:underline"
                 >
-                  About the company
+                  {ui.hero.ctaAbout}
                 </a>
               </div>
             </div>
@@ -133,9 +133,7 @@ export function Hero() {
                   </div>
                 ))}
               </div>
-              <span className="text-[12px] tracking-wide">
-                A team of architects, engineers &amp; builders dedicated to your home.
-              </span>
+              <span className="text-[12px] tracking-wide">{ui.hero.team}</span>
             </div>
             <div
               className={`hidden md:flex items-center gap-2 text-[11px] tracking-widest-2 uppercase transition-all duration-1000 delay-700 ${
@@ -143,7 +141,7 @@ export function Hero() {
               }`}
             >
               <span className="block w-2 h-2 rounded-full bg-terracotta-400 animate-pulse" />
-              Scroll to enter
+              {ui.hero.scroll}
             </div>
           </div>
         </div>

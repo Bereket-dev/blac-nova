@@ -1,22 +1,32 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
 import { notFound } from "next/navigation";
+
+export const ensureStatic = "navigation";
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
 import { ProjectDetail } from "@/components/ProjectDetail";
-import { getOtherProjects, getProject, projects } from "@/lib/data";
+import { getOtherProjects, getProject, getProjectSlugs } from "@/lib/projects";
 
 type ProjectPageProps = PageProps<"/projects/[slug]">;
 
-export function generateStaticParams() {
-  return projects.map((project) => ({ slug: project.slug }));
+export async function generateStaticParams() {
+  try {
+    const slugs = await getProjectSlugs();
+    // cacheComponents requires at least one param for build-time validation.
+    // Return a placeholder when Firebase isn't available (e.g., CI/build env).
+    if (slugs.length === 0) return [{ slug: "__placeholder__" }];
+    return slugs.map((slug) => ({ slug }));
+  } catch {
+    return [{ slug: "__placeholder__" }];
+  }
 }
 
 export async function generateMetadata({
   params,
 }: ProjectPageProps): Promise<Metadata> {
   const { slug } = await params;
-  const project = getProject(slug);
+  const project = await getProject(slug);
   if (!project) {
     return { title: "Project" };
   }
@@ -41,10 +51,16 @@ async function ProjectPageContent({
   params,
 }: Pick<ProjectPageProps, "params">) {
   const { slug } = await params;
-  const project = getProject(slug);
-  if (!project) notFound();
 
-  return <ProjectDetail project={project} others={getOtherProjects(slug)} />;
+  // Fetch project and full list in parallel — getProjects is cached so the
+  // second call is free; both resolve from the same cache entry.
+  const [project, others] = await Promise.all([
+    getProject(slug),
+    getOtherProjects(slug),
+  ]);
+
+  if (!project) notFound();
+  return <ProjectDetail project={project} others={others} />;
 }
 
 export default function ProjectPage({ params }: ProjectPageProps) {
