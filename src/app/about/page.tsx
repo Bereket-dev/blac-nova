@@ -4,15 +4,15 @@ import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
 import { InquiryForm } from "@/components/InquiryForm";
 import { Owner } from "@/components/Owner";
-import { parseInquirySelection } from "@/lib/services";
+import { getDesignCatalog, getDesignCategories } from "@/lib/designs";
+
+export const ensureStatic = "navigation";
 
 export const metadata: Metadata = {
   title: "About",
   description:
     "Meet the founder behind Blac Nova and start a project inquiry — name, phone, and an optional design direction.",
 };
-
-type AboutPageProps = PageProps<"/about">;
 
 function InquiryFallback() {
   return (
@@ -24,16 +24,24 @@ function InquiryFallback() {
   );
 }
 
-async function InquiryContent({
-  searchParams,
-}: Pick<AboutPageProps, "searchParams">) {
-  const resolved = await searchParams;
-  const selection = parseInquirySelection(resolved);
+// Fetches the cached data, then hands it to the client form.
+// searchParams is read on the client via useSearchParams() inside InquiryForm
+// so this component has no runtime dependencies — it can prerender fully.
+async function InquiryContent() {
+  const [categories, designs] = await Promise.all([
+    getDesignCategories(),
+    getDesignCatalog(),
+  ]);
 
-  return <InquiryForm initialSelection={selection} />;
+  return (
+    <InquiryForm
+      categories={categories}
+      designs={designs}
+    />
+  );
 }
 
-export default function AboutPage({ searchParams }: AboutPageProps) {
+export default function AboutPage() {
   return (
     <main className="bg-bone-50 text-ink-900 overflow-hidden">
       <Header solid />
@@ -41,7 +49,7 @@ export default function AboutPage({ searchParams }: AboutPageProps) {
       <section id="inquire" className="relative bg-bone-100 py-20 md:pb-28 md:pt-4">
         <div className="max-w-7xl mx-auto px-6 md:px-10 lg:px-14">
           <Suspense fallback={<InquiryFallback />}>
-            <InquiryContent searchParams={searchParams} />
+            <InquiryContent />
           </Suspense>
         </div>
       </section>

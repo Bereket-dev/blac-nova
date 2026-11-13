@@ -1,5 +1,8 @@
+"use client";
+
 import Link from "next/link";
 import { OWNER } from "@/lib/data";
+import { useUi } from "@/lib/language";
 import { FadeIn } from "./FadeIn";
 import { FadeImage } from "./FadeImage";
 
@@ -10,6 +13,8 @@ type OwnerProps = {
 
 export function Owner({ variant = "home" }: OwnerProps) {
   const isAbout = variant === "about";
+  const ui = useUi();
+  const o = ui.owner;
 
   return (
     <section
@@ -22,7 +27,7 @@ export function Owner({ variant = "home" }: OwnerProps) {
             <div className="relative aspect-[4/5] overflow-hidden rounded-2xl bg-bone-200">
               <FadeImage
                 src={OWNER.image}
-                alt={`${OWNER.role}, Blac Nova`}
+                alt={`${o.role}, Blac Nova`}
                 className="object-cover object-[center_20%]"
                 sizes="(max-width: 1024px) 100vw, 40vw"
                 eager
@@ -34,11 +39,11 @@ export function Owner({ variant = "home" }: OwnerProps) {
             <div className="flex items-center gap-3 mb-6">
               <span className="w-10 h-px bg-ink-900/40" />
               <span className="text-[11px] tracking-widest-2 uppercase text-ink-900/55">
-                {OWNER.eyebrow}
+                {o.eyebrow}
               </span>
             </div>
             <p className="text-[11px] tracking-widest-2 uppercase text-terracotta-500 mb-4">
-              {OWNER.role}
+              {o.role}
             </p>
             <h2
               className={`font-serif-display font-light text-ink-900 text-balance leading-[1.05] ${
@@ -47,15 +52,15 @@ export function Owner({ variant = "home" }: OwnerProps) {
                   : "text-3xl md:text-5xl lg:text-[3.25rem]"
               }`}
             >
-              {isAbout ? OWNER.aboutHeadline : OWNER.homeHeadline}
+              {isAbout ? o.aboutHeadline : o.homeHeadline}
             </h2>
             <p className="mt-6 text-ink-900/65 leading-relaxed text-lg max-w-xl">
-              {isAbout ? OWNER.aboutSummary : OWNER.homeSummary}
+              {isAbout ? o.aboutSummary : o.homeSummary}
             </p>
 
             {isAbout && (
               <div className="mt-8 space-y-5 max-w-xl">
-                {OWNER.aboutBody.map((paragraph) => (
+                {o.aboutBody.map((paragraph) => (
                   <p key={paragraph.slice(0, 32)} className="text-ink-900/60 leading-relaxed">
                     {paragraph}
                   </p>
@@ -68,7 +73,7 @@ export function Owner({ variant = "home" }: OwnerProps) {
                 href="/about"
                 className="mt-8 inline-flex items-center gap-2 text-[12px] tracking-widest-2 uppercase text-ink-900 hover:text-terracotta-500 transition-colors"
               >
-                About us & inquire
+                {o.homeCta}
                 <i className="ri-arrow-right-line" />
               </Link>
             )}
@@ -78,7 +83,7 @@ export function Owner({ variant = "home" }: OwnerProps) {
                 href="#inquire"
                 className="mt-10 inline-flex items-center gap-2 rounded-full bg-ink-900 text-bone-50 px-6 py-3 text-[13px] tracking-wide uppercase hover:bg-terracotta-500 transition-colors"
               >
-                Start an inquiry
+                {o.aboutCta}
                 <i className="ri-arrow-down-line text-base" />
               </a>
             )}
