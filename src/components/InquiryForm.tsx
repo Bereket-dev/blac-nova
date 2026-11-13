@@ -61,7 +61,8 @@ export function InquiryForm({ categories, designs }: InquiryFormProps) {
       } else {
         setError(result.error);
       }
-    } catch {
+    } catch (err) {
+      console.error("[InquiryForm] submitInquiry threw:", err);
       setError("Something went wrong. Please try again or contact us via Telegram.");
     } finally {
       setSubmitting(false);
