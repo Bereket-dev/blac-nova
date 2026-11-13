@@ -28,6 +28,7 @@ function mapProject(slug: string, data: Record<string, unknown>): Project {
     order: typeof data.order === "number" ? data.order : 0,
     published: data.published !== false,
     title_am: data.title_am as string | undefined,
+    location_am: data.location_am as string | undefined,
     summary_am: data.summary_am as string | undefined,
     description_am: data.description_am as string | undefined,
     approach_am: data.approach_am as string | undefined,

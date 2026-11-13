@@ -31,7 +31,9 @@ export function ProjectDetail({ project, others }: ProjectDetailProps) {
                 <div className="flex items-center gap-3 mb-5">
                   <span className="w-10 h-px bg-ink-900/40" />
                   <span className="text-[11px] tracking-widest-2 uppercase text-ink-900/55">
-                    Project /{project.index} — {project.category}
+                    {project.index
+                      ? `Project /${project.index} — ${project.category}`
+                      : project.category}
                   </span>
                   {project.isOngoing && (
                     <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-100 text-[10px] tracking-widest-2 uppercase text-amber-700 font-semibold border border-amber-200">
@@ -49,7 +51,7 @@ export function ProjectDetail({ project, others }: ProjectDetailProps) {
               </div>
               <div className="text-right">
                 <div className="font-serif-display text-2xl md:text-3xl text-ink-900">
-                  {project.location}
+                  {t(project.location, project.location_am, lang)}
                 </div>
                 <div className="mt-1 text-[12px] tracking-wide text-ink-900/50">
                   {project.year}
@@ -73,7 +75,10 @@ export function ProjectDetail({ project, others }: ProjectDetailProps) {
           <FadeIn delayMs={120}>
             <dl className="mt-10 grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8 border-y border-ink-900/10 py-8">
               {[
-                { label: "Location", value: project.location },
+                {
+                  label: "Location",
+                  value: t(project.location, project.location_am, lang),
+                },
                 { label: "Year", value: project.year },
                 { label: "Area", value: project.area },
                 {
@@ -82,7 +87,9 @@ export function ProjectDetail({ project, others }: ProjectDetailProps) {
                     ? (lang === "am" ? "በሂደት ላይ" : "Ongoing")
                     : t(project.status || "Completed", project.status_am, lang),
                 },
-              ].map((item) => (
+              ]
+                .filter((item) => Boolean(item.value))
+                .map((item) => (
                 <div key={item.label}>
                   <dt className="text-[11px] tracking-widest-2 uppercase text-ink-900/45">
                     {item.label}
@@ -98,62 +105,76 @@ export function ProjectDetail({ project, others }: ProjectDetailProps) {
       <section className="relative pb-20 md:pb-28 bg-bone-50">
         <div className="max-w-7xl mx-auto px-6 md:px-10 lg:px-14 grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16">
           <FadeIn className="lg:col-span-7 space-y-8">
-            <div>
-              <h2 className="font-serif-display text-3xl md:text-4xl font-light text-ink-900">
-                About this build
-              </h2>
-              <p className="mt-5 text-ink-900/70 leading-relaxed text-base md:text-[17px]">
-                {t(project.description, project.description_am, lang)}
-              </p>
-            </div>
-            <div>
-              <h2 className="font-serif-display text-3xl md:text-4xl font-light text-ink-900">
-                Approach
-              </h2>
-              <p className="mt-5 text-ink-900/70 leading-relaxed text-base md:text-[17px]">
-                {t(project.approach, project.approach_am, lang)}
-              </p>
-            </div>
+            {(project.description || project.summary) && (
+              <div>
+                <h2 className="font-serif-display text-3xl md:text-4xl font-light text-ink-900">
+                  About this build
+                </h2>
+                <p className="mt-5 text-ink-900/70 leading-relaxed text-base md:text-[17px]">
+                  {t(
+                    project.description || project.summary,
+                    project.description_am || project.summary_am,
+                    lang,
+                  )}
+                </p>
+              </div>
+            )}
+            {project.approach ? (
+              <div>
+                <h2 className="font-serif-display text-3xl md:text-4xl font-light text-ink-900">
+                  Approach
+                </h2>
+                <p className="mt-5 text-ink-900/70 leading-relaxed text-base md:text-[17px]">
+                  {t(project.approach, project.approach_am, lang)}
+                </p>
+              </div>
+            ) : null}
           </FadeIn>
 
           <FadeIn delayMs={100} className="lg:col-span-5 space-y-10">
-            <div>
-              <h3 className="text-[11px] tracking-widest-2 uppercase text-ink-900/45 mb-4">
-                Scope
-              </h3>
-              <ul className="space-y-3">
-                {project.scope.map((item) => (
-                  <li
-                    key={item}
-                    className="flex items-start gap-3 text-sm text-ink-900/80"
-                  >
-                    <span className="mt-2 w-1.5 h-1.5 rounded-full bg-terracotta-500 shrink-0" />
-                    {item}
-                  </li>
-                ))}
-              </ul>
-            </div>
-            <div>
-              <h3 className="text-[11px] tracking-widest-2 uppercase text-ink-900/45 mb-4">
-                Materials
-              </h3>
-              <div className="flex flex-wrap gap-2">
-                {project.materials.map((material) => (
-                  <span
-                    key={material}
-                    className="px-3 py-1.5 rounded-full border border-ink-900/10 text-[12px] tracking-wide text-ink-900/75"
-                  >
-                    {material}
-                  </span>
-                ))}
+            {project.scope.length > 0 && (
+              <div>
+                <h3 className="text-[11px] tracking-widest-2 uppercase text-ink-900/45 mb-4">
+                  Scope
+                </h3>
+                <ul className="space-y-3">
+                  {project.scope.map((item) => (
+                    <li
+                      key={item}
+                      className="flex items-start gap-3 text-sm text-ink-900/80"
+                    >
+                      <span className="mt-2 w-1.5 h-1.5 rounded-full bg-terracotta-500 shrink-0" />
+                      {item}
+                    </li>
+                  ))}
+                </ul>
               </div>
-            </div>
-            <div>
-              <h3 className="text-[11px] tracking-widest-2 uppercase text-ink-900/45 mb-2">
-                Lead
-              </h3>
-              <p className="text-sm text-ink-900">{project.collaborator}</p>
-            </div>
+            )}
+            {project.materials.length > 0 && (
+              <div>
+                <h3 className="text-[11px] tracking-widest-2 uppercase text-ink-900/45 mb-4">
+                  Materials
+                </h3>
+                <div className="flex flex-wrap gap-2">
+                  {project.materials.map((material) => (
+                    <span
+                      key={material}
+                      className="px-3 py-1.5 rounded-full border border-ink-900/10 text-[12px] tracking-wide text-ink-900/75"
+                    >
+                      {material}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            )}
+            {project.collaborator ? (
+              <div>
+                <h3 className="text-[11px] tracking-widest-2 uppercase text-ink-900/45 mb-2">
+                  Lead
+                </h3>
+                <p className="text-sm text-ink-900">{project.collaborator}</p>
+              </div>
+            ) : null}
           </FadeIn>
         </div>
       </section>
