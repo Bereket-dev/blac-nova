@@ -2,6 +2,7 @@
 
 import { FormEvent, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { AdminFormActions } from "@/components/admin/AdminFormActions";
 import { useAdminAuth } from "@/lib/admin/auth";
 import {
   listCategoriesClient,
@@ -421,18 +422,25 @@ export function ProjectForm({ initial, mode }: ProjectFormProps) {
       </SectionCard>
 
       <SectionCard title="Cover image">
-        {(preview ?? form.image) ? (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img
-            src={preview ?? form.image}
-            alt=""
-            className="w-full max-h-48 object-cover rounded-xl bg-gray-100 border border-gray-200"
-          />
-        ) : (
-          <div className="w-full h-36 rounded-xl bg-gray-100 border-2 border-dashed border-gray-300 flex items-center justify-center text-sm text-gray-400">
-            No image yet
-          </div>
-        )}
+        <div>
+          <p className="text-xs text-gray-500 mb-2">
+            Public preview — same 16:10 crop as the site
+          </p>
+          {(preview ?? form.image) ? (
+            <div className="relative aspect-[16/10] overflow-hidden rounded-xl bg-gray-100 border border-gray-200">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={preview ?? form.image}
+                alt=""
+                className="absolute inset-0 h-full w-full object-cover object-center"
+              />
+            </div>
+          ) : (
+            <div className="aspect-[16/10] rounded-xl bg-gray-100 border-2 border-dashed border-gray-300 flex items-center justify-center text-sm text-gray-400">
+              No image yet
+            </div>
+          )}
+        </div>
 
         <div>
           <label className="block text-xs font-semibold text-gray-700 mb-2">
@@ -485,33 +493,12 @@ export function ProjectForm({ initial, mode }: ProjectFormProps) {
         </div>
       ) : null}
 
-      <div className="fixed bottom-0 inset-x-0 z-20 bg-white/90 backdrop-blur border-t border-gray-200 safe-bottom md:static md:bg-transparent md:backdrop-blur-none md:border-0 md:p-0">
-        <div className="max-w-5xl mx-auto px-4 py-3 flex items-center gap-3 md:px-0">
-          <button
-            type="submit"
-            disabled={saving}
-            className="flex-1 md:flex-none md:w-auto flex items-center justify-center gap-2 bg-gray-900 text-white text-sm font-semibold py-3.5 md:py-2.5 px-6 rounded-xl hover:bg-gray-700 transition-colors disabled:opacity-50 active:scale-[0.98]"
-          >
-            {saving ? (
-              <>
-                <span className="w-3.5 h-3.5 border-2 border-white/40 border-t-white rounded-full animate-spin" />
-                Saving…
-              </>
-            ) : mode === "edit" ? (
-              "Update project"
-            ) : (
-              "Create project"
-            )}
-          </button>
-          <button
-            type="button"
-            onClick={() => router.push("/admin/projects")}
-            className="flex-1 md:flex-none md:w-auto py-3.5 md:py-2.5 px-6 rounded-xl text-sm font-medium text-gray-600 bg-gray-100 hover:bg-gray-200 active:bg-gray-300 transition-colors"
-          >
-            Cancel
-          </button>
-        </div>
-      </div>
+      <AdminFormActions
+        saving={saving}
+        submitLabel={mode === "edit" ? "Update project" : "Create project"}
+        onCancel={() => router.push("/admin/projects")}
+        aboveTabBar={false}
+      />
     </form>
   );
 }

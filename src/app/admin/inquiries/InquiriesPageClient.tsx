@@ -56,9 +56,11 @@ function InquiryCard({
   onHandled: (id: string) => void;
 }) {
   const [marking, setMarking] = useState(false);
+  const [markError, setMarkError] = useState("");
 
   const markHandled = async () => {
     setMarking(true);
+    setMarkError("");
     try {
       await updateDoc(doc(getClientDb(), "inquiries", inquiry.id), {
         handled: true,
@@ -66,7 +68,7 @@ function InquiryCard({
       });
       onHandled(inquiry.id);
     } catch {
-      alert("Failed to mark as handled. Please try again.");
+      setMarkError("Failed to mark as handled. Please try again.");
     } finally {
       setMarking(false);
     }
@@ -125,6 +127,22 @@ function InquiryCard({
           <p className="text-sm text-gray-600 leading-relaxed bg-gray-50 rounded-xl px-4 py-3 border border-gray-100">
             &ldquo;{inquiry.message}&rdquo;
           </p>
+        </div>
+      ) : null}
+
+      {/* Inline error */}
+      {markError ? (
+        <div className="mx-5 mb-3 flex items-center gap-2 rounded-xl bg-red-50 border border-red-200 px-4 py-2.5 text-sm text-red-700">
+          <i className="ri-error-warning-line text-base shrink-0" />
+          <span>{markError}</span>
+          <button
+            type="button"
+            onClick={() => setMarkError("")}
+            className="ml-auto text-red-400 hover:text-red-600 transition-colors"
+            aria-label="Dismiss"
+          >
+            <i className="ri-close-line text-base" />
+          </button>
         </div>
       ) : null}
 

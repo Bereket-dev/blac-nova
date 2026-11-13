@@ -4,12 +4,15 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { deleteProjectClient, listProjectsClient } from "@/lib/admin/firestore";
 import { revalidateProjects } from "@/lib/admin/actions";
+import { ConfirmModal } from "@/components/admin/ConfirmModal";
 import type { Project } from "@/lib/types";
 
 export default function AdminProjectsPage() {
   const [projects, setProjects] = useState<Project[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [pendingDelete, setPendingDelete] = useState<{ slug: string; title: string } | null>(null);
+  const [deleting, setDeleting] = useState(false);
 
   const load = async () => {
     setLoading(true);
@@ -27,15 +30,27 @@ export default function AdminProjectsPage() {
     void load();
   }, []);
 
-  const onDelete = async (slug: string, title: string) => {
-    if (!confirm(`Delete "${title}"? This cannot be undone.`)) return;
-    await deleteProjectClient(slug);
-    await revalidateProjects(slug);
+  const confirmDelete = async () => {
+    if (!pendingDelete) return;
+    setDeleting(true);
+    await deleteProjectClient(pendingDelete.slug);
+    await revalidateProjects(pendingDelete.slug);
+    setPendingDelete(null);
+    setDeleting(false);
     await load();
   };
 
   return (
     <div className="space-y-5">
+      <ConfirmModal
+        open={!!pendingDelete}
+        title="Delete project"
+        message={`Delete "${pendingDelete?.title}"? This cannot be undone.`}
+        confirmLabel="Delete"
+        loading={deleting}
+        onConfirm={() => void confirmDelete()}
+        onCancel={() => setPendingDelete(null)}
+      />
       {/* Header */}
       <div className="flex items-center justify-between gap-4">
         <div>
@@ -124,7 +139,7 @@ export default function AdminProjectsPage() {
                   </Link>
                   <button
                     type="button"
-                    onClick={() => onDelete(project.slug, project.title)}
+                    onClick={() => setPendingDelete({ slug: project.slug, title: project.title })}
                     className="flex-1 py-3 text-center text-sm font-medium text-red-500 hover:bg-red-50 active:bg-red-100 transition-colors"
                   >
                     Delete
@@ -225,7 +240,7 @@ export default function AdminProjectsPage() {
                       </Link>
                       <button
                         type="button"
-                        onClick={() => onDelete(project.slug, project.title)}
+                        onClick={() => setPendingDelete({ slug: project.slug, title: project.title })}
                         className="text-xs font-medium text-red-500 hover:text-red-700 transition-colors"
                       >
                         Delete

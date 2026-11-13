@@ -73,9 +73,11 @@ export function ReviewsView({ featured, rest }: ReviewsViewProps) {
             </div>
           </div>
           <div>
-            <div className="font-serif-display text-2xl text-ink-900">12yr</div>
+            <div className="font-serif-display text-2xl text-ink-900">
+              {copy.experienceValue}
+            </div>
             <div className="text-[11px] tracking-widest-2 uppercase text-ink-900/50 mt-1">
-              {copy.years}
+              {copy.experienceLabel}
             </div>
           </div>
         </FadeIn>

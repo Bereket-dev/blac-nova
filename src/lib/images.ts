@@ -2,11 +2,10 @@
 
 export const img = {
   // Project seed sources — uploaded to Cloudinary by `npm run seed`
-  projectG2: "/designs/kampala-homes.jpg",
-  projectFamily: "/designs/family-house.jpg",
-  projectGuest: "/designs/guest-house-pool.jpg",
-  projectLandscape: "/designs/compound-terraces.jpg",
-  projectG3: "/designs/east-africa-apartments.jpg",
+  projectG2: "/designs/g2-private-house.jpg",
+  projectBuilding: "/designs/building-slab.jpg",
+  projectCommercial: "/designs/commercial-foundation.jpg",
+  projectCompound: "/designs/compound-lounge.jpg",
 
   // Inquiry CTA
   cta: "/designs/inquiry-cta.jpg",
