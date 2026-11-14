@@ -27,7 +27,7 @@ export async function getTestimonials(): Promise<Testimonial[]> {
   if (!isAdminConfigured()) return [];
 
   try {
-    const db = getAdminDb();
+    const db = await getAdminDb();
     const snap = await db.collection("testimonials").orderBy("order", "asc").get();
     return snap.docs.map((doc) =>
       mapTestimonial(doc.id, doc.data() as Record<string, unknown>),

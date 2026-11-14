@@ -11,6 +11,8 @@ const nextConfig: NextConfig = {
     "firebase-admin/auth",
     "firebase-admin/firestore",
     "@google-cloud/firestore",
+    "@google-cloud/storage",
+    "google-auth-library",
     "jwks-rsa",
     "jose",
   ],

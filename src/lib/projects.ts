@@ -45,7 +45,7 @@ export async function getProjects(options?: {
 
   if (!isAdminConfigured()) return [];
 
-  const db = getAdminDb();
+  const db = await getAdminDb();
   const snap = await db.collection("projects").orderBy("order", "asc").get();
   const projects = snap.docs.map((doc) =>
     mapProject(doc.id, doc.data() as Record<string, unknown>),
@@ -65,7 +65,7 @@ export async function getProject(
 
   if (!isAdminConfigured()) return undefined;
 
-  const db = getAdminDb();
+  const db = await getAdminDb();
   const doc = await db.collection("projects").doc(slug).get();
   if (!doc.exists) return undefined;
 

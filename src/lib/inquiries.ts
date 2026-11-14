@@ -72,9 +72,9 @@ export async function submitInquiry(
   if (!name || name.length < 2) return { ok: false, error: "Name is required." };
   if (!phone || phone.length < 7) return { ok: false, error: "Phone number is required." };
 
-  let db: ReturnType<typeof getAdminDb>;
+  let db: Awaited<ReturnType<typeof getAdminDb>>;
   try {
-    db = getAdminDb();
+    db = await getAdminDb();
   } catch (err) {
     console.error("[submitInquiry] Firebase Admin init failed:", err);
     return { ok: false, error: "Service temporarily unavailable. Please try again." };
@@ -109,7 +109,7 @@ export async function submitInquiry(
 // ── Admin actions ────────────────────────────────────────────────────────────
 
 export async function markInquiryHandled(id: string): Promise<void> {
-  const db = getAdminDb();
+  const db = await getAdminDb();
   await db.collection("inquiries").doc(id).update({
     handled: true,
     handledAt: Date.now(),
