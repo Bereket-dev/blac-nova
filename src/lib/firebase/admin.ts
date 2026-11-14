@@ -1,9 +1,16 @@
 import "server-only";
+import { createRequire } from "node:module";
 
-// firebase-admin and its transitive deps (jwks-rsa → jose) are ESM-only.
-// Static top-level imports cause Turbopack/webpack to bundle them under CJS,
-// which breaks with ERR_REQUIRE_ESM. Dynamic import() defers resolution to
-// Node.js at runtime, bypassing the bundler entirely.
+// firebase-admin's ESM entry pulls in jwks-rsa → jose (ESM-only).
+// When Turbopack bundles `await import("firebase-admin/auth")` it mangles the
+// specifier to a hashed ID (e.g. "firebase-admin-a14c8a5423a75469/auth") that
+// only resolves inside the dev Turbopack runtime — not in Vercel's Lambda.
+//
+// createRequire forces Node to use the "require" condition in firebase-admin's
+// package.json exports map, which points to the CJS build (./lib/auth/index.js),
+// bypassing the ESM path entirely. Turbopack cannot statically analyze a
+// require() call buried inside a function, so it never mangles the specifier.
+const req = createRequire(import.meta.url);
 
 function readPrivateKey(): string | undefined {
   const raw =
@@ -12,7 +19,6 @@ function readPrivateKey(): string | undefined {
 
   let key = raw.trim();
 
-  // Vercel / dotenv sometimes wrap the value in quotes
   if (
     (key.startsWith('"') && key.endsWith('"')) ||
     (key.startsWith("'") && key.endsWith("'"))
@@ -20,58 +26,58 @@ function readPrivateKey(): string | undefined {
     key = key.slice(1, -1);
   }
 
-  // Common paste formats: literal \n, real newlines, or escaped \\n
   key = key.replace(/\\n/g, "\n").replace(/\r\n/g, "\n");
-
   return key.trim();
 }
 
-// Lazily initialized — created once per process, reused on subsequent calls.
-let _appPromise: Promise<import("firebase-admin/app").App> | null = null;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+let _app: any = null;
 
-async function getAdminApp(): Promise<import("firebase-admin/app").App> {
-  if (_appPromise) return _appPromise;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function getAdminApp(): any {
+  if (_app) return _app;
 
-  _appPromise = (async () => {
-    const { cert, getApps, initializeApp } = await import("firebase-admin/app");
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const { cert, getApps, initializeApp } = req("firebase-admin/app") as any;
 
-    if (getApps().length) return getApps()[0]!;
+  if (getApps().length) {
+    _app = getApps()[0];
+    return _app;
+  }
 
-    const projectId = process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID?.trim();
-    const clientEmail = (
-      process.env.FIREBASE_CLIENT_EMAIL ??
-      process.env.FIREBASE_ADMIN_CLIENT_EMAIL
-    )?.trim();
-    const privateKey = readPrivateKey();
+  const projectId = process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID?.trim();
+  const clientEmail = (
+    process.env.FIREBASE_CLIENT_EMAIL ??
+    process.env.FIREBASE_ADMIN_CLIENT_EMAIL
+  )?.trim();
+  const privateKey = readPrivateKey();
 
-    if (!projectId || !clientEmail || !privateKey) {
-      throw new Error(
-        "Missing Firebase Admin credentials. Set NEXT_PUBLIC_FIREBASE_PROJECT_ID, FIREBASE_CLIENT_EMAIL (or FIREBASE_ADMIN_CLIENT_EMAIL), and FIREBASE_PRIVATE_KEY (or FIREBASE_ADMIN_PRIVATE_KEY).",
-      );
-    }
+  if (!projectId || !clientEmail || !privateKey) {
+    throw new Error(
+      "Missing Firebase Admin credentials. Set NEXT_PUBLIC_FIREBASE_PROJECT_ID, FIREBASE_CLIENT_EMAIL (or FIREBASE_ADMIN_CLIENT_EMAIL), and FIREBASE_PRIVATE_KEY (or FIREBASE_ADMIN_PRIVATE_KEY).",
+    );
+  }
 
-    if (!privateKey.includes("BEGIN") || !privateKey.includes("PRIVATE KEY")) {
-      throw new Error(
-        "FIREBASE_PRIVATE_KEY looks malformed (expected a PEM private key). On Vercel, paste the full key with \\n for newlines.",
-      );
-    }
+  if (!privateKey.includes("BEGIN") || !privateKey.includes("PRIVATE KEY")) {
+    throw new Error(
+      "FIREBASE_PRIVATE_KEY looks malformed (expected a PEM private key). On Vercel, paste the full key with \\n for newlines.",
+    );
+  }
 
-    return initializeApp({
-      credential: cert({ projectId, clientEmail, privateKey }),
-    });
-  })();
-
-  return _appPromise;
+  _app = initializeApp({ credential: cert({ projectId, clientEmail, privateKey }) });
+  return _app;
 }
 
-export async function getAdminDb() {
-  const { getFirestore } = await import("firebase-admin/firestore");
-  return getFirestore(await getAdminApp());
+export function getAdminDb() {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const { getFirestore } = req("firebase-admin/firestore") as any;
+  return getFirestore(getAdminApp());
 }
 
-export async function getAdminAuth() {
-  const { getAuth } = await import("firebase-admin/auth");
-  return getAuth(await getAdminApp());
+export function getAdminAuth() {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const { getAuth } = req("firebase-admin/auth") as any;
+  return getAuth(getAdminApp());
 }
 
 export function isAdminConfigured(): boolean {

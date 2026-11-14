@@ -19,7 +19,7 @@ export async function getCategories(): Promise<ProjectCategory[]> {
 
   if (!isAdminConfigured()) return [];
 
-  const db = await getAdminDb();
+  const db = getAdminDb();
   const snap = await db.collection("categories").orderBy("order", "asc").get();
   return snap.docs.map((doc) =>
     mapCategory(doc.id, doc.data() as Record<string, unknown>),
@@ -33,7 +33,7 @@ export async function getCategory(id: string): Promise<ProjectCategory | undefin
 
   if (!isAdminConfigured()) return undefined;
 
-  const db = await getAdminDb();
+  const db = getAdminDb();
   const doc = await db.collection("categories").doc(id).get();
   if (!doc.exists) return undefined;
   return mapCategory(doc.id, doc.data()! as Record<string, unknown>);

@@ -185,13 +185,7 @@ function AdminShell({ children }: { children: ReactNode }) {
     /^\/admin\/projects\/[^/]+\/edit$/.test(pathname);
 
   useEffect(() => {
-    if (loading) {
-      // Don't wait — if no user is cached yet, go to login immediately.
-      // Once the auth listener resolves with a user, the effect runs again
-      // and replaces /admin/login with /admin.
-      if (!isLogin) router.replace("/admin/login");
-      return;
-    }
+    if (loading) return;
     if (!user && !isLogin) router.replace("/admin/login");
     if (user && isLogin) router.replace("/admin");
   }, [user, loading, isLogin, router]);

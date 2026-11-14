@@ -24,7 +24,7 @@ export async function POST(request: Request) {
     }
 
     try {
-      await (await getAdminAuth()).verifyIdToken(token);
+      await getAdminAuth().verifyIdToken(token);
     } catch (error) {
       console.error("Cloudinary sign auth error", error);
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });

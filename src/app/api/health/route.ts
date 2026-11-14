@@ -24,7 +24,7 @@ export async function GET() {
       admin = { ok: false, error: "not_configured" };
     } else {
       // Touch auth client without verifying a token
-      await getAdminAuth();
+      getAdminAuth();
       admin = { ok: true };
     }
   } catch (error) {
