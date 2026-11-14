@@ -5,49 +5,65 @@ import type { Inquiry } from "@/lib/types";
 
 // ── Telegram notification ────────────────────────────────────────────────────
 
+function escapeHtml(value: string): string {
+  return value
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;");
+}
+
 async function sendTelegramNotification(inquiry: Inquiry): Promise<void> {
-  const token = process.env.TELEGRAM_BOT_TOKEN;
-  const chatId = process.env.TELEGRAM_CHAT_ID;
+  const token = process.env.TELEGRAM_BOT_TOKEN?.trim();
+  const chatId = process.env.TELEGRAM_CHAT_ID?.trim();
 
   if (!token || !chatId) {
-    // Silently skip — bot not configured yet
+    console.warn("[Telegram] Skipping notification — TELEGRAM_BOT_TOKEN or TELEGRAM_CHAT_ID missing");
     return;
   }
 
   const lines = [
-    "📬 *New Inquiry — Blac Nova Homes*",
+    "📬 <b>New Inquiry — Blac Nova Homes</b>",
     "",
-    `👤 *Name:* ${inquiry.name}`,
-    `📞 *Phone:* ${inquiry.phone}`,
+    `👤 <b>Name:</b> ${escapeHtml(inquiry.name)}`,
+    `📞 <b>Phone:</b> ${escapeHtml(inquiry.phone)}`,
   ];
 
   if (inquiry.designTitle) {
-    lines.push(`🏠 *Design:* ${inquiry.designTitle} (${inquiry.designCategory ?? ""})`);
+    lines.push(
+      `🏠 <b>Design:</b> ${escapeHtml(inquiry.designTitle)} (${escapeHtml(inquiry.designCategory ?? "")})`,
+    );
   }
   if (inquiry.message) {
-    lines.push(`💬 *Message:* ${inquiry.message}`);
+    lines.push(`💬 <b>Message:</b> ${escapeHtml(inquiry.message)}`);
   }
 
   lines.push("");
-  lines.push(`🕐 ${new Date(inquiry.createdAt).toLocaleString("en-ET", { timeZone: "Africa/Addis_Ababa" })}`);
-  lines.push(`👉 [View in admin](https://blacnova.com/admin/inquiries)`);
+  lines.push(
+    `🕐 ${new Date(inquiry.createdAt).toLocaleString("en-ET", { timeZone: "Africa/Addis_Ababa" })}`,
+  );
+  lines.push(`👉 <a href="https://blacnova.com/admin/inquiries">View in admin</a>`);
 
   const text = lines.join("\n");
 
   try {
-    await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+    const res = await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         chat_id: chatId,
         text,
-        parse_mode: "Markdown",
+        parse_mode: "HTML",
         disable_web_page_preview: true,
       }),
     });
-  } catch {
+
+    if (!res.ok) {
+      const body = await res.text();
+      console.error("[Telegram] sendMessage failed", res.status, body);
+    }
+  } catch (err) {
     // Notification failure should not block the form submission
-    console.error("[Telegram] Failed to send inquiry notification");
+    console.error("[Telegram] Failed to send inquiry notification", err);
   }
 }
 
@@ -100,8 +116,8 @@ export async function submitInquiry(
     return { ok: false, error: "Failed to submit. Please try again." };
   }
 
-  // Fire-and-forget Telegram notification
-  void sendTelegramNotification(inquiry);
+  // Must await on Vercel — fire-and-forget is frozen when the Server Action returns.
+  await sendTelegramNotification(inquiry);
 
   return { ok: true, id: ref.id };
 }
