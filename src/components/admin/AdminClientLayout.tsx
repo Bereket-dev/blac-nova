@@ -185,20 +185,19 @@ function AdminShell({ children }: { children: ReactNode }) {
     /^\/admin\/projects\/[^/]+\/edit$/.test(pathname);
 
   useEffect(() => {
-    if (loading) return;
+    if (loading) {
+      // Don't wait — if no user is cached yet, go to login immediately.
+      // Once the auth listener resolves with a user, the effect runs again
+      // and replaces /admin/login with /admin.
+      if (!isLogin) router.replace("/admin/login");
+      return;
+    }
     if (!user && !isLogin) router.replace("/admin/login");
     if (user && isLogin) router.replace("/admin");
   }, [user, loading, isLogin, router]);
 
   if (loading) {
-    return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="flex flex-col items-center gap-3">
-          <span className="w-6 h-6 border-2 border-gray-300 border-t-gray-900 rounded-full animate-spin" />
-          <p className="text-sm text-gray-400">Loading…</p>
-        </div>
-      </div>
-    );
+    return <div className="min-h-screen bg-gray-50" />;
   }
 
   if (isLogin) {
