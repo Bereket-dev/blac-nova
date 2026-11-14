@@ -47,7 +47,7 @@ export async function getProjects(options?: {
 
   const db = getAdminDb();
   const snap = await db.collection("projects").orderBy("order", "asc").get();
-  const projects = snap.docs.map((doc) =>
+  const projects = snap.docs.map((doc: { id: string; data(): Record<string, unknown> }) =>
     mapProject(doc.id, doc.data() as Record<string, unknown>),
   );
 

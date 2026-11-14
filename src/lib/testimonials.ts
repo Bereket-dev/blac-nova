@@ -29,7 +29,7 @@ export async function getTestimonials(): Promise<Testimonial[]> {
   try {
     const db = getAdminDb();
     const snap = await db.collection("testimonials").orderBy("order", "asc").get();
-    return snap.docs.map((doc) =>
+    return snap.docs.map((doc: { id: string; data(): Record<string, unknown> }) =>
       mapTestimonial(doc.id, doc.data() as Record<string, unknown>),
     );
   } catch {

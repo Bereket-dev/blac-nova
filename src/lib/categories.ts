@@ -21,7 +21,7 @@ export async function getCategories(): Promise<ProjectCategory[]> {
 
   const db = getAdminDb();
   const snap = await db.collection("categories").orderBy("order", "asc").get();
-  return snap.docs.map((doc) =>
+  return snap.docs.map((doc: { id: string; data(): Record<string, unknown> }) =>
     mapCategory(doc.id, doc.data() as Record<string, unknown>),
   );
 }
