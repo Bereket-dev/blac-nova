@@ -10,7 +10,8 @@
     "seed": "tsx scripts/seed-firestore.ts"
   },
   "overrides": {
-    "@grpc/grpc-js": "1.14.7"
+    "@grpc/grpc-js": "1.14.7",
+    "jose": "4.15.9"
   },
   "dependencies": {
     "cloudinary": "^2.11.0",
