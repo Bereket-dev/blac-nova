@@ -38,7 +38,8 @@ export async function uploadProjectImage(
   );
 
   if (!uploadRes.ok) {
-    throw new Error("Cloudinary upload failed");
+    const body = await uploadRes.text();
+    throw new Error(body || "Cloudinary upload failed");
   }
 
   const payload = (await uploadRes.json()) as {

@@ -1,4 +1,4 @@
-import { createHash, createHmac } from "node:crypto";
+import { createHash } from "node:crypto";
 
 function requiredEnv(name: string): string {
   const value = process.env[name]?.trim();
@@ -20,9 +20,10 @@ export function createUploadSignature(params: {
   const folder =
     params.folder ?? process.env.CLOUDINARY_UPLOAD_FOLDER ?? "blac-nova/projects";
 
-  // api_sign_request: sort keys, join as key=value&, HMAC-SHA1 with API secret
-  const toSign = `folder=${folder}&timestamp=${timestamp}`;
-  const signature = createHmac("sha1", apiSecret).update(toSign).digest("hex");
+  // Cloudinary api_sign_request: sort params as key=value&, append API secret,
+  // then SHA-1 hex digest (NOT HMAC).
+  const toSign = `folder=${folder}&timestamp=${timestamp}${apiSecret}`;
+  const signature = createHash("sha1").update(toSign).digest("hex");
 
   return {
     timestamp,
