@@ -1,16 +1,25 @@
 import "server-only";
 import { createRequire } from "node:module";
 
-// firebase-admin's ESM entry pulls in jwks-rsa → jose (ESM-only).
-// When Turbopack bundles `await import("firebase-admin/auth")` it mangles the
-// specifier to a hashed ID (e.g. "firebase-admin-a14c8a5423a75469/auth") that
-// only resolves inside the dev Turbopack runtime — not in Vercel's Lambda.
+// Turbopack statically scans string literals for package specifiers and emits
+// them as externals — sync (x/externalRequire) for require(), async (y/externalImport)
+// for import(). Either path breaks on Vercel's Lambda when the specifier resolves
+// to an ESM-only package (jose/jwks-rsa) because:
+//   - sync: ERR_REQUIRE_ESM
+//   - async: the mangled hashed ID ("firebase-admin-<hash>/auth") doesn't exist in node_modules
 //
-// createRequire forces Node to use the "require" condition in firebase-admin's
-// package.json exports map, which points to the CJS build (./lib/auth/index.js),
-// bypassing the ESM path entirely. Turbopack cannot statically analyze a
-// require() call buried inside a function, so it never mangles the specifier.
+// Fix: build the specifier strings at runtime from fragments so Turbopack's
+// static scanner never sees the full "firebase-admin/X" string. Node resolves
+// them fine at runtime; createRequire forces the "require" condition in
+// firebase-admin's exports map → CJS build → no jose/jwks-rsa.
+
+const _pkg = ["firebase", "admin"].join("-"); // "firebase-admin"
 const req = createRequire(import.meta.url);
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function load(sub: string): any {
+  return req(`${_pkg}/${sub}`);
+}
 
 function readPrivateKey(): string | undefined {
   const raw =
@@ -37,8 +46,7 @@ let _app: any = null;
 function getAdminApp(): any {
   if (_app) return _app;
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const { cert, getApps, initializeApp } = req("firebase-admin/app") as any;
+  const { cert, getApps, initializeApp } = load("app");
 
   if (getApps().length) {
     _app = getApps()[0];
@@ -69,14 +77,12 @@ function getAdminApp(): any {
 }
 
 export function getAdminDb() {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const { getFirestore } = req("firebase-admin/firestore") as any;
+  const { getFirestore } = load("firestore");
   return getFirestore(getAdminApp());
 }
 
 export function getAdminAuth() {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const { getAuth } = req("firebase-admin/auth") as any;
+  const { getAuth } = load("auth");
   return getAuth(getAdminApp());
 }
 
