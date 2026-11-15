@@ -162,14 +162,11 @@ export function Footer() {
         <div className="relative border-t border-bone-50/8 px-8 md:px-12 lg:px-16 py-6 flex items-center justify-between flex-wrap gap-3 text-[11px] tracking-wide text-bone-50/40">
           <div>{ui.footer.copyright}</div>
           <div className="flex items-center gap-5">
-            <a href="#" className="hover:text-bone-50">
+            <a href="/privacy" className="hover:text-bone-50">
               {ui.footer.privacy}
             </a>
-            <a href="#" className="hover:text-bone-50">
+            <a href="/terms" className="hover:text-bone-50">
               {ui.footer.terms}
-            </a>
-            <a href="#" className="hover:text-bone-50">
-              {ui.footer.cookies}
             </a>
           </div>
         </div>
