@@ -41,6 +41,7 @@ export function DesignExplorer({ categories, designs: allDesigns }: DesignExplor
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [phoneError, setPhoneError] = useState("");
+  const [message, setMessage] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [submitError, setSubmitError] = useState("");
@@ -86,6 +87,7 @@ export function DesignExplorer({ categories, designs: allDesigns }: DesignExplor
     const result = await submitInquiry({
       name,
       phone,
+      message: message || undefined,
       designTitle: design?.title,
       designSlug: design?.slug,
       designCategory: design
@@ -423,6 +425,19 @@ export function DesignExplorer({ categories, designs: allDesigns }: DesignExplor
                   </div>
                 </div>
 
+                <label className="block">
+                  <span className="text-[11px] tracking-widest-2 uppercase text-bone-50/45">
+                    Message <span className="text-bone-50/25 normal-case tracking-normal text-[11px]">(optional)</span>
+                  </span>
+                  <textarea
+                    rows={3}
+                    value={message}
+                    onChange={(e) => setMessage(e.target.value)}
+                    placeholder="Your plot size, budget range, or anything you'd like us to know…"
+                    className="mt-2 w-full border border-bone-50/15 bg-ink-900 px-4 py-3 text-sm text-bone-50 placeholder-bone-50/25 focus:outline-none focus:border-bone-50/40 resize-none"
+                  />
+                </label>
+
                 <div className="flex flex-col sm:flex-row gap-3 pt-2">
                   <button
                     type="submit"
@@ -456,7 +471,7 @@ export function DesignExplorer({ categories, designs: allDesigns }: DesignExplor
                   <p className="text-sm text-red-400">{submitError}</p>
                 ) : submitted ? (
                   <p className="text-sm text-terracotta-400">
-                    Got it — we&apos;ll be in touch within 48 hours.
+                    Got it — we&apos;ll be in touch as soon as possible.
                     {selected ? ` We'll include ${selected.title} as your starting point.` : ""}
                   </p>
                 ) : (

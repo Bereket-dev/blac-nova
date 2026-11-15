@@ -143,7 +143,7 @@ export const uiCopy = {
       headlineAfter: "project.",
       cardEyebrow: "Blac Nova · Project Inquiry",
       cardBody:
-        "Share your plot, budget, and what you want to build. We reply within 48 hours with clear next steps.",
+        "Share your plot, budget, and what you want to build. We'll get back to you as soon as possible with clear next steps.",
       start: "Start your inquiry",
       browseFirst: "Or browse designs first",
       privacy:
@@ -155,12 +155,12 @@ export const uiCopy = {
       eyebrow: "Project inquiry",
       successHeadline: "We've got your inquiry.",
       successBody:
-        "Our team will reach out within 48 hours. You can also message us directly on Telegram for a faster response.",
+        "Our team will reach out as soon as possible. You can also message us directly on Telegram for a faster response.",
       telegram: "Message on Telegram",
       received: "Inquiry received",
       designLabel: "Design",
       headline: "Name, phone, and an optional design.",
-      body: "That's all we need to start. We reply within 48 hours — with clearer next steps if you've already picked a design.",
+      body: "That's all we need to start. We'll get back to you as soon as possible — with clearer next steps if you've already picked a design.",
       selectedDesign: "Selected design",
       changeDesign: "Change design",
       noDesign: "No design selected.",
