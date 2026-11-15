@@ -22,14 +22,6 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "storage.readdy-site.link",
-      },
-      {
-        protocol: "https",
-        hostname: "readdy.ai",
-      },
-      {
-        protocol: "https",
         hostname: "res.cloudinary.com",
       },
     ],
