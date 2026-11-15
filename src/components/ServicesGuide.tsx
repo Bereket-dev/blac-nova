@@ -74,7 +74,7 @@ export function ServicesGuide() {
                     <FadeImage
                       src={service.image}
                       alt={service.imageAlt}
-                      className="object-cover object-center"
+                      className={`object-cover ${service.imagePosition ?? "object-center"}`}
                       sizes="100vw"
                       eager={i === 0}
                     />
@@ -129,7 +129,7 @@ export function ServicesGuide() {
                             <FadeImage
                               src={shot.src}
                               alt={shot.alt}
-                              className="object-cover object-top"
+                              className={`object-cover ${shot.position ?? "object-top"}`}
                               sizes="(max-width: 1024px) 50vw, 28vw"
                             />
                           </div>

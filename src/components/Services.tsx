@@ -122,7 +122,7 @@ export function Services() {
               <FadeImage
                 src={img.landscapeCard}
                 alt="Landscape and pool detail"
-                className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105"
+                className="w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-105"
                 sizes="(max-width: 768px) 100vw, 33vw"
                 eager
               />

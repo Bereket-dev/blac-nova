@@ -21,14 +21,14 @@ export const img = {
   buildKitchen: "/designs/construction-crew.jpg",
 
   // Landscape service
-  landHero: "/designs/landscape-pool-hero.jpg",
-  landGarden: "/designs/compound-garden-path.jpg",
+  landHero: "/designs/landscape-pool-new.png",
+  landGarden: "/designs/compound-garden-wall.png",
   landPavilion: "/designs/landscape-pavilion.jpg",
 
   // Home services cards
   architectureCard: "/designs/addis-apartment-corner.jpg",
   stoneDetail: "/designs/addis-construction-3.jpg",
-  landscapeCard: "/designs/landscape-card.jpg",
+  landscapeCard: "/designs/landscape-terrace-front.png",
 
   // Hero / testimonial avatars
   avatar1: "/designs/avatar-1.jpg",

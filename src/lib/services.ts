@@ -13,7 +13,9 @@ export type ServiceOption = {
   summary: string;
   image: string;
   imageAlt: string;
-  gallery: { src: string; alt: string }[];
+  /** Tailwind object-position class for the hero banner, e.g. "object-center", "object-bottom" */
+  imagePosition?: string;
+  gallery: { src: string; alt: string; position?: string }[];
   youGet: string[];
   process: { step: string; title: string; detail: string }[];
 };
@@ -29,6 +31,7 @@ export const servicesCatalog: ServiceOption[] = [
       "We design houses and G+ buildings that fit the plot, the climate, and how you live — then produce drawings the site can follow.",
     image: img.archHero,
     imageAlt: "G+2 house elevation at golden hour",
+    imagePosition: "object-center",
     gallery: [
       {
         src: img.archInterior,
@@ -79,6 +82,7 @@ export const servicesCatalog: ServiceOption[] = [
       "One team owns schedule, quality, and cost on site — so the house you approved is the house that is handed over.",
     image: img.buildHero,
     imageAlt: "Active construction site with scaffolding and frame rising",
+    imagePosition: "object-center",
     gallery: [
       {
         src: img.buildStair,
@@ -129,14 +133,17 @@ export const servicesCatalog: ServiceOption[] = [
       "Compound landscaping, terraces, courtyards, and guest houses planned with the main building — not as an afterthought.",
     image: img.landHero,
     imageAlt: "Pool, stone terrace, and guest house at golden hour",
+    imagePosition: "object-bottom",
     gallery: [
       {
         src: img.landGarden,
         alt: "Compound garden path and planting",
+        position: "object-top",
       },
       {
         src: img.landPavilion,
         alt: "Guest house opening to the pool",
+        position: "object-center",
       },
     ],
     youGet: [
