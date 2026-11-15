@@ -40,9 +40,20 @@ export function DesignExplorer({ categories, designs: allDesigns }: DesignExplor
   const [selectedId, setSelectedId] = useState(initial.design);
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
+  const [phoneError, setPhoneError] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [submitError, setSubmitError] = useState("");
+
+  const validatePhone = (value: string): string => {
+    const v = value.trim();
+    if (!v) return "Phone number is required";
+    const pattern = /^(\+251[97]\d{8}|251[97]\d{8}|0[97]\d{8})$/;
+    if (!pattern.test(v)) {
+      return "Enter a valid Ethiopian mobile number — e.g. 09/07xxxxxxxx or +2519/7xxxxxxxx";
+    }
+    return "";
+  };
 
   const designs = useMemo(
     () => designsByCategory(allDesigns, categoryId),
@@ -63,6 +74,13 @@ export function DesignExplorer({ categories, designs: allDesigns }: DesignExplor
     e.preventDefault();
     setSubmitting(true);
     setSubmitError("");
+
+    const pErr = validatePhone(phone);
+    if (pErr) {
+      setPhoneError(pErr);
+      setSubmitting(false);
+      return;
+    }
 
     const design = selectedId ? findDesign(allDesigns, selectedId) : undefined;
     const result = await submitInquiry({
@@ -373,7 +391,7 @@ export function DesignExplorer({ categories, designs: allDesigns }: DesignExplor
                       placeholder="Your name"
                     />
                   </label>
-                  <label className="block">
+                  <div className="block">
                     <span className="text-[11px] tracking-widest-2 uppercase text-bone-50/45">
                       Phone
                     </span>
@@ -381,13 +399,28 @@ export function DesignExplorer({ categories, designs: allDesigns }: DesignExplor
                       required
                       type="tel"
                       value={phone}
-                      onChange={(e) => setPhone(e.target.value)}
-                      className="mt-2 w-full border border-bone-50/15 bg-ink-900 px-4 py-3 text-sm text-bone-50 placeholder-bone-50/30 focus:outline-none focus:border-bone-50/40"
+                      onChange={(e) => {
+                        setPhone(e.target.value);
+                        if (phoneError) setPhoneError("");
+                      }}
+                      onBlur={() => setPhoneError(validatePhone(phone))}
+                      className={`mt-2 w-full border bg-ink-900 px-4 py-3 text-sm text-bone-50 placeholder-bone-50/30 focus:outline-none ${
+                        phoneError
+                          ? "border-red-400 focus:border-red-400"
+                          : "border-bone-50/15 focus:border-bone-50/40"
+                      }`}
                       name="phone"
                       autoComplete="tel"
-                      placeholder="+251…"
+                      placeholder="09/07xxxxxxxx or +2519/7xxxxxxxx"
                     />
-                  </label>
+                    {phoneError ? (
+                      <p className="mt-1.5 text-xs text-red-400 leading-snug">{phoneError}</p>
+                    ) : (
+                      <p className="mt-1.5 text-[11px] text-bone-50/35 leading-snug">
+                        Format: 09/07xxxxxxxx or +2519/7xxxxxxxx
+                      </p>
+                    )}
+                  </div>
                 </div>
 
                 <div className="flex flex-col sm:flex-row gap-3 pt-2">
