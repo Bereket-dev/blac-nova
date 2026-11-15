@@ -22,7 +22,7 @@ const description =
   "Blac Nova Homes designs and builds houses, G+ buildings, and compound works across Ethiopia. Solid structure, clean handover.";
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://blacnova.com"),
+  metadataBase: new URL("https://blac-nova.vercel.app"),
   title: {
     default: title,
     template: `%s — ${siteName}`,

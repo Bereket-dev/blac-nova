@@ -41,7 +41,7 @@ async function sendTelegramNotification(inquiry: Inquiry): Promise<void> {
   lines.push(
     `🕐 ${new Date(inquiry.createdAt).toLocaleString("en-ET", { timeZone: "Africa/Addis_Ababa" })}`,
   );
-  lines.push(`👉 <a href="https://blacnova.com/admin/inquiries">View in admin</a>`);
+  lines.push(`👉 <a href="https://blac-nova.vercel.app/admin/inquiries">View in admin</a>`);
 
   const text = lines.join("\n");
 
