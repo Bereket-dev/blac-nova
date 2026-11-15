@@ -132,13 +132,21 @@ export default function SubscribersPageClient() {
                   <p className="text-sm font-medium text-gray-900 truncate">{sub.email}</p>
                   <p className="text-xs text-gray-400 mt-0.5">{formatDate(sub.createdAt)}</p>
                 </div>
-                <button
-                  type="button"
-                  onClick={() => setPendingDelete(sub)}
-                  className="px-3 py-1.5 text-xs font-medium text-red-600 bg-red-50 rounded-lg hover:bg-red-100 transition-colors shrink-0"
-                >
-                  Remove
-                </button>
+                <div className="flex items-center gap-2 shrink-0">
+                  <a
+                    href={`mailto:${sub.email}`}
+                    className="px-3 py-1.5 text-xs font-medium text-blue-600 bg-blue-50 rounded-lg hover:bg-blue-100 transition-colors"
+                  >
+                    Send email
+                  </a>
+                  <button
+                    type="button"
+                    onClick={() => setPendingDelete(sub)}
+                    className="px-3 py-1.5 text-xs font-medium text-red-600 bg-red-50 rounded-lg hover:bg-red-100 transition-colors"
+                  >
+                    Remove
+                  </button>
+                </div>
               </li>
             ))}
           </ul>
