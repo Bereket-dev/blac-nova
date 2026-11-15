@@ -39,7 +39,7 @@ export default function EditProjectPage() {
 
       {loading ? <p className="text-sm text-ink-900/50">Loading…</p> : null}
       {error ? <p className="text-sm text-terracotta-500">{error}</p> : null}
-      {project ? <ProjectForm mode="edit" initial={project} /> : null}
+      {project ? <ProjectForm mode="edit" initial={project} key={project.slug} /> : null}
     </div>
   );
 }

@@ -4,6 +4,13 @@ import { FormEvent, useEffect, useState } from "react";
 import { AdminFormActions } from "@/components/admin/AdminFormActions";
 import { ConfirmModal } from "@/components/admin/ConfirmModal";
 import {
+  FormErrorBanner,
+  FormField,
+  clearFieldError,
+  fieldInputClass,
+  requiredMsg,
+} from "@/components/admin/FormField";
+import {
   deleteCategoryClient,
   listCategoriesClient,
   saveCategoryClient,
@@ -12,8 +19,7 @@ import {
 import { revalidateCategories } from "@/lib/admin/actions";
 import type { ProjectCategory } from "@/lib/types";
 
-const inputCls =
-  "w-full border border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent disabled:bg-gray-100 disabled:text-gray-400 bg-gray-50";
+type FieldKey = "label" | "description";
 
 const emptyForm = () => ({ label: "", description: "" });
 
@@ -25,6 +31,7 @@ export default function AdminCategoriesPage() {
   const [saving, setSaving] = useState(false);
   const [reordering, setReordering] = useState(false);
   const [error, setError] = useState("");
+  const [fieldErrors, setFieldErrors] = useState<Partial<Record<FieldKey, string>>>({});
   const [formOpen, setFormOpen] = useState(false);
   const [pendingDelete, setPendingDelete] = useState<{ id: string; label: string } | null>(null);
   const [deleting, setDeleting] = useState(false);
@@ -50,6 +57,7 @@ export default function AdminCategoriesPage() {
     setEditingId(category.id);
     setForm({ label: category.label, description: category.description });
     setError("");
+    setFieldErrors({});
     setFormOpen(true);
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
@@ -58,13 +66,30 @@ export default function AdminCategoriesPage() {
     setEditingId(null);
     setForm(emptyForm());
     setError("");
+    setFieldErrors({});
     setFormOpen(false);
+  };
+
+  const validate = (): Partial<Record<FieldKey, string>> => {
+    const next: Partial<Record<FieldKey, string>> = {};
+    if (!form.label.trim()) next.label = requiredMsg("Label");
+    if (!form.description.trim()) next.description = requiredMsg("Description");
+    return next;
   };
 
   const onSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    setSaving(true);
     setError("");
+
+    const nextErrors = validate();
+    setFieldErrors(nextErrors);
+    const count = Object.keys(nextErrors).length;
+    if (count > 0) {
+      setError("Please fill in all required fields.");
+      return;
+    }
+
+    setSaving(true);
     try {
       if (editingId) {
         const existing = categories.find((c) => c.id === editingId);
@@ -72,15 +97,19 @@ export default function AdminCategoriesPage() {
         await saveCategoryClient({ ...existing, ...form });
       } else {
         const id = slugify(form.label);
-        if (!id) throw new Error("Label is required");
+        if (!id) {
+          setFieldErrors({ label: requiredMsg("Label") });
+          setError("Please fill in all required fields.");
+          return;
+        }
         if (categories.some((c) => c.id === id)) {
           throw new Error(`A category with id "${id}" already exists`);
         }
         const maxOrder = categories.reduce((m, c) => Math.max(m, c.order), 0);
         await saveCategoryClient({
           id,
-          label: form.label,
-          description: form.description,
+          label: form.label.trim(),
+          description: form.description.trim(),
           order: maxOrder + 1,
         });
       }
@@ -179,17 +208,17 @@ export default function AdminCategoriesPage() {
             </button>
           </div>
 
-          <form onSubmit={onSubmit} className="p-5 space-y-4 pb-28 md:pb-5">
-            <div>
-              <label className="block text-xs font-semibold text-gray-700 mb-2">
-                Label
-              </label>
+          <form onSubmit={onSubmit} noValidate className="p-5 space-y-4 pb-28 md:pb-5">
+            <FormField label="Label" required error={fieldErrors.label}>
               <input
-                required
                 value={form.label}
-                onChange={(e) => setForm((prev) => ({ ...prev, label: e.target.value }))}
-                className={inputCls}
+                onChange={(e) => {
+                  setForm((prev) => ({ ...prev, label: e.target.value }));
+                  clearFieldError(setFieldErrors, "label");
+                }}
+                className={fieldInputClass(!!fieldErrors.label)}
                 placeholder="Residences"
+                aria-invalid={!!fieldErrors.label}
               />
               {!editingId && form.label ? (
                 <p className="mt-1.5 text-xs text-gray-400">
@@ -197,29 +226,26 @@ export default function AdminCategoriesPage() {
                   <span className="font-mono text-gray-600">{slugify(form.label)}</span>
                 </p>
               ) : null}
-            </div>
+            </FormField>
 
-            <div>
-              <label className="block text-xs font-semibold text-gray-700 mb-2">
-                Description
-              </label>
+            <FormField label="Description" required error={fieldErrors.description}>
               <textarea
-                required
                 rows={3}
                 value={form.description}
-                onChange={(e) =>
-                  setForm((prev) => ({ ...prev, description: e.target.value }))
-                }
-                className={inputCls}
+                onChange={(e) => {
+                  setForm((prev) => ({ ...prev, description: e.target.value }));
+                  clearFieldError(setFieldErrors, "description");
+                }}
+                className={fieldInputClass(!!fieldErrors.description)}
                 placeholder="Residential projects including houses and villas"
+                aria-invalid={!!fieldErrors.description}
               />
-            </div>
+            </FormField>
 
-            {error ? (
-              <div className="bg-red-50 border border-red-200 text-red-700 text-sm rounded-xl px-4 py-3">
-                {error}
-              </div>
-            ) : null}
+            <FormErrorBanner
+              message={error}
+              fieldCount={Object.keys(fieldErrors).length}
+            />
 
             <AdminFormActions
               saving={saving}

@@ -15,7 +15,7 @@ export default function NewProjectPage() {
         </Link>
         <h1 className="mt-4 font-serif-display text-4xl font-light">New project</h1>
       </div>
-      <ProjectForm mode="create" />
+      <ProjectForm mode="create" key="new" />
     </div>
   );
 }

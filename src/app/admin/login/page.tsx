@@ -21,12 +21,21 @@ function EyeIcon({ open }: { open: boolean }) {
   );
 }
 
+type LoginFieldKey = "phone" | "password";
+
+function loginInputCls(error?: boolean): string {
+  return error
+    ? "w-full border border-red-400 rounded-md px-3 py-2.5 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent bg-red-50"
+    : "w-full border border-gray-300 rounded-md px-3 py-2.5 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent";
+}
+
 export default function AdminLoginPage() {
   const { login } = useAdminAuth();
   const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const [error, setError] = useState("");
+  const [fieldErrors, setFieldErrors] = useState<Partial<Record<LoginFieldKey, string>>>({});
+  const [authError, setAuthError] = useState("");
   const [submitting, setSubmitting] = useState(false);
 
   /** Normalize Ethiopian phone to canonical 09xxxxxxxx form.
@@ -35,20 +44,36 @@ export default function AdminLoginPage() {
    */
   const normalizePhone = (raw: string): string => {
     const p = raw.trim();
-    if (p.startsWith("+2519")) return "0" + p.slice(4);   // +2519x… → 09x…
-    if (p.startsWith("2519"))  return "0" + p.slice(3);   // 2519x…  → 09x…
-    return p;                                               // already 09x…
+    if (p.startsWith("+2519")) return "0" + p.slice(4);
+    if (p.startsWith("2519"))  return "0" + p.slice(3);
+    return p;
+  };
+
+  const clearField = (key: LoginFieldKey) => {
+    setFieldErrors((prev) => {
+      if (!prev[key]) return prev;
+      const next = { ...prev };
+      delete next[key];
+      return next;
+    });
   };
 
   const onSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    setError("");
+    setAuthError("");
+
+    const next: Partial<Record<LoginFieldKey, string>> = {};
+    if (!phone.trim()) next.phone = "Phone number is required";
+    if (!password) next.password = "Password is required";
+    setFieldErrors(next);
+    if (Object.keys(next).length > 0) return;
+
     setSubmitting(true);
     try {
       const email = `${normalizePhone(phone)}@blacnova.com`;
       await login(email, password);
     } catch {
-      setError("Incorrect phone number or password.");
+      setAuthError("Incorrect phone number or password.");
     } finally {
       setSubmitting(false);
     }
@@ -75,36 +100,55 @@ export default function AdminLoginPage() {
 
         <form
           onSubmit={onSubmit}
+          noValidate
           className="bg-white border border-gray-200 rounded-lg p-6 space-y-4 shadow-sm"
         >
+          {/* Phone */}
           <div>
-            <label className="block text-xs font-semibold text-gray-700 mb-1.5">
+            <label
+              className={`block text-xs font-semibold mb-1.5 ${
+                fieldErrors.phone ? "text-red-700" : "text-gray-700"
+              }`}
+            >
               Phone Number
+              <span className="text-red-500 ml-0.5" aria-hidden="true">*</span>
             </label>
             <input
-              required
               type="tel"
               value={phone}
-              onChange={(e) => setPhone(e.target.value)}
-              className="w-full border border-gray-300 rounded-md px-3 py-2.5 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent"
+              onChange={(e) => { setPhone(e.target.value); clearField("phone"); }}
+              className={loginInputCls(!!fieldErrors.phone)}
               placeholder="09xxxxxxxx"
               autoComplete="username"
               autoFocus
+              aria-invalid={!!fieldErrors.phone}
             />
+            {fieldErrors.phone ? (
+              <p className="mt-1.5 text-xs text-red-600 flex items-center gap-1" role="alert">
+                <i className="ri-error-warning-line text-sm" aria-hidden />
+                {fieldErrors.phone}
+              </p>
+            ) : null}
           </div>
 
+          {/* Password */}
           <div>
-            <label className="block text-xs font-semibold text-gray-700 mb-1.5">
+            <label
+              className={`block text-xs font-semibold mb-1.5 ${
+                fieldErrors.password ? "text-red-700" : "text-gray-700"
+              }`}
+            >
               Password
+              <span className="text-red-500 ml-0.5" aria-hidden="true">*</span>
             </label>
             <div className="relative">
               <input
-                required
                 type={showPassword ? "text" : "password"}
                 value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="w-full border border-gray-300 rounded-md px-3 py-2.5 pr-10 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent"
+                onChange={(e) => { setPassword(e.target.value); clearField("password"); }}
+                className={`${loginInputCls(!!fieldErrors.password)} pr-10`}
                 autoComplete="current-password"
+                aria-invalid={!!fieldErrors.password}
               />
               <button
                 type="button"
@@ -115,11 +159,17 @@ export default function AdminLoginPage() {
                 <EyeIcon open={showPassword} />
               </button>
             </div>
+            {fieldErrors.password ? (
+              <p className="mt-1.5 text-xs text-red-600 flex items-center gap-1" role="alert">
+                <i className="ri-error-warning-line text-sm" aria-hidden />
+                {fieldErrors.password}
+              </p>
+            ) : null}
           </div>
 
-          {error ? (
-            <div className="bg-red-50 border border-red-200 text-red-700 text-sm rounded-md px-3 py-2.5">
-              {error}
+          {authError ? (
+            <div className="bg-red-50 border border-red-200 text-red-700 text-sm rounded-md px-3 py-2.5" role="alert">
+              {authError}
             </div>
           ) : null}
 

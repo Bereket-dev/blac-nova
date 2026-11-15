@@ -1,8 +1,14 @@
 "use client";
 
 import { FormEvent, useEffect, useState } from "react";
-import { AdminFormActions } from "@/components/admin/AdminFormActions";
 import { ConfirmModal } from "@/components/admin/ConfirmModal";
+import {
+  FormErrorBanner,
+  FormField,
+  clearFieldError,
+  fieldInputClass,
+  requiredMsg,
+} from "@/components/admin/FormField";
 import {
   deleteTestimonialClient,
   listTestimonialsClient,
@@ -15,8 +21,7 @@ import { useAdminAuth } from "@/lib/admin/auth";
 import { TestimonialAvatar } from "@/components/TestimonialAvatar";
 import type { Testimonial } from "@/lib/types";
 
-const inputCls =
-  "w-full border border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent disabled:bg-gray-100 disabled:text-gray-400 bg-gray-50";
+type FieldKey = "name" | "role" | "quote";
 
 const emptyForm = () => ({
   quote: "",
@@ -38,6 +43,7 @@ export default function AdminTestimonialsPage() {
   const [saving, setSaving] = useState(false);
   const [reordering, setReordering] = useState(false);
   const [error, setError] = useState("");
+  const [fieldErrors, setFieldErrors] = useState<Partial<Record<FieldKey, string>>>({});
   const [formOpen, setFormOpen] = useState(false);
   const [pendingDelete, setPendingDelete] = useState<{ id: string; name: string } | null>(null);
   const [deleting, setDeleting] = useState(false);
@@ -65,6 +71,7 @@ export default function AdminTestimonialsPage() {
     setAvatarFile(null);
     setAvatarPreview(null);
     setError("");
+    setFieldErrors({});
     setFormOpen(true);
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
@@ -75,6 +82,7 @@ export default function AdminTestimonialsPage() {
     setAvatarFile(null);
     setAvatarPreview(null);
     setError("");
+    setFieldErrors({});
     setFormOpen(false);
   };
 
@@ -84,10 +92,26 @@ export default function AdminTestimonialsPage() {
     if (f) setAvatarPreview(URL.createObjectURL(f));
   };
 
+  const validate = (): Partial<Record<FieldKey, string>> => {
+    const next: Partial<Record<FieldKey, string>> = {};
+    if (!form.name.trim()) next.name = requiredMsg("Client name");
+    if (!form.role.trim()) next.role = requiredMsg("Role / location");
+    if (!form.quote.trim()) next.quote = requiredMsg("Quote");
+    return next;
+  };
+
   const onSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    setSaving(true);
     setError("");
+
+    const nextErrors = validate();
+    setFieldErrors(nextErrors);
+    if (Object.keys(nextErrors).length > 0) {
+      setError("Please fill in all required fields.");
+      return;
+    }
+
+    setSaving(true);
     try {
       let avatar = form.avatar;
 
@@ -112,7 +136,11 @@ export default function AdminTestimonialsPage() {
         await saveTestimonialClient({ ...existing, ...form, avatar });
       } else {
         const id = slugify(form.name);
-        if (!id) throw new Error("Name is required");
+        if (!id) {
+          setFieldErrors({ name: requiredMsg("Client name") });
+          setError("Please fill in all required fields.");
+          return;
+        }
         if (testimonials.some((t) => t.id === id)) {
           throw new Error(`A testimonial with id "${id}" already exists`);
         }
@@ -124,7 +152,15 @@ export default function AdminTestimonialsPage() {
               .map((t) => saveTestimonialClient({ ...t, featured: false })),
           );
         }
-        await saveTestimonialClient({ id, ...form, avatar, order: maxOrder + 1 });
+        await saveTestimonialClient({
+          id,
+          ...form,
+          name: form.name.trim(),
+          role: form.role.trim(),
+          quote: form.quote.trim(),
+          avatar,
+          order: maxOrder + 1,
+        });
       }
       resetForm();
       await revalidateTestimonials();
@@ -223,37 +259,37 @@ export default function AdminTestimonialsPage() {
             </button>
           </div>
 
-          <form onSubmit={onSubmit} className="p-5 space-y-4">
-            <div>
-              <label className="block text-xs font-semibold text-gray-700 mb-2">
-                Client name
-              </label>
+          <form onSubmit={onSubmit} noValidate className="p-5 space-y-4 pb-28 md:pb-5">
+            <FormField label="Client name" required error={fieldErrors.name}>
               <input
-                required
                 value={form.name}
-                onChange={(e) => setForm((p) => ({ ...p, name: e.target.value }))}
-                className={inputCls}
+                onChange={(e) => {
+                  setForm((p) => ({ ...p, name: e.target.value }));
+                  clearFieldError(setFieldErrors, "name");
+                }}
+                className={fieldInputClass(!!fieldErrors.name)}
                 placeholder="Abebe Tadesse"
+                aria-invalid={!!fieldErrors.name}
               />
               {!editingId && form.name ? (
                 <p className="mt-1.5 text-xs text-gray-400">
                   ID: <span className="font-mono text-gray-600">{slugify(form.name)}</span>
                 </p>
               ) : null}
-            </div>
+            </FormField>
 
-            <div>
-              <label className="block text-xs font-semibold text-gray-700 mb-2">
-                Role / location
-              </label>
+            <FormField label="Role / location" required error={fieldErrors.role}>
               <input
-                required
                 value={form.role}
-                onChange={(e) => setForm((p) => ({ ...p, role: e.target.value }))}
-                className={inputCls}
+                onChange={(e) => {
+                  setForm((p) => ({ ...p, role: e.target.value }));
+                  clearFieldError(setFieldErrors, "role");
+                }}
+                className={fieldInputClass(!!fieldErrors.role)}
                 placeholder="Private Client, Dire Dawa"
+                aria-invalid={!!fieldErrors.role}
               />
-            </div>
+            </FormField>
 
             {/* Sex */}
             <div>
@@ -276,28 +312,26 @@ export default function AdminTestimonialsPage() {
               </div>
             </div>
 
-            <div>
-              <label className="block text-xs font-semibold text-gray-700 mb-2">
-                Quote
-              </label>
+            <FormField label="Quote" required error={fieldErrors.quote}>
               <textarea
-                required
                 rows={4}
                 value={form.quote}
-                onChange={(e) => setForm((p) => ({ ...p, quote: e.target.value }))}
-                className={inputCls}
+                onChange={(e) => {
+                  setForm((p) => ({ ...p, quote: e.target.value }));
+                  clearFieldError(setFieldErrors, "quote");
+                }}
+                className={fieldInputClass(!!fieldErrors.quote)}
                 placeholder="What the client said…"
+                aria-invalid={!!fieldErrors.quote}
               />
-            </div>
+            </FormField>
 
             {/* Avatar upload */}
-            <div>
-              <label className="block text-xs font-semibold text-gray-700 mb-2">
-                Avatar photo{" "}
-                <span className="font-normal text-gray-400">(optional)</span>
-              </label>
+            <FormField
+              label="Avatar photo"
+              hint="Optional — falls back to a generated initial avatar"
+            >
               <div className="flex items-center gap-4">
-                {/* Preview circle — shows file preview, existing photo, or sex fallback */}
                 <TestimonialAvatar
                   testimonial={{ name: form.name || "?", avatar: avatarPreview ?? form.avatar, sex: form.sex }}
                   size={56}
@@ -324,7 +358,7 @@ export default function AdminTestimonialsPage() {
                   )}
                 </div>
               </div>
-            </div>
+            </FormField>
 
             {/* Featured toggle */}
             <label className="flex items-center gap-4 py-3 px-4 bg-amber-50 border border-amber-100 rounded-xl cursor-pointer">
@@ -342,11 +376,10 @@ export default function AdminTestimonialsPage() {
               </div>
             </label>
 
-            {error ? (
-              <div className="bg-red-50 border border-red-200 text-red-700 text-sm rounded-xl px-4 py-3">
-                {error}
-              </div>
-            ) : null}
+            <FormErrorBanner
+              message={error}
+              fieldCount={Object.keys(fieldErrors).length}
+            />
 
             <button
               type="submit"
