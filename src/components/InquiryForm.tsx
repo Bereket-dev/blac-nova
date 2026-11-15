@@ -27,10 +27,30 @@ export function InquiryForm({ categories, designs }: InquiryFormProps) {
 
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
+  const [phoneError, setPhoneError] = useState("");
   const [message, setMessage] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState("");
+
+  /**
+   * Valid Ethiopian mobile formats:
+   *   09xxxxxxxx    — 10 digits, starts with 09
+   *   07xxxxxxxx    — 10 digits, starts with 07
+   *   +2519xxxxxxxx — 13 chars (with +), starts with +2519
+   *   +2517xxxxxxxx — 13 chars (with +), starts with +2517
+   *   2519xxxxxxxx  — 12 digits, starts with 2519
+   *   2517xxxxxxxx  — 12 digits, starts with 2517
+   */
+  const validatePhone = (value: string): string => {
+    const v = value.trim();
+    if (!v) return "Phone number is required";
+    const pattern = /^(\+251[97]\d{8}|251[97]\d{8}|0[97]\d{8})$/;
+    if (!pattern.test(v)) {
+      return "Enter a valid Ethiopian mobile number — e.g. 09/07xxxxxxxx or +2519/7xxxxxxxx";
+    }
+    return "";
+  };
 
   const design = initialSelection.design
     ? designs.find(
@@ -45,6 +65,14 @@ export function InquiryForm({ categories, designs }: InquiryFormProps) {
     e.preventDefault();
     setSubmitting(true);
     setError("");
+
+    // Validate phone before hitting the server
+    const pErr = validatePhone(phone);
+    if (pErr) {
+      setPhoneError(pErr);
+      setSubmitting(false);
+      return;
+    }
 
     try {
       const result = await submitInquiry({
@@ -186,7 +214,7 @@ export function InquiryForm({ categories, designs }: InquiryFormProps) {
                 autoComplete="name"
               />
             </label>
-            <label className="block">
+            <div className="block">
               <span className="text-[11px] tracking-widest-2 uppercase text-ink-900/45">
                 {copy.phone}
               </span>
@@ -194,13 +222,30 @@ export function InquiryForm({ categories, designs }: InquiryFormProps) {
                 required
                 type="tel"
                 value={phone}
-                onChange={(e) => setPhone(e.target.value)}
-                className="mt-2 w-full border border-ink-900/10 bg-bone-50 px-4 py-3 text-sm text-ink-900 focus:outline-none focus:border-ink-900/40"
+                onChange={(e) => {
+                  setPhone(e.target.value);
+                  if (phoneError) setPhoneError("");
+                }}
+                onBlur={() => setPhoneError(validatePhone(phone))}
+                className={`mt-2 w-full border px-4 py-3 text-sm text-ink-900 focus:outline-none bg-bone-50 ${
+                  phoneError
+                    ? "border-red-400 focus:border-red-500"
+                    : "border-ink-900/10 focus:border-ink-900/40"
+                }`}
                 name="phone"
                 autoComplete="tel"
-                placeholder="+251…"
+                placeholder="09/07xxxxxxxx or +2519/7xxxxxxxx"
               />
-            </label>
+              {phoneError ? (
+                <p className="mt-1.5 text-xs text-red-600 leading-snug">
+                  {phoneError}
+                </p>
+              ) : (
+                <p className="mt-1.5 text-[11px] text-ink-900/40 leading-snug">
+                  Format: 09/07xxxxxxxx or +2519/7xxxxxxxx
+                </p>
+              )}
+            </div>
           </div>
 
           <label className="block">
