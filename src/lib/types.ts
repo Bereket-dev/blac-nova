@@ -73,6 +73,12 @@ export type Inquiry = {
   handledAt?: number;
 };
 
+export type Subscriber = {
+  id: string;
+  email: string;
+  createdAt: number; // Unix ms timestamp
+};
+
 export type DesignOption = {
   id: string;
   slug: string;

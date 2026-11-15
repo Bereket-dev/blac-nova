@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useState, type FormEvent } from "react";
 import { useUi } from "@/lib/language";
+import { saveSubscriberClient } from "@/lib/admin/firestore";
 
 const social = [
   {
@@ -18,7 +19,10 @@ const social = [
 ];
 
 export function Footer() {
+  const [email, setEmail] = useState("");
   const [subscribed, setSubscribed] = useState(false);
+  const [subscribing, setSubscribing] = useState(false);
+  const [subscribeError, setSubscribeError] = useState("");
   const ui = useUi();
 
   const explore = [
@@ -28,9 +32,18 @@ export function Footer() {
     { href: "/about#inquire", label: ui.footer.inquiry },
   ];
 
-  const onSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setSubscribed(true);
+    setSubscribeError("");
+    setSubscribing(true);
+    try {
+      await saveSubscriberClient(email);
+      setSubscribed(true);
+    } catch {
+      setSubscribeError("Something went wrong. Please try again.");
+    } finally {
+      setSubscribing(false);
+    }
   };
 
   return (
@@ -102,25 +115,37 @@ export function Footer() {
             {subscribed ? (
               <p className="text-sm text-terracotta-400">{ui.footer.thanks}</p>
             ) : (
-              <form
-                onSubmit={onSubmit}
-                className="flex items-center gap-2 bg-ink-700 rounded-full p-1.5 border border-bone-50/8"
-              >
-                <input
-                  required
-                  placeholder={ui.footer.emailPlaceholder}
-                  className="flex-1 bg-transparent px-4 py-2 text-sm text-bone-50 placeholder-bone-50/40 focus:outline-none"
-                  type="email"
-                  name="email"
-                />
-                <button
-                  type="submit"
-                  className="w-10 h-10 rounded-full bg-bone-50 text-ink-900 hover:bg-terracotta-500 hover:text-bone-50 transition-colors flex items-center justify-center"
-                  aria-label={ui.footer.subscribe}
+              <>
+                <form
+                  onSubmit={onSubmit}
+                  className="flex items-center gap-2 bg-ink-700 rounded-full p-1.5 border border-bone-50/8"
                 >
-                  <i className="ri-arrow-right-line text-lg" />
-                </button>
-              </form>
+                  <input
+                    required
+                    type="email"
+                    value={email}
+                    onChange={(e) => { setEmail(e.target.value); setSubscribeError(""); }}
+                    placeholder={ui.footer.emailPlaceholder}
+                    className="flex-1 bg-transparent px-4 py-2 text-sm text-bone-50 placeholder-bone-50/40 focus:outline-none"
+                    name="email"
+                  />
+                  <button
+                    type="submit"
+                    disabled={subscribing}
+                    className="w-10 h-10 rounded-full bg-bone-50 text-ink-900 hover:bg-terracotta-500 hover:text-bone-50 transition-colors flex items-center justify-center disabled:opacity-60"
+                    aria-label={ui.footer.subscribe}
+                  >
+                    {subscribing ? (
+                      <span className="w-4 h-4 border-2 border-ink-900/30 border-t-ink-900 rounded-full animate-spin" />
+                    ) : (
+                      <i className="ri-arrow-right-line text-lg" />
+                    )}
+                  </button>
+                </form>
+                {subscribeError ? (
+                  <p className="mt-2 text-xs text-red-400">{subscribeError}</p>
+                ) : null}
+              </>
             )}
             <div className="mt-6 flex items-center gap-3 text-[11px] tracking-wide text-bone-50/45">
               <i className="ri-shield-check-line" /> {ui.footer.privacyNote}

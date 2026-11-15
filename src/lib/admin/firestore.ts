@@ -11,7 +11,7 @@ import {
   setDoc,
 } from "firebase/firestore";
 import { getClientDb } from "@/lib/firebase/client";
-import type { Project, ProjectCategory, Testimonial } from "@/lib/types";
+import type { Project, ProjectCategory, Subscriber, Testimonial } from "@/lib/types";
 
 export async function listCategoriesClient(): Promise<ProjectCategory[]> {
   const snap = await getDocs(
@@ -164,4 +164,31 @@ export async function saveTestimonialClient(testimonial: Testimonial) {
 
 export async function deleteTestimonialClient(id: string) {
   await deleteDoc(doc(getClientDb(), "testimonials", id));
+}
+
+export async function listSubscribersClient(): Promise<Subscriber[]> {
+  const snap = await getDocs(
+    query(collection(getClientDb(), "subscribers"), orderBy("createdAt", "desc")),
+  );
+  return snap.docs.map((item) => {
+    const data = item.data();
+    return {
+      id: item.id,
+      email: (data.email as string) ?? "",
+      createdAt: (data.createdAt as number) ?? 0,
+    } satisfies Subscriber;
+  });
+}
+
+export async function saveSubscriberClient(email: string): Promise<void> {
+  const id = email.toLowerCase().trim().replace(/[^a-z0-9]/g, "-");
+  await setDoc(
+    doc(getClientDb(), "subscribers", id),
+    { id, email: email.toLowerCase().trim(), createdAt: Date.now() },
+    { merge: false },
+  );
+}
+
+export async function deleteSubscriberClient(id: string): Promise<void> {
+  await deleteDoc(doc(getClientDb(), "subscribers", id));
 }
