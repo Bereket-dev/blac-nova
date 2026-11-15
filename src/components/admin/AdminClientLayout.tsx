@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { useEffect, useState, type ReactNode } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import { AdminAuthProvider, useAdminAuth } from "@/lib/admin/auth";
 
 const nav = [
@@ -85,9 +85,14 @@ function Drawer({
 }) {
   const pathname = usePathname();
 
-  // close on route change
+  const pathnameRef = useRef(pathname);
+
+  // Close only when the route actually changes, not on initial mount
   useEffect(() => {
-    onClose();
+    if (pathnameRef.current !== pathname) {
+      pathnameRef.current = pathname;
+      onClose();
+    }
   }, [pathname, onClose]);
 
   return (
