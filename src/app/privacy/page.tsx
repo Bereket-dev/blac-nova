@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 };
 
 export default function PrivacyPage() {
-  const updated = "15 November 2025";
+  const updated = "15 November 2026";
 
   return (
     <main className="bg-bone-50 text-ink-900 overflow-hidden">
