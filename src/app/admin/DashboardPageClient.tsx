@@ -137,13 +137,6 @@ export default function AdminDashboardPage() {
             <span className="text-gray-400 text-sm">→</span>
           </Link>
           <Link
-            href="/admin/subscribers"
-            className="flex items-center justify-between py-3 px-4 bg-gray-50 rounded-xl active:bg-gray-100 transition-colors"
-          >
-            <span className="text-sm font-medium text-gray-900">View subscribers</span>
-            <span className="text-gray-400 text-sm">→</span>
-          </Link>
-          <Link
             href="/"
             target="_blank"
             className="flex items-center justify-between py-3 px-4 bg-gray-50 rounded-xl active:bg-gray-100 transition-colors"
