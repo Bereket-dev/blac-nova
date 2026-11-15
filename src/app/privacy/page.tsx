@@ -53,8 +53,8 @@ export default function PrivacyPage() {
                   When you submit an inquiry form, we collect your <strong>name</strong>,
                   <strong> phone number</strong>, and an optional <strong>message</strong>.
                   If you selected a design from our services page, we also record that
-                  selection. This information is stored in our private database (Firebase
-                  Firestore) and forwarded to our team via Telegram so we can respond promptly.
+                  selection. This information is shared with our internal team so we
+                  can respond to your inquiry.
                 </p>
               </div>
               <div className="border-l-2 border-ink-900/15 pl-5">
@@ -93,11 +93,9 @@ export default function PrivacyPage() {
           <div>
             <h2 className="font-semibold text-ink-900 text-base mb-3">Storage and security</h2>
             <p className="text-sm">
-              Data is stored on Google Firebase (Firestore), a cloud database with
-              access restricted to authorised Blac Nova staff only. Project images are
-              hosted on Cloudinary. Both services are secured with industry-standard
-              encryption in transit and at rest. We do not store payment information —
-              no transactions take place on this website.
+              Information you submit through this website is stored securely and
+              accessible only to authorised Blac Nova staff. We do not store payment
+              information — no transactions take place on this website.
             </p>
           </div>
 
